@@ -52,7 +52,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'anagrafiche',
+    'core',
+    'accounts',
+    'django_countries',
+    
+    "bootstrap5",
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+# La prossima variabile serve per fare in modo che Crispy avvisi in caso di errore
+CRISPY_FAIL_SILENTLY = not DEBUG
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
