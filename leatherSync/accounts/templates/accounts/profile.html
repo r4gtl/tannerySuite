@@ -1,0 +1,57 @@
+{% extends 'core/base.html' %} 
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+
+		
+
+<div class="container mt-3">
+	<div class="card w-100" >
+		<div class="row g-0">
+			<div class="col-md-4 d-flex justify-content-center">
+				<img src="{{ user.profile.avatar.url }}"  
+			alt="{{ user.username }}" 
+			style="height: 200px; width: 200px; border-radius: 50%; margin-top: 25px;" 
+			class="avatar"  
+			accept=".jpg,.jpeg,.png"
+			id="preview-image"
+			/>
+			</div>
+			<div class="col-md-8">
+				<div class="card-body">
+				<h5 class="card-title">Profilo</h5>
+				<form method="POST" enctype="multipart/form-data">
+					{% csrf_token %} 
+					{{u_form.username|as_crispy_field}}
+					{{u_form.first_name|as_crispy_field}}
+					{{u_form.last_name|as_crispy_field}}
+					{{u_form.email|as_crispy_field}}
+				
+					<!-- User form -->
+					{{ p_form|crispy }}
+					<!-- Profile form -->
+					<button type="submit" class="btn btn-primary full-width">Aggiorna Profilo</button>
+					<a class="btn btn-danger" href="{% url 'password_change' %}">Aggiorna password</a>
+	
+				</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+	
+
+{% endblock content %}
+
+{% block extra_scripts %}
+<script>
+
+$(document).ready(function() {
+	handleImagePreview('id_avatar', 'preview-image');
+});
+
+</script>
+
+{% endblock %}

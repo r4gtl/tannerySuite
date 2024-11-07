@@ -1,0 +1,191 @@
+html {
+  font-size: 14px;
+}
+
+/* regole per le tabelle */
+
+/* questa regola imposta la larghezza massima di una cella */
+.max-width-cell {
+  max-width: 50px; /* Imposta la larghezza massima desiderata per la colonna */
+  /* white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;*/
+}
+
+
+/* questa regola imposta l'altezza massima della tabella e mette la barra di scorrimento a destra */
+.table-container {
+  height: 300px; /* Imposta l'altezza desiderata del contenitore */
+  overflow-y: auto; /* Aggiunge la barra di scorrimento verticale */
+  
+}
+
+.table-container-big {
+  height: 500px; /* Imposta l'altezza desiderata del contenitore */
+  overflow-y: auto; /* Aggiunge la barra di scorrimento verticale */
+  
+}
+
+
+/* questa regola imposta l'header della tabella come fissata in alto */
+.table-fixed-header thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #fff;
+  
+}
+
+
+/* CSS Sidebar */
+.sidenav {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 160px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 20; /* Stay at the top */
+    left: 0;
+    background-color: #0c7c59; 
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+}
+
+/* Liste sidebar */
+.sidenav ul {
+    list-style-type:none;
+    padding: 6px 8px 6px 6px;
+}
+
+/* The navigation menu links */
+.sidenav a {
+    padding: 6px 8px 6px 6px;
+    text-decoration: none;
+    font-size: 14px;
+    color: #050505;
+    display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+    color: white;
+}
+
+.sidenav li:hover {
+  color: white;
+}
+
+
+
+
+
+/* Style page content */
+.main {
+    margin-left: 160px; /* Same as the width of the sidebar */
+    padding: 0px 10px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+/* CSS Navbar */
+.navbar {
+    background-color: #0c7c59;
+}
+
+.navbar a {
+    color: whitesmoke;
+}
+
+.navbar a:hover {
+    color: silver;
+}
+
+
+/* Prova css sidebar */
+
+.dropdown-toggle { outline: 0; }
+
+.btn-toggle {
+  padding: .25rem .5rem;
+  font-weight: 600;
+  color: var(--bs-emphasis-color);
+  background-color: transparent;
+}
+.btn-toggle:hover,
+.btn-toggle:focus {
+  color: rgba(var(--bs-emphasis-color-rgb), .85);
+  background-color: var(--bs-tertiary-bg);
+}
+
+.btn-toggle::before {
+  width: 1.25em;
+  line-height: 0;
+  content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+  transition: transform .35s ease;
+  transform-origin: .5em 50%;
+}
+
+[data-bs-theme="dark"] .btn-toggle::before {
+  content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%28255,255,255,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+}
+
+.btn-toggle[aria-expanded="true"] {
+  color: rgba(var(--bs-emphasis-color-rgb), .85);
+}
+.btn-toggle[aria-expanded="true"]::before {
+  transform: rotate(90deg);
+}
+
+.btn-toggle-nav a {
+  padding: .1875rem .5rem;
+  margin-top: .125rem;
+  margin-left: 1.25rem;
+}
+.btn-toggle-nav a:hover,
+.btn-toggle-nav a:focus {
+  background-color: var(--bs-tertiary-bg);
+}
+
+.scrollarea {
+  overflow-y: auto;
+}
+
+img .avatarimage {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+
+}
+
+
+  tr.draggable {
+    cursor: move;
+  }
+
+
+/* Messaggi di successo o errore in basso a destra */
+  .fixed-bottom-message {
+    position: fixed;
+    bottom: 20px;
+    right: 20px; 
+    z-index: 1000; 
+    width: 400px; 
+    padding: 10px;
+    
+}
+
+.search-modal-button {
+  background-color: #ffb703 !important;
+  color: white !important;
+  
+}
+
+
+/* classe aggiunta per le tabelle di ricerca nei modal*/
+.table-search tr:hover {
+  background-color: #f0f0f0; /* Cambia il colore di sfondo della riga al passaggio del mouse */
+  cursor: pointer; /* Cambia il cursore quando il mouse passa sopra la riga */
+}
