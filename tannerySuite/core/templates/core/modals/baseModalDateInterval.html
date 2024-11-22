@@ -1,0 +1,120 @@
+{% comment %}
+Questo modal viene utilizzato quando alla query basta un intervallo di date.
+Uso:
+inserire in un tag <a>
+<a href="#" data-bs-toggle="modal" data-bs-target="#myModal" onclick="setModalUrl(`{% url 'acquistopelli:report_traceability_in' %}`, 'Dati Produzione')">
+  Apri modal
+</a>
+{% endcomment %}
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+      <!-- Modal Title -->
+            {% block modal-title %}
+            <h5 class="modal-title" id="modal_title"><i class="bi bi-calendar-check"></i>&nbsp;&nbsp; Criteri di Stampa </h5>          
+            {% endblock modal-title %}
+        
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="date_form" action="" target="_blank" method="GET">
+          <label class="form-label mt-2" for="from_date">Dalla data:</label>
+          <input class="form-control" type="date" id="from_date" name="from_date">
+
+          <label class="form-label mt-2" for="to_date">Alla data:</label>
+          <input class="form-control" type="date" id="to_date" name="to_date">
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+            <button type="submit" class="btn btn-primary">Genera report</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+   // Funzione per validare i campi del form prima del submit
+   function validateForm() {
+    // Ottieni i valori dei campi from_date e to_date
+    var fromDate = document.getElementById('from_date').value;
+    var toDate = document.getElementById('to_date').value;
+
+    // Verifica se i campi sono vuoti
+    if (fromDate === "" || toDate === "") {
+      // Mostra un messaggio di avviso
+      alert("Si prega di compilare entrambi i campi 'Dalla data' e 'Alla data' prima di generare il report.");
+      return false; // Impedisce l'invio del form
+    }
+
+    // Converte le date in oggetti Date
+    var fromDateObj = new Date(fromDate);
+    var toDateObj = new Date(toDate);
+
+    // Verifica se from_date è più recente di to_date
+    if (fromDateObj > toDateObj) {
+      // Mostra un messaggio di avviso
+      alert("La data 'Dalla data' non può essere più recente della data 'Alla data'.");
+      return false; // Impedisce l'invio del form
+    }
+
+    // Se tutti i controlli passano, permetti l'invio del form
+    return true;
+  }
+
+  // Aggiungi un gestore di eventi al form per chiamare la funzione di validazione prima del submit
+  document.getElementById('date_form').addEventListener('submit', function (e) {
+    if (!validateForm()) {
+      e.preventDefault(); // Impedisce l'invio del form se la validazione fallisce
+    }
+  });
+
+/*
+  function setModalUrl(url, title, submitButtonText = "Genera report") {
+    // Imposta l'URL nel campo azione del form nel modal
+    document.getElementById('date_form').action = url;
+    console.log("url: " + url )
+
+    // Ottieni l'elemento del titolo del modal
+    var modalTitle = document.getElementById('modal_title');
+    
+    // Aggiungi il valore di title al testo esistente del titolo
+    modalTitle.innerText = modalTitle.innerText + ' | ' + title;
+
+    var submitButton = document.querySelector('#myModal button[type="submit"]');
+    submitButton.innerText = submitButtonText;
+
+
+    
+  }*/
+  function setModalUrl(url, title, submitButtonText = "Genera report") {
+    // Imposta l'URL nel campo azione del form nel modal
+    document.getElementById('date_form').action = url;
+
+    // Ottieni le date selezionate
+    var fromDate = document.getElementById('from_date').value;
+    var toDate = document.getElementById('to_date').value;
+
+    // Imposta i parametri della query string per le date selezionate
+    var queryParams = new URLSearchParams({from_date: fromDate, to_date: toDate});
+
+    // Crea l'URL per la richiesta AJAX
+    var ajaxUrl = url + '?' + queryParams.toString();
+    console.log('ajaxUrl: ' + ajaxUrl)
+
+    // Esegui una richiesta AJAX per ottenere i dati aggiornati
+    fetch(ajaxUrl)
+        .then(response => response.json())
+        .then(data => {
+            // Aggiorna il grafico con i nuovi dati
+            updateChartWithData(data, fromDate, toDate);
+        })
+        .catch(error => console.log(error));
+}
+
+</script>

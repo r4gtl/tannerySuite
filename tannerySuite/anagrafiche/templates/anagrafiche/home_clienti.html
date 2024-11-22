@@ -1,0 +1,171 @@
+{% extends 'core/base.html' %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block title %}{{ block.super }} | Anagrafiche - Fornitori {% endblock %}
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_anagrafiche.html" %}
+{% endblock %}
+
+{% block content %}
+
+
+<nav aria-label="breadcrumb" class="mt-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+        <li class="breadcrumb-item active" aria-current="page">Clienti</li>
+    </ol>
+</nav>
+
+    <div class="container">
+        
+        <h3>Anagrafiche Clienti</h3>
+        <br>
+        {% include "core/partials/_messages.html" %}
+
+        <!-- Riga grafici e statistiche -->
+        <div class="row">
+          <div class="col-4">        
+            <canvas id="country_count" data-url=""></canvas>
+          </div>
+        </div>
+        <!-- Fine riga grafici e statistiche -->
+        
+
+        <!-- Valutare se tenere il filtro in javascript DataTable -->
+        <!-- Inizio filtro -->
+        <!-- <div class="row">
+          <div class="col">
+            <div class="card card-body">
+        
+              
+              <form method="get">
+        
+                <div class="table-responsive-sm">
+                  <table class="table table-hover table-striped table-bordered">
+                    <thead class="thead-dark">
+                      <tr>     
+                        <th>Ragione Sociale</th>
+                        
+                        
+                      </tr>
+                    </thead>
+                    
+                    <tbody>
+                    <tr>
+                      <td style="width: 20%">                
+                        {% render_field filter.form.ragionesociale class="form-control" %}
+                      </td>
+                      
+                      
+                      
+                    </tr>
+              
+                    
+                    
+                  </tbody>
+                  </table>
+                </div>
+                  
+        
+                
+        
+                <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i>&nbsp;&nbsp; Cerca</button>
+                <a class="btn btn-success" href="{% url 'anagrafiche:home_clienti' %}"><i class="bi bi-arrow-counterclockwise"></i>&nbsp;&nbsp; Pulisci campi</a>
+                
+              </form>
+              
+              
+            </div>
+          </div>
+          
+        </div> -->
+        <!-- Fine filtro -->
+
+        <hr>
+        <div class="d-flex flex-row-reverse bd-highlight">
+        <a href="{% url 'anagrafiche:aggiungi_cliente' %}" class="btn btn-success p-2 bd-highlight"><i class="bi bi-person-plus"></i> Aggiungi Cliente</a>
+        </div>  
+        <br>
+
+
+        <div class="container-fluid">
+            <div class="table-responsive">
+            <table class="table table-hover table-striped table-bordered" id="TabellaClienti">
+              <thead class="thead-dark">
+              <tr>        
+                <th>Ragione Sociale</th>
+                <th>Indirizzo</th>
+                <th>Paese</th>
+                
+                
+                
+                            
+              </tr>
+            </thead>
+              
+              <tbody>
+                {% for cliente in initial_clienti %}
+                    
+                    <td class="col-md-1"><a href="{{ cliente.get_absolute_url }}">{{ cliente.ragionesociale }}</a></td>
+                    <td class="col-md-2">{{ cliente.indirizzo }}</td>  
+                    <td class="col-md-2">{{ cliente.country  }} <img class="country-select-flag" id="{ flag_id }" style="max-height: 24px;" src="{{ cliente.country.flag  }}"></td>                    
+                  </tr>
+                
+                {% endfor %}
+                
+              </tbody>
+            </table>
+             
+          </div>
+    </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  
+
+  document.addEventListener('DOMContentLoaded', function() {
+        var ctx = document.getElementById('country_count').getContext('2d');
+        
+        fetch('{% url 'anagrafiche:get_country_count_client' %}')
+            .then(response => response.json())
+            .then(data => {
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Conteggio Clienti per Nazione',
+                            data: data.data,
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                precision: 0
+                            }
+                        }
+                    }
+                });
+            });
+    });
+
+
+
+        document.addEventListener("DOMContentLoaded", function() {
+            initializeDataTable('TabellaClienti');
+        });
+    
+
+
+</script>
+{% endblock %}

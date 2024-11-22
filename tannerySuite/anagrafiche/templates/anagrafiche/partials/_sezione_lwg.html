@@ -1,0 +1,60 @@
+{% load crispy_forms_tags %}
+
+
+        <!-- sezione certificati LWG -->
+        {% if form.instance.id %}
+        <div class="row"> <!-- in questa riga metto le due tabelle (nc associate e lwg certificates)-->
+            
+            {% include "nonconformity/partials/_nc_associate.html" %}
+
+            <div class="col-8">
+            <div class="container-fluid" id="lwg-section">
+                <div class="container">
+                    <div class="row justify-content-end"> 
+                        <div class="col-3 text-start mt-2">
+                            <h5>Certificati LWG</h5>
+                        </div>                       
+                        <div class="col text-end">
+                            <a href="{% url 'anagrafiche:aggiungi_lwg' fk_fornitore=fornitore.pk %}" class="btn btn-success">Aggiungi Certificato</a>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="table-responsive">
+                <table class="table table-hover table-striped table-bordered">
+                <thead class="thead-dark">
+                <tr>        
+                    <th>URN</th>
+                    <th>Punteggio</th>
+                    <th>LWG Range</th>
+                    <th>Data Certificato</th>
+                    <th>Azione</th>
+                    
+                    
+                                
+                </tr>
+                </thead>
+                
+                <tbody>
+                    {% for lwg_cert in lwg_certs %}
+                        
+                        <td class="col-md-1"><a href="{% url 'anagrafiche:modifica_lwg' pk=lwg_cert.pk %}">{{ lwg_cert.lwg_urn }}</a></td>
+                        <td class="col-md-2">{{ lwg_cert.lwg_score }}</td>  
+                        <td class="col-md-2">{{ lwg_cert.lwg_range  }} </td>
+                        <td class="col-md-2">{{ lwg_cert.lwg_date }}</td>                     
+                        <td class="col-md-1"><a href="{% url 'anagrafiche:delete_lwg' pk=lwg_cert.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{ lwg_cert.pk }}"><i class="bi bi-trash"></i> Elimina</a></td>
+
+                    </tr>
+                    
+                    {% endfor %}
+                    
+                </tbody>
+                </table>
+                
+            </div>
+        </div>
+    </div>
+        </div>
+            
+        {% endif %}
+            <!-- fine sezione certificati LWG -->

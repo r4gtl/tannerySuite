@@ -1,0 +1,51 @@
+{% load crispy_forms_tags %}
+
+
+        <!-- sezione prezzi listino lavorazioni Values -->
+        <div class="container-fluid" id="prezzi-section">
+            <div class="container">
+                <div class="row justify-content-end">
+                    <div class="col-10">
+
+                    </div>
+                    <div class="col">
+                        {% if form.instance.id  %}
+                        <a class="btn btn-sm btn-outline-success mb-2" href="{% url 'anagrafiche:aggiungi_prezzo_listino' fk_listino_terzista=listino %}">Aggiungi</a>
+                        {% else %}
+                            <a class="btn btn-sm btn-outline-success mb-2" disabled>Salvare per inserire</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="table-responsive">
+            <table class="table table-hover table-striped table-bordered">
+              <thead class="thead-dark">
+              <tr>        
+                <th>Prezzo</th>
+                <th>Data Inserimento</th>
+                <th>Azione</th>
+                
+                
+                
+                            
+              </tr>
+            </thead>
+              
+              <tbody>
+                {% for prezzo in prezzi %}
+                  <tr>   
+                    <td class="col-md-6"><a href="{% url 'anagrafiche:modifica_prezzo_listino' pk=prezzo.pk  %}">{{ prezzo.prezzo }}</a></td>
+                    <td class="col-md-2 text-end">{{ prezzo.data_inserimento }}</td>  
+                    <td class="text-center"> <a href="{% url 'anagrafiche:delete_prezzo_listino' pk=prezzo.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButtonPrezzo{{prezzo.pk}}"><i class="bi bi-trash"></i> Elimina</a></td>
+                    
+                  </tr>
+                
+                {% endfor %}
+                
+              </tbody>
+            </table>
+             
+          </div>
+    </div>
+        <!-- fine sezione prezzi Values -->

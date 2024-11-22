@@ -1,0 +1,28 @@
+<!-- Modal -->
+<div class="modal fade" id="criteriaModal" tabindex="-1" role="dialog" aria-labelledby="criteriaModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="criteriaModalLabel">Inserisci criteri di filtraggio</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Includi il form dei criteri all'interno del modal -->
+        <form action="{% url 'acquistopelli:report_traceability_in' %}" target="_blank" method="GET">
+          <label class="form-label mt-2" for="from_date">Dalla data:</label>
+          <input class="form-control" type="date" id="from_date" name="from_date">
+
+          <label class="form-label mt-2" for="to_date">Alla data:</label>
+          <input class="form-control" type="date" id="to_date" name="to_date">
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+            <button type="submit" class="btn btn-primary">Genera report</button>
+          </div>
+        </form>
+      </div>
+     
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+{% extends 'core/modals/baseModal.html' %}
+
+
+<!-- Modal ID -->
+{% block modal-id %} id="confirmDeleteModal" caller-id="" {% endblock modal-id %}
+<!-- Modal Title -->
+{% block modal-title %}
+<h5><i class="bi bi-question-circle"></i>&nbsp;&nbsp; Sei sicuro?</h5>          
+{% endblock modal-title %}
+      <!-- Modal Body -->
+{% block modal-body %}
+<p>Sei sicuro di voler cancellare questo elemento?</p>
+
+{% endblock modal-body %}
+
+
+<!-- Modal Footer -->
+{% block modal-footer %}
+        
+        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal" id="confirmDeleteButtonModal">Cancella Riga</button>
+
+
+{% block scripts %}
+<script>
+
+$(document).on('click', '.confirm-delete', function () {
+  var callerId = $(this).data("bs-id");
+  console.log("Caller: " + callerId)
+  console.log("Caller-id: " + $("#confirmDeleteModal").attr("caller-id", $(this).attr("id")))
+  console.log("Attr: " + $(this).attr("id"))
+  $("#confirmDeleteModal").attr("caller-id", $(this).attr("id"));
+  
+});
+
+/*
+$(document).on('click', '#confirmDeleteButtonModal', function () {
+  var caller = $("#confirmDeleteButtonModal").closest(".modal").attr("caller-id");
+  console.log("Caller onclick: " + caller)
+  console.log("Indirizzo:" + $("#".concat(caller)).attr("href"))
+  window.location = $("#".concat(caller)).attr("href");
+  console.log("Indirizzo:" + $("#".concat(caller)).attr("href"))
+});*/
+
+$(document).on('click', '#confirmDeleteButtonModal', function () {
+  var caller = $("#confirmDeleteButtonModal").closest(".modal").attr("caller-id");
+  console.log("Caller onclick: " + caller);
+  //var targetUrl = $("#".concat(caller)).attr("href");
+  var targetUrl = $("#" + caller).attr("href");
+  console.log("Indirizzo: " + targetUrl);
+  
+  if (targetUrl) {
+    console.log("target url: " + targetUrl) 
+    window.location.href = targetUrl;
+    console.log("target url: " + targetUrl) 
+  } else {
+    console.error("URL non valido.");
+  }
+});
+
+</script>
+{% endblock %}
+{% endblock modal-footer %}

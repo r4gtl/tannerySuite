@@ -1,0 +1,143 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{ block.super }} | Rapporto NC {% endblock %}
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_non_conformity.html" %}
+{% endblock %}
+
+{% block content %}
+
+
+<nav aria-label="breadcrumb" class="mt-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+        <li class="breadcrumb-item"><a href="{% url 'nonconformity:home_rapporti_audit' %}">Lista Rapporti Audit</a></li>        
+
+        {% if form.instance.id  %}
+            <li class="breadcrumb-item active" aria-current="page">Modifica Rapporto Audit {{ rapportoaudit }}</li>
+        {% else %}
+            <li class="breadcrumb-item active" aria-current="page">Aggiungi Rapporto Audit</li>
+        {% endif %}             
+        
+        
+    </ol>
+</nav>
+
+    <div class="container">
+        {% if form.instance.id  %}
+            <h3>Modifica Rapporto Audit N. {{ rapportoaudit }}</h3>
+        {% else %}
+            <h3> Aggiungi Rapporto Audit</h3>
+        {% endif %}
+        
+        
+        <hr>
+        
+        
+        {% include "core/partials/_messages.html" %}
+        
+        <br>
+
+
+        <form method="post">
+            {% csrf_token %}
+
+              <input type="submit" name="salva_esci" class="btn btn-success mb-2 me-1" value="Salva ed Esci">
+              <input type="submit" name="salva_continua" class="btn btn-success mb-2 me-1" value="Salva e Continua">
+
+            <div class="row">
+                
+                <div class="col-3">
+                    {{ form.data_rapporto_audit|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ form.norme_riferimento|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ form.auditor|as_crispy_field }}
+                </div>
+                
+                
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    {{ form.risultato|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ form.data_controllo|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ form.created_by|as_crispy_field }}
+                </div>
+                
+                
+            </div>
+
+            
+            
+            
+
+            
+            
+          
+        </form>
+        <hr>
+        <div class="row"> <!-- Inizio riga per inglobare due tabelle -->
+        <div class="col-6"><!-- Inizio colonna per inglobare Processi-Rapporti -->
+        <!-- Lista Processi-Rapporti Audit -->
+      <div class="row">
+        <div class="col text-end">
+          {% if form.instance.id  %}
+            <a href="{% url 'nonconformity:aggiungi_processo_rapporto_audit' fk_rapportoaudit=rapportoaudit.pk %}" class="btn btn-success mt-2 "><i class="bi bi-file-earmark-plus"></i> Aggiungi Processo</a>
+          {% else %}
+            <button class="btn btn-outline-success mt-2">Salvare per aggiungere</button>
+          {% endif %}
+        </div>
+      </div>
+        <div class="row">
+        
+      
+      {% if form.instance.id  %}
+        <table class="table table-bordered table-striped mt-2">
+          <thead>
+            <tr>
+              <th>Processo</th>            
+              <th>Classe Processo</th>              
+              <th>Azione</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            {% for processo in processi_audit %}
+            <tr>        
+              
+              <td><a href="{% url 'nonconformity:modifica_processo_rapporto_audit' fk_rapportoaudit=rapportoaudit.pk pk=processo.pk %}">{{ processo.fk_processo }}</a></td>
+              <td>{{ processo.fk_processo.classe_processo }}</td>   
+              
+              <td class="text-center"><a href="{% url 'nonconformity:delete_processo_audit' pk=processo.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{processo.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>             
+            </tr>  
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+
+    </div>
+    </div><!-- Fine colonna per inglobare Processi-Rapporti -->
+
+
+    {% include "nonconformity/partials/_nc_associate.html" %}
+    </div> 
+    </div><!-- Fine colonna per inglobare Processi-Rapporti -->
+
+
+
+
+    </div> <!-- Fine riga per inglobare 2 tabelle -->
+    </div>
+
+
+
+{% endblock %}
+

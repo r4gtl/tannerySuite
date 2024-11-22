@@ -1,0 +1,52 @@
+<div class="row">
+      
+    
+    
+      <h5>Caratteristiche Procedura</h5>
+                
+    
+    <div class="col-12 text-end">
+      
+      <a href="{% url 'articoli:aggiungi_caratteristica_procedura' fk_dettaglio_procedura=dettaglioprocedura.pk %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi Caratteristica</a>
+
+    </div>
+  </div>
+  <div class="table-container" >
+    <table class="table table-bordered table-striped mt-2" id="myTable" data-model_name="CaratteristicaProcedura">
+      <thead>
+        <tr>          
+          <th>Riga</th> 
+          <th>Caratteristica</th> 
+          <th>Fornitore</th> 
+          <th>Codice Lavorazione</th> 
+          <th>Valore</th> 
+          <th>Azioni</th>
+          
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        {% for caratteristica in caratteristiche_procedura %}
+        <tr data-pk="{{ caratteristica.pk }}">   
+          <td class="numero-riga" id="numero-riga-{{ caratteristica.pk }}"><a href="{% url 'articoli:modifica_caratteristica_procedura' fk_dettaglio_procedura=dettaglioprocedura.pk pk=caratteristica.pk %}">{{ caratteristica.numero_riga }}</a></td>     
+          <td ><a href="{% url 'articoli:modifica_caratteristica_procedura' fk_dettaglio_procedura=dettaglioprocedura.pk pk=caratteristica.pk %}">{{ caratteristica.fk_dettaglio_fase_lavoro }}</a></td>
+          
+          <td>{{ caratteristica.fk_fornitore|default_if_none:"" }}</td>  
+          {% if caratteristica.fk_lavorazione_esterna %}          
+            <td>{{ caratteristica.fk_lavorazione_esterna|default_if_none:"" }} | Cod. {{ caratteristica.fk_lavorazione_esterna.codice|default_if_none:"" }}</td>            
+          {% else %}
+            <td></td>
+          {% endif %}
+          <td>{{ caratteristica.valore|default_if_none:"" }}</td>            
+          <td class="text-center">
+            <a href="{% url 'articoli:delete_caratteristica_procedura' pk=caratteristica.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{caratteristica.pk}}"><i class="bi bi-trash"></i>Elimina</a>
+            
+          </td>
+
+        </tr>  
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% block extra_scripts %}{% endblock %}
+  

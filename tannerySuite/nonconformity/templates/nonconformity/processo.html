@@ -1,0 +1,93 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{ block.super }} | Processo {% endblock %}
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_non_conformity.html" %}
+{% endblock %}
+
+{% block content %}
+
+
+<nav aria-label="breadcrumb" class="mt-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+        <li class="breadcrumb-item"><a href="{% url 'nonconformity:home_rapporti_nc' %}">Lista Rapporti NC</a></li>        
+        <li class="breadcrumb-item"><a href="{% url 'nonconformity:tabelle_generiche' %}">Tabelle Generiche</a></li>        
+
+        {% if form.instance.id  %}
+            <li class="breadcrumb-item active" aria-current="page">Modifica Processo {{ processo }}</li>
+        {% else %}
+            <li class="breadcrumb-item active" aria-current="page">Aggiungi Processo</li>
+        {% endif %}             
+        
+        
+    </ol>
+</nav>
+
+    <div class="container">
+        {% if form.instance.id  %}
+            <h3>Modifica Processo {{ processo }}</h3>
+        {% else %}
+            <h3> Aggiungi Processo</h3>
+        {% endif %}
+        
+        
+        <hr>
+        
+        
+        
+        
+        <br>
+
+
+        <form method="post">
+            {% csrf_token %}
+
+            
+
+            <div class="row">
+                
+                <div class="col-3">
+                    {{ form.descrizione|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ form.classe_processo|as_crispy_field }}
+                </div>
+                
+                
+                
+            </div>
+
+            
+
+            
+
+
+
+            <div class="row">
+                <div class="col-8">
+                    {{ form.note|as_crispy_field }}
+                </div>
+                <div class="col-2">
+                    {{ form.created_by.as_hidden }}
+                </div>
+            </div>
+            
+            
+
+            
+            <input type="submit" class="btn btn-success" value="Salva">
+        </form>
+        <hr>
+        
+        
+    </div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %} 

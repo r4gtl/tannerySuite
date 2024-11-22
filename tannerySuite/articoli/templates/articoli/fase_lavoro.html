@@ -1,0 +1,167 @@
+{% extends 'core/base.html' %} 
+{% load static %}
+{% load crispy_forms_tags %} 
+{% load widget_tweaks %}
+{% block head_title %}{{ block.super }} - Fase Lavoro{% endblock head_title %} 
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_articoli.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <br>
+    <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+            <li class="breadcrumb-item"><a href="{% url 'articoli:tabelle_generiche' %}">Tabelle Generiche</a></li>        
+    
+            {% if form.instance.id  %}
+                <li class="breadcrumb-item active" aria-current="page">{{ faselavoro.descrizione }}</li>
+            {% else %}
+                <li class="breadcrumb-item active" aria-current="page">Aggiungi Fase Lavoro</li>
+            {% endif %}             
+            
+            
+        </ol>
+    </nav>    
+    <hr>
+    <!-- Inseriamo il partial dei messaggi per visualizzare il messaggio su Salva e Continua -->
+    {% include "core/partials/_messages.html" %}
+    {% include "core/modals/baseModalGenericSearch.html" %}
+    <br>
+    {% if form.instance.id  %}
+            <h5 class="text-end">{{ faselavoro.descrizione }}</h5>
+            <h3>Modifica Fase di Lavoro</h3>
+        {% else %}
+            <h5 class="text-end">Fase di Lavoro</h5>
+            <h3> Aggiungi Fase di Lavoro</h3>
+        {% endif %}
+    
+    <!-- Form Articolo -->
+    
+    <div class="form-group mt-3">
+        <form class="mt-3" method="POST" novalidate enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            
+                    <div class="row mt-3 mb-4">
+                      
+                      <div class="col-md-12 border rounded shadow-sm">
+                        <div class="row">
+                            <div class = "col-md-3">
+                              {{ form.descrizione|as_crispy_field }}
+                            </div>
+                            <div class = "col-md-3">
+                              {{ form.interno_esterno|as_crispy_field }}
+                            </div>
+                            
+                            
+                             
+                        </div>
+                        
+                        
+                        <hr>
+                        
+
+                        
+
+                    </div>
+                      </div>
+        <input type="submit" name="salva_esci" class="btn btn-success mb-2 me-1" value="Salva ed Esci">
+        <input type="submit" name="salva_continua" class="btn btn-success mb-2 me-1" value="Salva e continua">        
+        <button type="button" class="btn btn-danger mb-2 me-1" onclick="cancelAndRedirectTo(`{% url 'articoli:tabelle_generiche' %}`)"><i class="bi bi-arrow-counterclockwise"></i> Annulla</button>
+        {% if form.instance.id  %}
+        <button type="button" 
+                class="btn search-modal-button mb-2 me-1" 
+                data-toggle="tooltip" 
+                data-placement="top" 
+                title="Cerca fase da accodare alla fase attiva." 
+                style="" 
+                data-bs-toggle="modal" 
+                data-bs-target="#searchModal"
+                id="openSearchFaseButton"
+                data-bs-toggle="modal" 
+                data-bs-target="#searchModal"
+                data-url="{% url 'core:search_fase_lavoro' %}" 
+                data-modal-title="Cerca Fase" 
+                data-search-input-label="Cerca Fase"
+                data-fase-attiva="{{ faselavoro.pk }}" 
+                
+                >
+                <i class="bi bi-lightning"></i> Accoda fase</button>
+                {% else %}                  
+                  <button type="button" class="btn btn-secondary mt-1" style="width:100%" id=""><i class="bi bi-lightning"></i> Accoda Fase</button>
+                {% endif %}
+        <!-- fine form -->
+        </form>
+
+        
+
+    </div>
+    <hr>
+    
+    <div class="row">
+      <!-- Tabella Attributi Fase -->
+      <div class="col-6">
+        <div class="row">
+        
+        {% if form.instance.id  %}
+        <div class="col-6">
+          <h5>Attributi Fase</h5>
+                    
+        </div>
+        <div class="col-6 text-end">
+          
+          <a href="{% url 'articoli:aggiungi_attributo' fk_fase_lavoro=faselavoro.pk %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi Attributo</a>
+
+        </div>
+      </div>
+      <div class="table-container">
+        <table class="table table-bordered table-striped mt-2">
+          <thead>
+            <tr>
+              <th>Attributo</th>                
+              <th>Azione</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            {% for attributo in elenco_attributi %}
+            <tr>        
+              
+              <td><a href="{% url 'articoli:modifica_attributo' fk_fase_lavoro=faselavoro.pk pk=attributo.pk %}">{{ attributo.attributo }}</a></td>
+              
+              <td class="text-center"><a href="{% url 'articoli:delete_attributo' pk=attributo.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{attributo.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+            </tr>  
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+  </div>
+
+</div><!--Fine prima riga tabelle-->
+
+
+</div>
+
+{% endblock content %}
+{% block extra_scripts %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            setFocusOnField('id_descrizione');
+        });
+
+
+    document.getElementById('openSearchFaseButton').addEventListener('click', function(event) {
+        var callerButtonId = this.id;
+        var url = this.getAttribute('data-url');
+        var modalTitle = this.getAttribute('data-modal-title');
+        var searchInputLabel = this.getAttribute('data-search-input-label');
+        searchFunctionGeneral(url, modalTitle, searchInputLabel, callerButtonId, event);
+    });
+    </script>
+
+{% endblock %}

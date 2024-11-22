@@ -1,0 +1,147 @@
+{% extends 'core/base.html' %} 
+{% load static %}
+{% load crispy_forms_tags %} 
+{% load widget_tweaks %}
+{% block head_title %}{{ block.super }} - Procedura{% endblock head_title %} 
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_articoli.html" %}
+{% endblock %}
+
+{% block content %}
+{% include 'core/modals/delConfirm.html' %}
+<div class="container">
+    <br>
+    <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+            <li class="breadcrumb-item"><a href="{% url 'articoli:modifica_articolo' pk=fk_articolo.pk %}">{{ fk_articolo }}</a></li>        
+    
+            {% if form.instance.id  %}
+                <li class="breadcrumb-item active" aria-current="page">Procedura {{ procedura.nr_procedura }} del {{ procedura.data_procedura }}</li>
+            {% else %}
+                <li class="breadcrumb-item active" aria-current="page">Aggiungi Procedura</li>
+            {% endif %}             
+            
+            
+        </ol>
+    </nav>    
+    <hr>
+    <!-- Inseriamo il partial dei messaggi per visualizzare il messaggio su Salva e Continua -->
+    {% include "core/partials/_messages.html" %}
+
+    <br>
+    {% if form.instance.id  %}
+            <h5 class="text-end">{{ procedura.nr_procedura }} del {{ procedura.data_procedura }}</h5>
+            <h3>Modifica Procedura</h3>
+        {% else %}
+            <h5 class="text-end">Procedura</h5>
+            <h3> Aggiungi Procedura</h3>
+        {% endif %}
+    
+    <!-- Form Procedura -->
+    
+    <div class="form-group mt-3">
+        <form class="mt-3" method="POST" novalidate enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            
+                    <div class="row mt-3 mb-4">
+                      
+                      <div class="col-md-12 border rounded shadow-sm">
+                        <div class="row">
+                            <div class = "col-md-2">
+                              {{ form.nr_procedura|as_crispy_field }}
+                            </div>
+                            <div class = "col-md-2">
+                              {{ form.data_procedura|as_crispy_field }}
+                            </div>
+                            <div class = "col-md-2">
+                                {{ form.nr_revisione|as_crispy_field }}
+                              </div>
+                              <div class = "col-md-2">
+                                {{ form.data_revisione|as_crispy_field }}
+                              </div>
+                              
+                            
+                            
+                             
+                        </div>
+                        <div class="row">
+
+                            <div class = "col-md-2">
+                                {{ form.fk_articolo|as_crispy_field }}
+                              </div>
+
+                            <div class = "col-md-2">
+                                {{ form.created_by|as_crispy_field }}
+                              </div>
+                        </div>
+                        
+                        
+                        <hr>
+                        
+
+                        
+
+                    </div>
+                      </div>
+
+        <input type="submit" name="salva_esci" class="btn btn-success mb-2 me-1" value="Salva ed Esci">        
+        <input type="submit" name="salva_continua" class="btn btn-success mb-2 me-1" value="Salva e continua">
+        <button type="button" class="btn btn-danger mb-2 me-1" onclick="cancelAndRedirectTo(`{% url 'articoli:modifica_articolo' pk=fk_articolo.pk %}`)"><i class="bi bi-arrow-counterclockwise"></i> Annulla</button>
+        <!-- fine form -->
+        </form>
+
+        
+
+    </div>
+
+    <hr>
+    <div class="row">
+      
+
+        {% if form.instance.id  %}
+            
+        {% include "articoli/partials/_elenco_dettaglio_procedura.html" %}
+    
+        {% else %}
+            <h3> Non sono presenti righe di dettaglio.</h3>
+        {% endif %}
+  
+  
+        
+  
+  </div>
+
+</div>
+
+{% endblock content %}
+{% block extra_scripts %}
+
+    <script>
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            setFocusOnField('id_descrizione');
+        
+            const table = document.getElementById('myTable');
+            // Ottieni il nome del modello dall'attributo data nel tuo template HTML
+            
+        
+            makeTableRowsDraggable(table);
+            
+        });
+
+        const currentApp = "{{ request.resolver_match.app_name }}";  // Ottieni il nome dell'applicazione corrente dal resolver_match        
+        const modelName = document.getElementById('myTable').dataset.model_name;
+        const searchURL = `/core/update_row_numbers/${encodeURIComponent(currentApp)}/${encodeURIComponent(modelName)}/`;
+        const linkTemplate = "/articoli/{{procedura.pk}}/modifica_dettaglio_procedura/{pk}/";
+
+    
+
+
+
+          
+          
+    </script>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% comment %}
+<!--Serve per mostrare le nc associate ad un altro Model
+Uso:
+Nella view, aggiungere al context il seguento campo:
+context["nc_associate"] = RapportoNC.objects.filter(fk_fornitore=self.object.pk)
+e nel template aggiungere 
+{% include "nonconformity/partials/_nc_associate.html" %}
+-->
+{% endcomment %}
+
+<div class="col-4"><!-- in questa colonna metto le nc associate -->
+                <div class="card">
+                    <div class="card-header">
+                      Non conformità associate
+                    </div>
+                    <div class="card-body">
+                        {% if nc_associate %}
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped table-bordered table-warning">
+                                <thead class="thead-dark">
+                                <tr>        
+                                    <th>Numero Rapporto</th>
+                                    <th>Data Rapporto</th>
+                                </tr>
+                                </thead>
+                                
+                                <tbody>                                    
+                                        {% for nc_associata in nc_associate %}
+                                            
+                                            <td class="col-md-1">{{ nc_associata.numero_nc }}</td>
+                                            <td class="col-md-2">{{ nc_associata.data_nc }}</td>  
+                                            
+                                        </tr>
+                                        
+                                        {% endfor %}
+                                    
+                                    
+                                </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p>Nessuna non conformità associata. <i class="bi bi-emoji-smile"></i></p>
+                        {% endif %}
+                    </div>
+                  </div>
+                
+            </div><!-- Fine colonna NC associate-->

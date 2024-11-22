@@ -1,0 +1,235 @@
+{% extends 'core/basi_stampe/base_stampa_a4_verticale.html' %}
+{% load static %}
+{% load countries %}
+{% block title %}Tracciabilità in ingresso {% endblock %}
+
+
+    <style>
+        .page {
+            width: 297mm; /* Larghezza pagina A4 orizzontale */
+            height: 210mm; /* Altezza pagina A4 orizzontale */
+            margin: 0 auto;
+            background-color: #fff; /* Colore di sfondo della pagina */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Ombra della pagina */
+        }
+        
+        /* Imposta l'orientamento orizzontale della pagina */
+        @media print {
+            .page {
+                width: 210mm;
+                height: 297mm;
+            }
+            @page {
+                size: A4 landscape;
+            }
+        }
+		
+		@media screen {
+
+			body {
+			margin: 2em;
+			
+			}
+			.row {
+				height: 80px;
+			}
+			.logo-text {
+				font-size: 0.7rem;
+			}
+			.code-text {
+				font-size: 2em;
+			}
+			.big-text {
+				font-size: 2.5em;
+			}
+			.bigger-text {
+				/*font-size: 3.2em;*/
+				font-size: 3em;
+			}
+		}
+			
+
+			
+    </style>
+</head>
+{% block content %}
+<div class="container mt-4">
+  <h1 class="text-center">Tracciabilità in Ingresso</h1>
+  <p>Intervallo di date selezionato: {{ from_date }} - {{ to_date }}</p>
+</div>
+<br>
+<hr>
+<div class="row">
+   <div class="col-4">
+      <canvas id="origine_per_rpt_lwg" data-url="{% url 'acquistopelli:origine_per_rpt_lwg' %}" data-from-date="{{ from_date|date:'Y-m-d' }}" data-to-date="{{ to_date|date:'Y-m-d' }}"></canvas>
+    </div>
+    <div class="col-4">
+      <canvas id="tipoanimale_per_rpt_lwg" data-url="{% url 'acquistopelli:tipoanimale_per_rpt_lwg' %}" data-from-date="{{ from_date|date:'Y-m-d' }}" data-to-date="{{ to_date|date:'Y-m-d' }}"></canvas>
+    </div>
+    <div class="col-4">
+      <canvas id="tipogrezzo_per_rpt_lwg" data-url="{% url 'acquistopelli:tipogrezzo_per_rpt_lwg' %}" data-from-date="{{ from_date|date:'Y-m-d' }}" data-to-date="{{ to_date|date:'Y-m-d' }}"></canvas>
+    </div>
+</div>
+<br>
+<h4>Primi 100 acquisti nel periodo in base a numero</h4>
+<table class="table table-bordered table-striped mt-2">
+          <thead>
+            <tr>
+                        
+              <th>Fornitore</th>
+              <th>Tipo Animale</th>
+              <th>Tipo Grezzo</th>
+              <th>Origine</th>
+              <th>Acquistati nel periodo</th>
+              <th>Somma pezzi</th>
+
+              
+            </tr>
+          </thead>
+          <tbody>
+            
+             {% for lotto in lotti_filtrati %}
+             
+                <tr>
+                  
+                  <td>{{ lotto.fk_fornitore__ragionesociale }}</td>			
+                  <td>{{ lotto.fk_tipoanimale__descrizione }}</td>
+                  <td>{{ lotto.fk_tipogrezzo__descrizione }}</td>
+                  <td>{{ lotto.origine }}</td>                  
+                  <td>{{ lotto.numero_lotti }}</td>
+                  <td>{{ lotto.pezzi }}</td>
+                </tr>
+        
+            {% endfor %}
+          </tbody>
+        </table>
+    
+
+		
+		
+
+
+
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+<script>
+
+$(function() {
+    var $origineperrptlwg = $("#origine_per_rpt_lwg");
+    var from_date = $origineperrptlwg.data("from-date");
+    var to_date = $origineperrptlwg.data("to-date");
+    $.ajax({
+      url: $origineperrptlwg.data("url"),
+      data: {
+        from_date: from_date,
+        to_date: to_date
+      },
+      success: function(data) {
+        var ctx = $origineperrptlwg[0].getContext("2d");
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              label: 'Origine',
+              backgroundColor: getRandomColor(),
+              data: data.data
+            }]
+          },
+          options: {
+            responsive: true,
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'Origine'
+            }
+          }
+        });
+      }
+    });
+  });
+
+
+
+$(function() {
+    var $tipoanimaleperrptlwg = $("#tipoanimale_per_rpt_lwg");
+    var from_date = $tipoanimaleperrptlwg.data("from-date");
+    var to_date = $tipoanimaleperrptlwg.data("to-date");
+    $.ajax({
+      url: $tipoanimaleperrptlwg.data("url"),
+      data: {
+        from_date: from_date,
+        to_date: to_date
+      },
+      success: function(data) {
+        var ctx = $tipoanimaleperrptlwg[0].getContext("2d");
+        new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              label: 'Tipo Animali',
+              backgroundColor: getRandomColor(),
+              data: data.data
+            }]
+          },
+          options: {
+            responsive: true,
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'Tipo Animali'
+            }
+          }
+        });
+      }
+    });
+  });
+
+
+$(function() {
+    var $tipogrezzoperrptlwg = $("#tipogrezzo_per_rpt_lwg");
+    var from_date = $tipogrezzoperrptlwg.data("from-date");
+    var to_date = $tipogrezzoperrptlwg.data("to-date");
+    $.ajax({
+      url: $tipogrezzoperrptlwg.data("url"),
+      data: {
+        from_date: from_date,
+        to_date: to_date
+      },
+      success: function(data) {
+        var ctx = $tipogrezzoperrptlwg[0].getContext("2d");
+        new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              label: 'Tipo Grezzo',
+              backgroundColor: getRandomColor(),
+              data: data.data
+            }]
+          },
+          options: {
+            responsive: true,
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'Tipo Grezzo'
+            }
+          }
+        });
+      }
+    });
+  });
+
+</script>
+{% endblock %}
