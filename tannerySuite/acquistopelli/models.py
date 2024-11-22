@@ -33,6 +33,72 @@ class TipoGrezzo(models.Model):
 
 '''Fine modelli da inserire in automatico'''
     
+class Spessore(models.Model):
+    descrizione = models.CharField(max_length=10)
+    note = models.TextField(null=True, blank=True)
+    created_by = models.ForeignKey(User, related_name='spessore', null=True, blank=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["descrizione"]
+        verbose_name_plural = "spessori"
+
+    def __str__(self):
+        return self.descrizione
+    
+class Quality(models.Model):
+    descrizione = models.CharField(max_length=10)
+    note = models.TextField(null=True, blank=True)
+    created_by = models.ForeignKey(User, related_name='quality', null=True, blank=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["descrizione"]
+        verbose_name_plural = "qualities"
+
+    def __str__(self):
+        return self.descrizione
+    
+class Taglio(models.Model):
+    descrizione = models.CharField(max_length=10)
+    note = models.TextField(null=True, blank=True)
+    created_by = models.ForeignKey(User, related_name='taglio', null=True, blank=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["descrizione"]
+        verbose_name_plural = "tagli"
+
+    def __str__(self):
+        return self.descrizione
+    
+class Sezione(models.Model):
+    descrizione = models.CharField(max_length=10)
+    note = models.TextField(null=True, blank=True)
+    created_by = models.ForeignKey(User, related_name='sezione', null=True, blank=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["descrizione"]
+        verbose_name_plural = "sezioni"
+
+    def __str__(self):
+        return self.descrizione
+    
+class Concia(models.Model):
+    descrizione = models.CharField(max_length=10)
+    note = models.TextField(null=True, blank=True)
+    created_by = models.ForeignKey(User, related_name='concia', null=True, blank=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["descrizione"]
+        verbose_name_plural = "conce"
+
+    def __str__(self):
+        return self.descrizione
+    
+
 class Scelta(models.Model):
     descrizione = models.CharField(max_length=50)
     note = models.TextField(null=True, blank=True)
@@ -46,13 +112,19 @@ class Scelta(models.Model):
     def __str__(self):
         return self.descrizione
     
+    
+
 
 
 class Lotto(models.Model):    
     data_acquisto = models.DateField(null=False, blank=False)
     identificativo = models.CharField(max_length=10, null=False, blank=False)
+    fk_taglio = models.ForeignKey(Taglio, null=True, blank=True, on_delete=models.SET_NULL, related_name='lotto')
+    fk_sezione = models.ForeignKey(Sezione, null=True, blank=True, on_delete=models.SET_NULL, related_name='lotto')
+    fk_concia = models.ForeignKey(Concia, null=True, blank=True, on_delete=models.SET_NULL, related_name='lotto')
     fk_tipoanimale = models.ForeignKey(TipoAnimale, null=True, blank=True, on_delete=models.SET_NULL, related_name='lotto')
-    fk_tipogrezzo = models.ForeignKey(TipoGrezzo, null=True, blank=True, on_delete=models.SET_NULL, related_name='lotto')
+    fk_spessore = models.ForeignKey(Spessore, null=True, blank=True, on_delete=models.SET_NULL, related_name='lotto')
+    fk_quality = models.ForeignKey(Quality, null=True, blank=True, on_delete=models.SET_NULL, related_name='lotto')
     fk_fornitore = models.ForeignKey(Fornitore, null=False, blank=False, on_delete=models.CASCADE, related_name='lotto')
     origine = CountryField(blank_label='(seleziona Paese)', null=True, blank=True)
     documento = models.CharField(max_length=10, null=True, blank=True)
