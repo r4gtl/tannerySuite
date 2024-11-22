@@ -1,1 +1,1 @@
-# leatherSync
+# tannerySuite

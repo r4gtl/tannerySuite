@@ -1,0 +1,84 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{ block.super }} | Anagrafiche - Fornitori {% endblock %}
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_anagrafiche.html" %}
+{% endblock %}
+
+{% block content %}
+
+
+<nav aria-label="breadcrumb" class="mt-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+        <li class="breadcrumb-item"><a href="{% url 'anagrafiche:home_fornitori' %}">Fornitori</a></li>        
+        <li class="breadcrumb-item"><a href="{% url 'anagrafiche:vedi_fornitore' pk=fornitore.pk %}">{{ fornitore.ragionesociale }}</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'anagrafiche:modifica_lwg' pk=certificato.pk %}">{{ certificato.lwg_urn }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Transfer Values</li>
+        
+    </ol>
+</nav>
+
+    <div class="container">
+        {% if form.instance.id  %}
+            <h3>Modifica Transfer Value</h3>
+        {% else %}
+            <h3> Aggiungi Transfer Value</h3>
+        {% endif %}
+        
+        
+        <hr>
+        
+        
+        
+        
+        <br>
+
+
+        <form method="post">
+            {% csrf_token %}
+
+            
+
+            <div class="row">
+                
+                <div class="col-3">
+                    {{ form.fk_transfervalue|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ form.quantity|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                    {{ form.note|as_crispy_field }}
+                </div>
+
+                
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    {{ form.fk_lwgcertificato|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ form.created_by|as_crispy_field }}
+                </div>
+            </div>
+            
+            
+
+            
+            <input type="submit" class="btn btn-success mb-2 me-1" value="Salva">
+            <button type="button" class="btn btn-danger mb-2 me-1" onclick="goBack()"><i class="bi bi-arrow-counterclockwise"></i> Annulla</button>
+        </form>
+        <hr>
+        
+        
+    </div>
+
+
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+{% endblock %} 

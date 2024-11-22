@@ -1,0 +1,114 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{ block.super }} | Anagrafiche - Clienti {% endblock %}
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_anagrafiche.html" %}
+{% endblock %}
+
+{% block content %}
+
+{% include 'core/modals/delConfirm.html' %}
+
+<nav aria-label="breadcrumb" class="mt-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+        <li class="breadcrumb-item"><a href="{% url 'anagrafiche:home_clienti' %}">Clienti</a></li>        
+        <li class="breadcrumb-item"><a href="{% url 'anagrafiche:modifica_cliente' pk=fk_cliente %}">{{ cliente.ragionesociale }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Voce Listino</li>
+        
+    </ol>
+</nav>
+
+    <div class="container">
+        {% if form.instance.id  %}
+            <h3>Modifica Voce Listino</h3>
+        {% else %}
+            <h3> Aggiungi Voce Listino</h3>
+        {% endif %}
+        
+        
+        <hr>
+        {% include "core/modals/baseModalGenericSearch.html" %}
+        <br>
+
+        {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %} 
+               <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                    <strong>Field: {{ field.name }}</strong>
+               </div>
+            {% endfor %}
+        {% endfor %}
+     {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            
+
+            <div class="row">
+                <div class="col-3">
+                    {{ form.fk_articolo|as_crispy_field }}
+                </div>
+                <div class="col-md-1">
+                    <button type="button" 
+                    class="btn btn-info mt-3" 
+                    data-toggle="tooltip" 
+                    data-placement="top" 
+                    title="Cerca Articolo" 
+                    style="width:100%"
+                    id="openSearchArticleButton"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#searchModal"
+                    data-url="{% url 'core:search_articolo' %}" 
+                    data-modal-title="Cerca Articolo" 
+                    data-search-input-label="Cerca Articoli"
+                    
+                    ><i class="bi bi-search"></i></button>
+                          </div>
+                            
+                            <div class="col-2">
+                                {{ form.prezzo|as_crispy_field }}
+                            </div>
+                            <div class="col-1">
+                                {{ form.fk_cliente|as_crispy_field }}
+                            </div>
+
+                            <div class="col-1">
+                                {{ form.created_by|as_crispy_field }}
+                            </div>
+            
+            </div>
+            
+
+            
+            <input type="submit" name="salva_esci" class="btn btn-success mb-2 me-1" value="Salva">
+            
+            <button type="button" class="btn btn-danger mb-2 me-1" onclick="cancelAndRedirectTo(`{% url 'anagrafiche:modifica_cliente' pk=fk_cliente %}`)"><i class="bi bi-arrow-counterclockwise"></i> Annulla</button>
+        </form>
+        <hr>
+        
+    </div>
+
+
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+            setFocusOnField('openSearchArticleButton');
+        });
+
+        document.getElementById('openSearchArticleButton').addEventListener('click', function(event) {
+            var callerButtonId = this.id;
+            var url = this.getAttribute('data-url');
+            var modalTitle = this.getAttribute('data-modal-title');
+            var searchInputLabel = this.getAttribute('data-search-input-label');
+            searchFunctionGeneral(url, modalTitle, searchInputLabel, callerButtonId, event);
+        });
+
+</script>
+{% endblock %} 

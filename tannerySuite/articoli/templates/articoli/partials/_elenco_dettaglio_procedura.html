@@ -1,0 +1,42 @@
+<div class="row">
+      
+    
+    
+      <h5>Dettaglio Procedura</h5>
+                
+    
+    <div class="col-12 text-end">
+      
+      <a href="{% url 'articoli:aggiungi_dettaglio_procedura' fk_procedura=procedura.pk %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi Riga di Dettaglio</a>
+
+    </div>
+  </div>
+  <div class="table-container" >
+    <table class="table table-bordered table-striped mt-2" id="myTable" data-model_name="DettaglioProcedura">
+      <thead>
+        <tr>
+          <th>Riga </th>
+          <th>Fase di Lavoro</th> 
+          <th>Azioni</th>
+          
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        {% for dettaglio in elenco_dettagli %}
+        <tr data-pk="{{ dettaglio.pk }}">        
+          <td class="numero-riga" id="numero-riga-{{ dettaglio.pk }}"><a href="{% url 'articoli:modifica_dettaglio_procedura' fk_procedura=procedura.pk pk=dettaglio.pk %}">{{ dettaglio.numero_riga }}</a></td>
+          
+          <td>{{ dettaglio.fk_faselavoro.descrizione }}</td>            
+          <td class="text-center">
+            <a href="{% url 'articoli:delete_dettaglio_procedura' pk=dettaglio.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{dettaglio.pk}}"><i class="bi bi-trash"></i>Elimina</a>
+            
+          </td>
+
+        </tr>  
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% block extra_scripts %}{% endblock %}
+  

@@ -1,5 +1,4 @@
 asgiref==3.8.1
-backports.zoneinfo==0.2.1
 Django==4.2.16
 django-bootstrap5==24.3
 django-countries==7.6.1

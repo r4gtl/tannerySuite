@@ -1,0 +1,256 @@
+{% extends 'core/base.html' %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block title %}{{ block.super }} | Rapporti NC {% endblock %}
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_non_conformity.html" %}
+{% endblock %}
+
+{% block content %}
+
+{% include 'core/modals/delConfirm.html' %}
+<nav aria-label="breadcrumb" class="mt-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+        <li class="breadcrumb-item active" aria-current="page">Rapporti Non Conformità</li>
+    </ol>
+</nav>
+
+    <div class="container">
+        
+        <h3>Rapporti Non Conformità</h3>
+        <br>
+        {% include "core/partials/_messages.html" %}
+        
+
+        <!-- Riga grafici e statistiche -->
+        <div class="row">
+          <div class="col-4">        
+            <canvas id="nc_count" data-url=""></canvas>
+          </div>
+        </div>
+        <!-- Fine riga grafici e statistiche -->
+
+        <!-- Inizio filtro -->
+        <div class="row">
+          <div class="col">
+            <div class="card card-body">
+        
+              
+              <form method="get">
+        
+                <div class="table-responsive-sm">
+                  <table class="table table-hover table-striped table-bordered">
+                    <thead class="thead-dark">
+                      <tr>     
+                        <th>Numero Rapporto</th>
+                        <th>Data Rapporto</th>
+                        <th>Tipo Rapporto</th>
+                        
+                      </tr>
+                    </thead>
+                    
+                    <tbody>
+                    <tr>
+                      <td style="width: 20%">                
+                        {% render_field filter.form.numero_nc class="form-control" %}
+                      </td>
+                      
+                      <td style="width: 20%">
+                        {% render_field filter.form.data_nc class="form-control" %}
+                      </td>
+
+                      <td style="width: 20%">
+                        {% render_field filter.form.tipo_nc class="form-control" %}
+                      </td>
+                      
+                    </tr>
+              
+                    
+                    
+                  </tbody>
+                  </table>
+                </div>
+                  
+        
+                
+        
+                <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i>&nbsp;&nbsp; Cerca</button>
+                <a class="btn btn-success" href="{% url 'nonconformity:home_rapporti_nc' %}"><i class="bi bi-arrow-counterclockwise"></i>&nbsp;&nbsp; Pulisci campi</a>
+                
+              </form>
+              
+              
+            </div>
+          </div>
+          
+        </div>
+        <!-- Fine filtro -->
+
+        <hr>
+        <div class="d-flex flex-row-reverse bd-highlight">
+        <a href="{% url 'nonconformity:aggiungi_rapporto_nc' %}" class="btn btn-success p-2 bd-highlight"><i class="bi bi-person-plus"></i> Aggiungi Rapporto NC</a>
+        </div>  
+        <br>
+
+
+        <div class="container-fluid">
+            <div class="table-responsive">
+            <table class="table table-hover table-striped table-bordered">
+              <thead class="thead-dark">
+              <tr>        
+                <th>Numero Rapporto</th>
+                <th>Data Rapporto</th>
+                <th>Tipo Rapporto</th>
+                <th>Azioni</th>
+                
+                
+                            
+              </tr>
+            </thead>
+              
+              <tbody>
+                {% for rapporto_nc in rapporti_nc_filter_paginator %}
+                    <tr>
+                    <td><a href="{% url 'nonconformity:modifica_rapporto_nc' pk=rapporto_nc.pk %}">{{ rapporto_nc.numero_nc }}</a></td>
+                    <td>{{ rapporto_nc.data_nc }}</td>                           
+                    <td>{{ rapporto_nc.tipo_nc }}</td>                    
+                    <td class="text-center"><a href="{% url 'nonconformity:delete_rapporto_nc' pk=rapporto_nc.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{rapporto_nc.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>             
+                    </tr>
+                
+                {% endfor %}
+                
+              </tbody>
+            </table>
+             
+
+
+
+
+    <!-- Pagination -->
+{% if rapporti_nc_filter_paginator.has_other_pages %}
+<nav>
+  <ul class="pagination justify-content-center">
+    {% if rapporti_nc_filter_paginator.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ rapporti_nc_filter_paginator.previous_page_number }}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <span class="page-link" aria-hidden="true">&laquo;</span>
+      </li>
+    {% endif %}
+
+    {% for page in rapporti_nc_filter_paginator.paginator.page_range %}
+      {% if page == rapporti_nc_filter_paginator.number %}
+        <li class="page-item active">
+          <span class="page-link">{{ page }}</span>
+        </li>
+      {% else %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+
+    {% if rapporti_nc_filter_paginator.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ rapporti_nc_filter_paginator.next_page_number }}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <span class="page-link" aria-hidden="true">&raquo;</span>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+<!-- End Pagination -->
+
+
+          </div>
+    </div>
+
+
+
+
+    </div>
+
+
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+  //var from_date = '{{ from_date }}';
+  //var to_date = '{{ to_date }}';
+
+  // Effettua una richiesta AJAX a produzione_intervallo_date
+  fetch("{% url 'nonconformity:chart_nc_per_tipo_ultimo_anno' %}")
+    .then(response => response.json())
+    .then(data => {
+      
+      // Elabora i dati ricevuti, ad esempio aggiorna il grafico nel tuo template
+      updateChartWithDataNC(data);
+      
+      
+    })
+    .catch(error => console.log(error));
+});
+
+function updateChartWithDataNC(data) {
+  // Elabora i dati e aggiorna il grafico utilizzando Chart.js
+  
+  
+
+  var labels = [];
+  var quantities = [];
+
+  for (var i = 0; i < data.length; i++) {
+    
+    labels.push(data[i].tipo_nc);
+    
+    quantities.push(data[i].count);
+    
+  }
+
+  var ctx = document.getElementById('nc_count').getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'RNC per tipo Ultimo Anno',
+        data: quantities,
+        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Specifica un colore predefinito
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      },
+      plugins: {
+        legend: {
+          display: false  // Imposta il display della legenda su false per rimuoverla
+        }
+      }
+    }
+  });
+};
+
+
+</script>
+
+{% endblock %}

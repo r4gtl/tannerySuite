@@ -1,0 +1,105 @@
+{% extends 'core/base.html' %} 
+{% load static %}
+{% load crispy_forms_tags %} 
+{% load widget_tweaks %}
+{% block head_title %}{{ block.super }} - Lavorazione Esterna{% endblock head_title %} 
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_articoli.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <br>
+    <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+            <li class="breadcrumb-item"><a href="{% url 'articoli:tabelle_generiche' %}">Tabelle Generiche</a></li>        
+    
+            {% if form.instance.id  %}
+                <li class="breadcrumb-item active" aria-current="page">{{ lavorazione.descrizione }}</li>
+            {% else %}
+                <li class="breadcrumb-item active" aria-current="page">Aggiungi Lavorazione</li>
+            {% endif %}             
+            
+            
+        </ol>
+    </nav>    
+    <hr>
+    <br>
+    {% if form.instance.id  %}
+            <h5 class="text-end">{{ lavorazione.descrizione }}</h5>
+            <h3>Modifica Lavorazione</h3>
+        {% else %}
+            <h5 class="text-end">Lavorazione</h5>
+            <h3> Aggiungi Lavorazione</h3>
+        {% endif %}
+    
+    <!-- Form Lavorazione -->
+    
+    <div class="form-group mt-3">
+        <form class="mt-3" method="POST" novalidate enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            
+                    <div class="row mt-3 mb-4">
+                      
+                      <div class="col-md-12 border rounded shadow-sm">
+                        <div class="row">
+                            <div class = "col-md-5">
+                              {{ form.descrizione|as_crispy_field }}
+                            </div>
+                            <div class = "col-md-3">
+                              {{ form.codice|as_crispy_field }}
+                            </div>
+                            <div class = "col-md-4">
+                              {{ form.note|as_crispy_field }}
+                            </div>
+                            
+                            
+                             
+                        </div>
+                        <div class="row">
+                            <div class = "col-md-8">
+                              {{ form.created_by|as_crispy_field }}
+                            </div>
+                            
+                            
+                            
+                             
+                        </div>
+                        
+
+                        
+                        <hr>
+                        
+
+                        
+
+                    </div>
+                      </div>
+        <input type="submit" name="salva_esci" class="btn btn-success mb-2 me-1" value="Salva ed Esci">
+        
+        <button type="button" class="btn btn-danger mb-2 me-1" onclick="cancelAndRedirectTo(`{% url 'articoli:tabelle_generiche' %}`)"><i class="bi bi-arrow-counterclockwise"></i> Annulla</button>
+
+        <!-- fine form -->
+        </form>
+
+        
+
+    </div>
+    <hr>
+    
+
+
+</div>
+
+{% endblock content %}
+{% block extra_scripts %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            setFocusOnField('id_descrizione');
+        });
+    </script>
+{% endblock %}

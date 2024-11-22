@@ -1,0 +1,28 @@
+{% load crispy_forms_tags %}
+
+<form method="post">
+    {% csrf_token %}
+
+    {% if modello_form.errors %}
+        {% for field in modello_form %}
+            {% for error in field.errors %} 
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    <div class="row">
+        <div class="col-2">
+            {{ modello_form.id_zdhc|as_crispy_field }}
+        </div>
+        
+    </div>
+    
+    
+
+    
+    
+</form>
+<hr>
+{% include "nonconformity/partials/_nc_associate.html" %}

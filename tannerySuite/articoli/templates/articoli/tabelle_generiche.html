@@ -1,0 +1,395 @@
+{% extends 'core/base.html' %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block title %}{{ block.super }} | Tabelle Generiche {% endblock %}
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_articoli.html" %}
+{% endblock %}
+
+{% block content %}
+{% include 'core/modals/delConfirm.html' %}
+
+<nav aria-label="breadcrumb" class="mt-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+        <li class="breadcrumb-item"><a href="{% url 'articoli:articoli_home' %}">Home Articoli</a></li>      
+        <li class="breadcrumb-item active" aria-current="page">Tabelle Generiche</li>
+    </ol>
+</nav>
+
+    <div class="container">
+        
+        <h3>Tabelle Generiche per la gestione degli articoli</h3>
+        <br>
+        {% include "core/partials/_messages.html" %}
+
+        
+        
+        
+
+        <div class="row">
+        <!-- Inizio Fasi Lavoro -->
+          <div class="col-6">
+            <div class="row">
+              <div class="col-6">
+                <h5>Fasi di Lavoro</h5>
+                <p>Inserire/modificare le fasi di lavoro.</p>                  
+              </div>
+              <div class="col-6 text-end">
+                <a href="{% url 'articoli:crea_fase_lavoro' %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi Fase di Lavoro</a>
+              </div>
+            </div>
+          <!-- filtro -->
+            <div class="row">
+              <div class="col">
+                  <div class="card card-body">
+                      <form method="get">
+
+                          <div class="table-responsive-sm">
+                              <table class="table table-hover table-striped table-bordered">
+                                  <thead class="thead-dark">
+                                      <tr>     
+                                          <th>Descrizione</th>                                          
+                                      </tr>
+                                  </thead>  
+                                  <tbody>
+                                    <tr>
+                                      <td style="width: 20%">                
+                                        {% render_field filter.form.descrizione class="form-control" %}
+                                      </td>
+                                      
+                                      
+                                      
+                                    </tr>
+                              
+                                    
+                                    
+                                  </tbody>                          
+                                  
+                              </table>
+                          </div>
+                          <button class="btn btn-primary" type="submit">Cerca</button>
+                          <a class="btn btn-success" href="{% url 'articoli:tabelle_generiche' %}"><i class="bi bi-arrow-counterclockwise"></i>&nbsp;&nbsp; Pulisci campi</a>
+                      </form>        
+                  </div>
+              </div>        
+          </div>
+          <!-- fine filtro-->
+
+
+
+            <p>Numero Fasi Totale {{ tot_fasi }} - Numero fasi filtrate {{ fase_lavoro_filter_count }}</p>
+            <div class="table-container">
+              <table class="table table-bordered table-striped mt-2">
+                <thead>
+                  <tr>
+                    <th>Fase di Lavoro</th>
+                    <th>Interna/Esterna</th>                        
+                    <th>Azioni</th> 
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for faselavoro in filter.qs %}
+          <tr>        
+            
+            
+            <td><a href="{% url 'articoli:modifica_fase_lavoro' pk=faselavoro.pk %}">{{ faselavoro.descrizione }}</a></td>            
+            <td>{{ faselavoro.interno_esterno|default_if_none:"" }}</td>            
+            <td class="text-center"><a href="{% url 'articoli:delete_fase_lavoro' pk=faselavoro.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButtonFaseLavoro{{faselavoro.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+          </tr>  
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+        <!-- Pagination -->
+        {% if fasi_lavoro_paginator.has_other_pages %}
+        <nav>
+          <ul class="pagination justify-content-center">
+            {% if fasi_lavoro_paginator.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ fasi_lavoro_paginator.previous_page_number }}" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                  <span class="page-link" aria-hidden="true">&laquo;</span>
+              </li>
+            {% endif %}
+    
+            {% for p in fasi_lavoro_paginator.paginator.page_range %}
+              {% if fasi_lavoro_paginator.number == p %}
+                <li class="page-item"><a class="page-link" style="color: red;" href="#">{{ p }}</a></li>
+              {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+              {% endif %}
+            {% endfor %}
+    
+            {% if fasi_lavoro_paginator.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ fasi_lavoro_paginator.next_page_number }}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <span class="page-link" aria-hidden="true">&raquo;</span>
+              </li>
+            {% endif %}
+        </ul>
+        </nav>
+      {% endif %}
+      <!-- End Pagination -->
+
+          </div>
+        <!-- Fine Fasi Lavoro -->
+
+
+        <!-- Inizio Elenco Test -->
+          <div class="col-6">
+            <div class="row">
+              <div class="col-6">
+                <h5>Elenco Test</h5>
+                <p>Inserire/Modificare test che possono essere richiesti.</p>                  
+              </div>
+              <div class="col-6 text-end">
+                <a href="{% url 'articoli:crea_test' %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi Test</a>
+              </div>
+            </div>
+
+            <!-- Inizio filtro -->
+              <div class="row">
+                <div class="col">
+                  <div class="card card-body">
+              
+                    
+                    <form method="get">
+              
+                      <div class="table-responsive-sm">
+                        <table class="table table-hover table-striped table-bordered">
+                          <thead class="thead-dark">
+                            <tr>     
+                              <th>Descrizione</th>
+                              
+                              
+                            </tr>
+                          </thead>
+                          
+                          <tbody>
+                          <tr>
+                            <td style="width: 20%">                
+                              {% render_field elenco_test_filter.form.descrizione class="form-control" %}
+                            </td>
+                            
+                            
+                            
+                          </tr>
+                    
+                          
+                          
+                        </tbody>
+                        </table>
+                      </div>
+                        
+              
+                      
+              
+                      <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i>&nbsp;&nbsp; Cerca</button>
+                      <a class="btn btn-success" href="{% url 'articoli:tabelle_generiche' %}"><i class="bi bi-arrow-counterclockwise"></i>&nbsp;&nbsp; Pulisci campi</a>
+                      
+                    </form>
+                    
+                    
+                  </div>
+                </div>
+                
+              </div>
+              <!-- Fine filtro -->
+              <p>Numero test {{ tot_test }} - Numero test filtrati {{ elenco_test_filter_count }}</p>
+            <div class="table-container">
+              <table class="table table-bordered table-striped mt-2">
+                <thead>
+                  <tr>
+                    <th>Descrizione</th>            
+                    <th>Norma Riferimento</th>
+                    <th>Azione</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for test in elenco_test_paginator %}
+                  <tr>        
+                    
+                    <td><a href="{% url 'articoli:modifica_test' pk=test.pk %}">{{ test.descrizione }}</a></td>
+                    <td>{{ test.norma_riferimento|default_if_none:"Non inserita" }}</td>
+                    <td class="text-center"><a href="{% url 'articoli:delete_test' pk=test.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButtonTest{{test.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+                  </tr>  
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <!-- Paginazione -->
+            <div class="pagination">
+              <span class="step-links">
+                {% if elenco_test_paginator.has_previous %}
+                  <a href="?page={{ elenco_test_paginator.previous_page_number }}">precedente</a>
+                {% endif %}
+
+                <span class="current-page">{{ elenco_test_paginator.number }}</span>
+
+                {% if idranti_paginator.has_next %}
+                  <a href="?page={{ elenco_test_paginator.next_page_number }}">successivo</a>
+                {% endif %}
+              </span>
+            </div>
+            
+        <!-- Fine Paginazione -->
+          </div>
+        <!-- Fine Elenco Test -->
+
+    
+
+  </div>
+  <!-- Fine prima riga -->
+
+    
+  <br>
+  <hr>
+
+    <div class="row">
+        <!-- Inizio Lavorazioni -->
+          <div class="col-6">
+            <div class="row">
+              <div class="col-6">
+                <h5>Codici Lavorazioni</h5>
+                <p>Inserire/modificare i codici lavorazione esterna.</p>                  
+              </div>
+              <div class="col-6 text-end">
+                <a href="{% url 'articoli:crea_lavorazione_esterna' %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi Lavorazione Esterna</a>
+              </div>
+            </div>
+          <!-- filtro -->
+            <div class="row">
+              <div class="col">
+                  <div class="card card-body">
+                      <form method="get">
+
+                          <div class="table-responsive-sm">
+                              <table class="table table-hover table-striped table-bordered">
+                                  <thead class="thead-dark">
+                                      <tr>     
+                                          <th>Descrizione</th>                                          
+                                      </tr>
+                                  </thead>  
+                                  <tbody>
+                                    <tr>
+                                      <td style="width: 20%">                
+                                        {% render_field filter.form.descrizione class="form-control" %}
+                                      </td>
+                                      
+                                      
+                                      
+                                    </tr>
+                              
+                                    
+                                    
+                                  </tbody>                          
+                                  
+                              </table>
+                          </div>
+                          <button class="btn btn-primary" type="submit">Cerca</button>
+                          <a class="btn btn-success" href="{% url 'articoli:tabelle_generiche' %}"><i class="bi bi-arrow-counterclockwise"></i>&nbsp;&nbsp; Pulisci campi</a>
+                      </form>        
+                  </div>
+              </div>        
+          </div>
+          <!-- fine filtro-->
+
+
+
+            <p>Numero Lavorazioni Totale {{ tot_lavorazioni_esterne }} - Numero Lavorazioni filtrate {{ lavorazioni_esterne_filter_count }}</p>
+            <div class="table-container">
+              <table class="table table-bordered table-striped mt-2">
+                <thead>
+                  <tr>
+                    <th>Lavorazione</th>
+                    <th>Codice</th>                        
+                    <th>Azioni</th> 
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for lavorazione in lavorazioni_esterne_filter.qs %}
+          <tr>        
+            
+            
+            <td><a href="{% url 'articoli:modifica_lavorazione_esterna' pk=lavorazione.pk %}">{{ lavorazione.descrizione }}</a></td>            
+            <td>{{ lavorazione.codice|default_if_none:"" }}</td>            
+            <td class="text-center"><a href="{% url 'articoli:delete_lavorazione_esterna' pk=lavorazione.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButtonLavorazione{{lavorazione.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+          </tr>  
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+        <!-- Pagination -->
+        {% if lavorazioni_esterne_paginator.has_other_pages %}
+        <nav>
+          <ul class="pagination justify-content-center">
+            {% if lavorazioni_esterne_paginator.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ lavorazioni_esterne_paginator.previous_page_number }}" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                  <span class="page-link" aria-hidden="true">&laquo;</span>
+              </li>
+            {% endif %}
+    
+            {% for p in lavorazioni_esterne_paginator.paginator.page_range %}
+              {% if lavorazioni_esterne_paginator.number == p %}
+                <li class="page-item"><a class="page-link" style="color: red;" href="#">{{ p }}</a></li>
+              {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+              {% endif %}
+            {% endfor %}
+    
+            {% if lavorazioni_esterne_paginator.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ lavorazioni_esterne_paginator.next_page_number }}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <span class="page-link" aria-hidden="true">&raquo;</span>
+              </li>
+            {% endif %}
+        </ul>
+        </nav>
+      {% endif %}
+      <!-- End Pagination -->
+
+          </div>
+        <!-- Fine Fasi Lavoro -->
+
+
+        
+
+    
+
+  </div>
+  <!-- Fine prima riga -->
+
+
+        
+    </div>
+
+
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+{% endblock %}

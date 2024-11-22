@@ -1,0 +1,44 @@
+
+<!-- <div class="row"> -->
+    <!-- Tabella Procedure -->
+    <!-- <div class="col-6"> -->
+      <div class="row">
+      
+      {% if form.instance.id  %}
+      <div class="col-6">
+        <h5>Revisioni procedure</h5>
+                  
+      </div>
+      <div class="col-6 text-end">
+        
+        <!-- altrimenti genero una nuova procedura -->
+          <a href="{% url 'articoli:aggiungi_procedura' fk_articolo=articolo.pk %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi Revisione</a>
+        
+      </div>
+    </div>
+    <div class="table-container">
+      <table class="table table-bordered table-striped mt-2">
+        <thead>
+          <tr>
+            <th>Nr. e Data Procedura </th>
+            <th>Nr. e Data Revisione</th> 
+            <th>Azione</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% for revisione in elenco_revisioni %}
+          <tr>        
+            
+            <td><a href="{% url 'articoli:modifica_procedura' fk_articolo=articolo.pk pk=revisione.pk %}">{{ revisione.nr_procedura }} del {{ revisione.data_procedura }}</a></td>
+            <td>{{ revisione.nr_revisione }} del {{ revisione.data_revisione }}</td>            
+            <td class="text-center"><a href="{% url 'articoli:delete_procedura' pk=revisione.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{revisione.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+          </tr>  
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+<!-- </div> -->
+
+<!-- </div> --><!--Fine prima riga tabelle-->

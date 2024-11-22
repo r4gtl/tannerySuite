@@ -1,0 +1,56 @@
+{% load crispy_forms_tags %}
+
+<form method="post">
+    {% csrf_token %}
+
+    {% if modello_form.errors %}
+        {% for field in modello_form %}
+            {% for error in field.errors %} 
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    
+</form>
+
+<hr>
+
+        <div class="d-flex flex-row-reverse bd-highlight">
+        <a href="{% url 'anagrafiche:aggiungi_voce_listino_cliente' fk_cliente=cliente.pk %}" class="btn btn-success p-2 bd-highlight"><i class="bi bi-person-plus"></i> Aggiungi Voce Listino</a>
+        </div>  
+        <br>
+
+
+<div class="table-responsive">
+            <table class="table table-hover table-striped table-bordered">
+              <thead class="thead-dark">
+              <tr>        
+                <th>Articolo</th>
+                <th>Prezzo</th>                
+                <th>Azione</th>
+
+                
+                            
+              </tr>
+
+
+            </thead>
+              
+              <tbody>
+                {% for listino in listini %}
+                    
+                    <td class="col-md"><a href="{% url 'anagrafiche:modifica_voce_listino_cliente' pk=listino.pk %}">{{ listino.fk_articolo }}</a></td>
+                    <td class="col-md text-end">
+                      {{ listino.prezzo }}
+                  </td>
+                    
+                    <td class="col-md text-center"><a href="{% url 'anagrafiche:delete_voce_listino_cliente' pk=listino.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButtonListino{{listino.pk}}"><i class="bi bi-trash"></i>Elimina</a></td> 
+                  </tr>
+                
+                {% endfor %}
+                
+              </tbody>
+            </table>
+            </div>

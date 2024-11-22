@@ -1,0 +1,186 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{ block.super }} | Anagrafiche - Fornitori {% endblock %}
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_anagrafiche.html" %}
+{% endblock %}
+
+{% block content %}
+
+{% include 'core/modals/delConfirm.html' %}
+<nav aria-label="breadcrumb" class="mt-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+        <li class="breadcrumb-item"><a href="{% url 'anagrafiche:home_fornitori' %}">Fornitori</a></li>
+        {% if form.instance.id  %}
+        <li class="breadcrumb-item active" aria-current="page">{{ fornitore.ragionesociale }}</li>
+        {% else %}
+        <li class="breadcrumb-item active" aria-current="page">Nuovo Fornitore</li>
+        {% endif %}
+            
+        
+    </ol>
+</nav>
+
+    <div class="container">
+        
+        {% if form.instance.id  %}
+            <h3>Modifica {{ fornitore.ragionesociale }}</h3>
+        {% else %}
+            <h3> Aggiungi Fornitore</h3>
+        {% endif %}
+        <hr>
+        
+        {% include "core/partials/_messages.html" %}
+        
+        
+        <br>
+
+
+        <form method="post">
+            {% csrf_token %}
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %} 
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+            <input type="submit" name="salva_esci" class="btn btn-success mb-2 me-1" value="Salva ed Esci">
+            <input type="submit" name="salva_continua" class="btn btn-success mb-2 me-1" value="Salva e continua">
+            <button type="button" class="btn btn-danger mb-2 me-1" onclick="cancelAndRedirectTo(`{% url 'anagrafiche:home_fornitori' %}`)"><i class="bi bi-arrow-counterclockwise"></i> Annulla</button>
+            <input type="hidden" name="categoria" value="{{ request.GET.categoria }}">
+            <div class="row">
+                <div class="col-9">
+                    {{ form.ragionesociale|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ form.categoria|as_crispy_field }}
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    {{ form.indirizzo|as_crispy_field }}
+                </div>
+                <div class="col-2">
+                    {{ form.cap|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ form.city|as_crispy_field }}
+                </div>
+                <div class="col-1">
+                    {{ form.provincia|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ form.country|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    {{ form.sito_web|as_crispy_field }}
+                    
+                </div>
+                <div class="col-3 mb-1 d-flex align-items-center pt-1">
+                    <button type="button" class="btn btn-sm btn-success" onclick="openWebSite()"><i class="bi bi-globe2"></i> Visita Sito</button>
+                    
+                </div>
+                <div class="col-3">
+                    {{ form.e_mail|as_crispy_field }}
+                    
+                </div>
+                
+                
+                
+                    
+            </div>         
+            <div class="row">
+                <div class="col-1">
+                    {{ form.created_by|as_crispy_field }}
+                </div>
+            </div>
+
+            <br>
+            {% if categoria_instance_missing %}
+                <p>Il fornitore non è presente nei sottodati della categoria.</p>
+                <p>Salvare e riprovare.</p>
+
+            {% else %}
+                {% if nome_form_secondario == "FornitorePelliForm" %}            
+                    {% include "anagrafiche/partials/_fornitore_pelli.html" %}
+                {% elif nome_form_secondario == "FornitoreProdottiChimiciForm" %}
+                    {% include "anagrafiche/partials/_fornitore_prodotti_chimici.html" %}
+                {% elif nome_form_secondario == "FornitoreLavorazioniEsterneForm" %}
+                    {% include "anagrafiche/partials/_fornitore_lavorazioni_esterne.html" %}
+                {% elif nome_form_secondario == "FornitoreServiziForm" %}
+                    {% include "anagrafiche/partials/_fornitore_servizi.html" %}
+                {% elif nome_form_secondario == "FornitoreManutenzioniForm" %}
+                    {% include "anagrafiche/partials/_fornitore_manutenzioni.html" %}
+                {% elif nome_form_secondario == "FornitoreRifiutiForm" %}
+                    {% include "anagrafiche/partials/_fornitore_rifiuti.html" %}
+
+                {% endif %}
+            {% endif %}
+
+            
+        </form>
+
+        
+        <hr>
+
+        
+        
+
+
+
+
+
+    </div>
+
+
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+
+document.addEventListener("DOMContentLoaded", function() {
+            setFocusOnField('id_ragionesociale');
+        });
+
+
+function openWebSite() {
+    var website = document.getElementById("id_sito_web").value;
+
+    if (website) {
+        // Verifica se l'URL inizia con "http://" o "https://"
+        if (!website.startsWith("http://") && !website.startsWith("https://")) {
+            // Se non inizia con il prefisso, aggiungi "http://"
+            website = "http://" + website;
+        }
+
+        // Apri l'URL
+        window.open(website);
+    } else {
+        alert("Manca indirizzo web!");
+    }
+}
+
+function openGoogleMaps() {
+        var latitudine = document.getElementById("id_latitude").value;
+        var longitudine = document.getElementById("id_longitude").value;
+
+        if (latitudine && longitudine) {
+            var url = "https://www.google.com/maps/search/?api=1&query=" + latitudine + "," + longitudine;
+            window.open(url);
+        } else {
+            alert("Completa i campi Latitudine e Longitudine prima di aprire Google Maps.");
+        }
+    }
+    
+</script>
+
+{% endblock %}

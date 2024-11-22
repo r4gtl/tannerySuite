@@ -1,0 +1,95 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{ block.super }} | Listino - Prezzi {% endblock %}
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_anagrafiche.html" %}
+{% endblock %}
+
+{% block content %}
+
+
+<nav aria-label="breadcrumb" class="mt-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+        <li class="breadcrumb-item"><a href="{% url 'anagrafiche:home_fornitori' %}">Fornitori</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'anagrafiche:vedi_fornitore' pk=fk_fornitore %}">fk_fornitore</a></li>        
+        <li class="breadcrumb-item"><a href="{% url 'anagrafiche:modifica_voce_listino' pk=fk_listino_terzista %}">Listino</a></li>
+
+        {% if form.instance.id  %}
+            <li class="breadcrumb-item active" aria-current="page">Modifica</li>
+        {% else %}
+            <li class="breadcrumb-item active" aria-current="page">Aggiungi Prezzo</li>
+        {% endif %}             
+        
+        
+    </ol>
+</nav>
+
+    <div class="container">
+        {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %} 
+               <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                    <strong>Field: {{ field.name }}</strong>
+               </div>
+            {% endfor %}
+        {% endfor %}
+     {% endif %}
+
+        {% if form.instance.id  %}
+            <h3>Modifica Prezzo</h3>
+        {% else %}
+            <h3> Aggiungi Prezzo</h3>
+        {% endif %}
+        
+        
+        <hr>
+        
+        {% include "core/partials/_messages.html" %}
+        
+        
+        <br>
+
+
+        <form method="post">
+            {% csrf_token %}
+
+            
+
+            <div class="row">
+                <div class="col-3">
+                    {{ form.prezzo|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ form.data_inserimento|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ form.fk_listino_terzista|as_crispy_field }}
+                </div>
+                
+            </div>
+            
+            
+
+            
+            <input type="submit" class="btn btn-success" value="Salva">
+            <button type="button" class="btn btn-danger" onclick="cancelAndRedirectTo(`{% url 'anagrafiche:modifica_voce_listino' pk=fk_listino_terzista %}`)"><i class="bi bi-arrow-counterclockwise"></i> Annulla</button>
+        </form>
+        <hr>
+        
+        
+    </div>
+
+
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+            setFocusOnField('id_prezzo');
+        });
+</script>
+{% endblock %} 
