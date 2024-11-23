@@ -6,7 +6,7 @@ from django_countries.fields import \
 
 '''Questi modelli devono essere inseriti in automatico'''
 class TipoAnimale(models.Model):
-    descrizione = models.CharField(max_length=10)
+    descrizione = models.CharField(max_length=50)
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='animale', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -34,7 +34,7 @@ class TipoGrezzo(models.Model):
 '''Fine modelli da inserire in automatico'''
     
 class Spessore(models.Model):
-    descrizione = models.CharField(max_length=10)
+    descrizione = models.CharField(max_length=50)
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='spessore', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -47,7 +47,7 @@ class Spessore(models.Model):
         return self.descrizione
     
 class Quality(models.Model):
-    descrizione = models.CharField(max_length=10)
+    descrizione = models.CharField(max_length=50)
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='quality', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -60,7 +60,7 @@ class Quality(models.Model):
         return self.descrizione
     
 class Taglio(models.Model):
-    descrizione = models.CharField(max_length=10)
+    descrizione = models.CharField(max_length=50)
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='taglio', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -73,7 +73,7 @@ class Taglio(models.Model):
         return self.descrizione
     
 class Sezione(models.Model):
-    descrizione = models.CharField(max_length=10)
+    descrizione = models.CharField(max_length=50)
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='sezione', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -86,7 +86,7 @@ class Sezione(models.Model):
         return self.descrizione
     
 class Concia(models.Model):
-    descrizione = models.CharField(max_length=10)
+    descrizione = models.CharField(max_length=50)
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='concia', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)

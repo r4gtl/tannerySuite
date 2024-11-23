@@ -172,11 +172,21 @@ def tabelle_generiche_acquisto_pelli(request):
     tipianimale = TipoAnimale.objects.all()
     tipigrezzo = TipoGrezzo.objects.all()
     scelte = Scelta.objects.all()
+    spessori = Spessore.objects.all()
+    qualities = Quality.objects.all()
+    tagli = Taglio.objects.all()
+    sezioni = Sezione.objects.all()
+    conce = Concia.objects.all()
     
 
     context = {'tipianimale': tipianimale, 
                 'tipigrezzo': tipigrezzo,  
-                'scelte': scelte              
+                'scelte': scelte,
+                'spessori': spessori,
+                'qualities': qualities,
+                'tagli': tagli,
+                'sezioni': sezioni,
+                'conce': conce
                 }
     
     return render(request, "acquistopelli/tabelle_generiche_acquisto_pelli.html", context)
@@ -185,7 +195,7 @@ def tabelle_generiche_acquisto_pelli(request):
 class TipoAnimaleCreateView(LoginRequiredMixin,CreateView):
     model = TipoAnimale
     form_class = TipoAnimaleModelForm
-    template_name = 'acquistopelli/tipo_animale.html'
+    template_name = 'acquistopelli/generiche/tipo_animale.html'
     success_message = 'Tipo Animale aggiunto correttamente!'
     success_url = reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
   
@@ -202,7 +212,7 @@ class TipoAnimaleCreateView(LoginRequiredMixin,CreateView):
 class TipoAnimaleUpdateView(LoginRequiredMixin,UpdateView):
     model = TipoAnimale
     form_class = TipoAnimaleModelForm
-    template_name = 'acquistopelli/tipo_animale.html'
+    template_name = 'acquistopelli/generiche/tipo_animale.html'
     success_message = 'Tipo Animale modificato correttamente!'
     success_url = reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
 
@@ -223,7 +233,7 @@ def delete_tipo_animale(request, pk):
 class TipoGrezzoCreateView(LoginRequiredMixin,CreateView):
     model = TipoGrezzo
     form_class = TipoGrezzoModelForm
-    template_name = 'acquistopelli/tipo_grezzo.html'
+    template_name = 'acquistopelli/generiche/tipo_grezzo.html'
     success_message = 'Tipo Grezzo aggiunto correttamente!'
     success_url = reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
 
@@ -240,7 +250,7 @@ class TipoGrezzoCreateView(LoginRequiredMixin,CreateView):
 class TipoGrezzoUpdateView(LoginRequiredMixin,UpdateView):
     model = TipoGrezzo
     form_class = TipoGrezzoModelForm
-    template_name = 'acquistopelli/tipo_grezzo.html'
+    template_name = 'acquistopelli/generiche/tipo_grezzo.html'
     success_message = 'Tipo Grezzo modificato correttamente!'
     success_url = reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
 
@@ -261,7 +271,7 @@ def delete_tipo_grezzo(request, pk):
 class SceltaCreateView(LoginRequiredMixin,CreateView):
     model = Scelta
     form_class = SceltaModelForm
-    template_name = 'acquistopelli/scelta.html'
+    template_name = 'acquistopelli/generiche/scelta.html'
     success_message = 'Scelta aggiunta correttamente!'
     success_url = reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
    
@@ -279,7 +289,7 @@ class SceltaCreateView(LoginRequiredMixin,CreateView):
 class SceltaUpdateView(LoginRequiredMixin,UpdateView):
     model = Scelta
     form_class = SceltaModelForm
-    template_name = 'acquistopelli/scelta.html'
+    template_name = 'acquistopelli/generiche/scelta.html'
     success_message = 'Scelta modificata correttamente!'
     success_url = reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
 
@@ -292,6 +302,192 @@ class SceltaUpdateView(LoginRequiredMixin,UpdateView):
 
 def delete_scelta(request, pk): 
         deleteobject = get_object_or_404(Scelta, pk = pk)          
+        deleteobject.delete()
+        url_match= reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
+        return redirect(url_match)
+
+class SpessoreCreateView(LoginRequiredMixin,CreateView):
+    model = Spessore
+    form_class = SpessoreModelForm
+    template_name = 'acquistopelli/generiche/spessore.html'
+    success_message = 'Spessore aggiunto correttamente!'
+    success_url = reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
+  
+    def form_valid(self, form):        
+        messages.info(self.request, self.success_message) # Compare sul success_url
+        return super().form_valid(form)
+    
+    def get_initial(self):
+        created_by = self.request.user
+        return {
+            'created_by': created_by,
+        }
+    
+class SpessoreUpdateView(LoginRequiredMixin,UpdateView):
+    model = Spessore
+    form_class = SpessoreModelForm
+    template_name = 'acquistopelli/generiche/spessore.html'
+    success_message = 'Spessore modificato correttamente!'
+    success_url = reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
+
+    
+    
+    def form_valid(self, form):        
+        messages.info(self.request, self.success_message) # Compare sul success_url
+        return super().form_valid(form)
+    
+
+def delete_spessore(request, pk): 
+        deleteobject = get_object_or_404(Spessore, pk = pk)          
+        deleteobject.delete()
+        url_match= reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
+        return redirect(url_match)
+
+class QualityCreateView(LoginRequiredMixin,CreateView):
+    model = Quality
+    form_class = QualityModelForm
+    template_name = 'acquistopelli/generiche/quality.html'
+    success_message = 'Qualità aggiunta correttamente!'
+    success_url = reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
+  
+    def form_valid(self, form):        
+        messages.info(self.request, self.success_message) # Compare sul success_url
+        return super().form_valid(form)
+    
+    def get_initial(self):
+        created_by = self.request.user
+        return {
+            'created_by': created_by,
+        }
+    
+class QualityUpdateView(LoginRequiredMixin,UpdateView):
+    model = Quality
+    form_class = QualityModelForm
+    template_name = 'acquistopelli/generiche/quality.html'
+    success_message = 'Qualità modificata correttamente!'
+    success_url = reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
+
+    
+    
+    def form_valid(self, form):        
+        messages.info(self.request, self.success_message) # Compare sul success_url
+        return super().form_valid(form)
+    
+
+def delete_quality(request, pk): 
+        deleteobject = get_object_or_404(Quality, pk = pk)          
+        deleteobject.delete()
+        url_match= reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
+        return redirect(url_match)
+
+class TaglioCreateView(LoginRequiredMixin,CreateView):
+    model = Taglio
+    form_class = TaglioModelForm
+    template_name = 'acquistopelli/generiche/taglio.html'
+    success_message = 'Taglio aggiunto correttamente!'
+    success_url = reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
+  
+    def form_valid(self, form):        
+        messages.info(self.request, self.success_message) # Compare sul success_url
+        return super().form_valid(form)
+    
+    def get_initial(self):
+        created_by = self.request.user
+        return {
+            'created_by': created_by,
+        }
+    
+class TaglioUpdateView(LoginRequiredMixin,UpdateView):
+    model = Taglio
+    form_class = TaglioModelForm
+    template_name = 'acquistopelli/generiche/taglio.html'
+    success_message = 'Taglio modificato correttamente!'
+    success_url = reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
+
+    
+    
+    def form_valid(self, form):        
+        messages.info(self.request, self.success_message) # Compare sul success_url
+        return super().form_valid(form)
+    
+
+def delete_taglio(request, pk): 
+        deleteobject = get_object_or_404(Taglio, pk = pk)          
+        deleteobject.delete()
+        url_match= reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
+        return redirect(url_match)
+
+
+class SezioneCreateView(LoginRequiredMixin,CreateView):
+    model = Sezione
+    form_class = SezioneModelForm
+    template_name = 'acquistopelli/generiche/sezione.html'
+    success_message = 'Sezione aggiunta correttamente!'
+    success_url = reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
+  
+    def form_valid(self, form):        
+        messages.info(self.request, self.success_message) # Compare sul success_url
+        return super().form_valid(form)
+    
+    def get_initial(self):
+        created_by = self.request.user
+        return {
+            'created_by': created_by,
+        }
+    
+class SezioneUpdateView(LoginRequiredMixin,UpdateView):
+    model = Sezione
+    form_class = SezioneModelForm
+    template_name = 'acquistopelli/generiche/sezione.html'
+    success_message = 'Sezione modificata correttamente!'
+    success_url = reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
+
+    
+    
+    def form_valid(self, form):        
+        messages.info(self.request, self.success_message) # Compare sul success_url
+        return super().form_valid(form)
+    
+
+def delete_sezione(request, pk): 
+        deleteobject = get_object_or_404(Sezione, pk = pk)          
+        deleteobject.delete()
+        url_match= reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
+        return redirect(url_match)
+    
+class ConciaCreateView(LoginRequiredMixin,CreateView):
+    model = Concia
+    form_class = ConciaModelForm
+    template_name = 'acquistopelli/generiche/concia.html'
+    success_message = 'Concia aggiunta correttamente!'
+    success_url = reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
+  
+    def form_valid(self, form):        
+        messages.info(self.request, self.success_message) # Compare sul success_url
+        return super().form_valid(form)
+    
+    def get_initial(self):
+        created_by = self.request.user
+        return {
+            'created_by': created_by,
+        }
+    
+class ConciaUpdateView(LoginRequiredMixin,UpdateView):
+    model = Concia
+    form_class = ConciaModelForm
+    template_name = 'acquistopelli/generiche/concia.html'
+    success_message = 'Concia modificata correttamente!'
+    success_url = reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
+
+    
+    
+    def form_valid(self, form):        
+        messages.info(self.request, self.success_message) # Compare sul success_url
+        return super().form_valid(form)
+    
+
+def delete_concia(request, pk): 
+        deleteobject = get_object_or_404(Concia, pk = pk)          
         deleteobject.delete()
         url_match= reverse_lazy('acquistopelli:tabelle_generiche_acquisto_pelli')
         return redirect(url_match)
