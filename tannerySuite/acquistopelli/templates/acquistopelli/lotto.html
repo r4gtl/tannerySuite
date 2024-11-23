@@ -5,7 +5,7 @@
 {% block head_title %}{{ block.super }} - Lotto{% endblock head_title %} 
 
 {% block sidenav %}
-{% include "core/partials/_sidenav_human_resources.html" %}
+{% include "core/partials/_sidenav_acquisto_pelli.html" %}
 {% endblock %}
 
 {% block content %}
@@ -61,12 +61,24 @@
                           </div> 
                       </div>
                       <div class="row"> 
-                        <div class="col-3">
-                          {{ form.fk_tipoanimale|as_crispy_field }}
+                        <div class="col-2">
+                          {{ form.fk_taglio|as_crispy_field }}
                       </div>                         
-                        <div class="col-3">
-                          {{ form.fk_tipogrezzo|as_crispy_field }}
+                        <div class="col-2">
+                          {{ form.fk_sezione|as_crispy_field }}
                       </div>
+                      <div class="col-2">
+                        {{ form.fk_concia|as_crispy_field }}
+                    </div>
+                    <div class="col-2">
+                      {{ form.fk_tipoanimale|as_crispy_field }}
+                  </div>
+                  <div class="col-2">
+                    {{ form.fk_spessore|as_crispy_field }}
+                </div>
+                <div class="col-2">
+                  {{ form.fk_quality|as_crispy_field }}
+              </div>
                           <div class="col-md-3">
                             {{ form.origine|as_crispy_field }}
                           </div>

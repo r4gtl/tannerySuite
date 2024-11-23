@@ -1,0 +1,31 @@
+<div class="col-6">
+    <div class="row">
+      <div class="col-6">
+        <h5>Tipo Grezzo</h5>                  
+      </div>
+      <div class="col-6 text-end">
+        <a href="{% url 'acquistopelli:crea_tipo_grezzo' %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi Tipo Grezzo</a>
+      </div>
+    </div>
+    <div class="table-container">
+      <table class="table table-bordered table-striped mt-2">
+        <thead>
+          <tr>
+            <th>Descrizione</th>            
+            <th>Azione</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% for tipogrezzo in tipigrezzo %}
+          <tr>        
+            
+            <td><a href="{% url 'acquistopelli:modifica_tipo_grezzo' pk=tipogrezzo.pk %}">{{ tipogrezzo.descrizione }}</a></td>
+            
+            <td class="text-center"><a href="{% url 'acquistopelli:delete_tipo_grezzo' pk=tipogrezzo.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{tipogrezzo.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+          </tr>  
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+  </div>

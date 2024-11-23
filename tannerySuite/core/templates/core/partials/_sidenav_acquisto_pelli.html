@@ -1,0 +1,35 @@
+<div class="sidenav">
+    
+    <nav>
+        
+        <ul>
+            <li class="border-top my-3"></li>
+            <li class="mb-1">
+                <li><a href="{% url 'acquistopelli:dashboard_acquisto_pelli' %}">Dashboard</a></li>
+                <li><a href="{% url 'acquistopelli:tabelle_generiche_acquisto_pelli' %}">Tabelle Generiche</a></li>
+                
+                
+                </li>
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#tabelle-collapse" aria-expanded="false">
+                        Anagrafiche
+                    </button>
+                    <div class="collapse" id="tabelle-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Fornitori</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Macelli</a></li>
+                        
+                        </ul>
+                    </div>
+                    </li>
+                    
+            
+            
+                
+                <li class="border-top my-3"></li>
+                <li><a href="#">Procedure</a></li>
+                <li><a href="#">LWG</a></li>
+        </ul>
+    </nav>
+</div>

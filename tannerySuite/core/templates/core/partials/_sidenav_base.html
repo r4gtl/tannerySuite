@@ -11,8 +11,8 @@
                 <div class="collapse" id="anagrafiche-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                     <li><a href="{% url 'anagrafiche:edit_facility_details' pk=1 %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Facility Details</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Clienti</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Fornitori</a></li>
+                    <li><a href="{% url 'anagrafiche:home_clienti' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Clienti</a></li>
+                    <li><a href="{% url 'anagrafiche:home_fornitori' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Fornitori</a></li>
                     <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Operatori</a></li>
                     <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Articoli</a></li>
                     <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Macelli</a></li>
@@ -39,7 +39,7 @@
                         </button>
                         <div class="collapse" id="acquisti-collapse">
                             <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Pelli</a></li>
+                            <li><a href="{% url 'acquistopelli:dashboard_acquisto_pelli'%}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Pelli</a></li>
                             
                             
                             </ul>

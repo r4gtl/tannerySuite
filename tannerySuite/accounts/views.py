@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .forms import UserUpdateForm, ProfileUpdateForm
 from .forms import FormRegistrazione
+from .models import Profile
 
 
 
@@ -31,6 +32,10 @@ def registrazione_view(request):
 
 @login_required
 def profile(request):
+    
+    if not hasattr(request.user, 'profile'):
+        Profile.objects.create(user=request.user)
+        
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
         p_form = ProfileUpdateForm(request.POST,

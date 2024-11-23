@@ -51,7 +51,7 @@
             {% endif %}
             <input type="submit" name="salva_esci" class="btn btn-success mb-2 me-1" value="Salva ed Esci">
             <input type="submit" name="salva_continua" class="btn btn-success mb-2 me-1" value="Salva e continua">
-            <button type="button" class="btn btn-danger mb-2 me-1" onclick="cancelAndRedirectTo(`{% url 'anagrafiche:home_fornitori' %}`)"><i class="bi bi-arrow-counterclockwise"></i> Annulla</button>
+            <button type="button" class="btn btn-danger mb-2 me-1" onclick="goBack()"><i class="bi bi-arrow-counterclockwise"></i> Annulla</button>
             <input type="hidden" name="categoria" value="{{ request.GET.categoria }}">
             <div class="row">
                 <div class="col-9">

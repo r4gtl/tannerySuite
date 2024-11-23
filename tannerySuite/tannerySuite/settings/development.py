@@ -17,7 +17,7 @@ DATABASES = {
     }
 }
 '''
-print(f"base_dir: {BASE_DIR}")
+
 # Percorsi per lo sviluppo
 '''STATICFILES_DIRS = [
     os.path.join(BASE_DIR.parent '/static'),  # Percorso per i file statici in sviluppo
