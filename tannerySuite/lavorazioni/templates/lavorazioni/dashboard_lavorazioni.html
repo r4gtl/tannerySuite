@@ -1,0 +1,175 @@
+{% extends 'core/base.html' %} 
+{% load static %}
+{% load crispy_forms_tags %} 
+{% load widget_tweaks %}
+{% block head_title %}{{ block.super }} - Lavorazioni{% endblock head_title %} 
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_acquisto_pelli.html" %}
+{% endblock %}
+
+
+
+{% block content %}
+
+
+
+<div class="container">
+  <br>
+  <h3>Lista Lavorazioni</h3>
+  <hr>
+  
+
+  <!-- filtro -->
+  <div class="row">
+    <div class="col">
+        <div class="card card-body">
+            <form method="get">
+
+                <div class="table-responsive-sm">
+                    <table class="table table-hover table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <tr>     
+                                <th>Descrizione</th>
+                                <th>Codice</th>                                    
+                                
+                            </tr>
+                        </thead>                            
+                        <tbody>
+                            <tr>                                    
+                                <td style="width: 20%">{{ filter.form.descrizione|as_crispy_field }}</td>                                    
+                                <td style="width: 20%">{{ filter.form.codice|as_crispy_field }}</td>                                
+                                                              
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn btn-primary" type="submit">Cerca</button>
+                <a class="btn btn-success" href="{% url 'lavorazioni:dashboard_lavorazioni' %}"><i class="bi bi-arrow-counterclockwise"></i>&nbsp;&nbsp; Pulisci campi</a>
+            </form>        
+        </div>
+    </div>        
+</div>
+<!-- fine filtro-->
+  <hr>
+  {% include "core/partials/_messages.html" %}
+  <br>
+  
+
+  <a class="btn btn-sm btn-success mt-2 mb-4" href="{% url 'lavorazioni:crea_lavorazione' %}"><span class="bi bi-person-plus-fill"></span> Aggiungi</a>
+  <br>
+    <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            
+            <th>Descrizione</th>
+            <th>Codice</th>                                    
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% for lavorazione in lavorazioni_paginator %}
+          <tr>        
+            
+            
+            <td><a href="{% url 'lavorazioni:modifica_lavorazione' pk=lavorazione.pk %}">{{ lavorazione.descrizione }}</a></td>
+            
+            <td>{{ lavorazione.codice }}</td>            
+          </tr>  
+          {% endfor %}
+        </tbody>
+      </table>
+      <!-- Pagination -->
+{% if lavorazioni_paginator.has_other_pages %}
+<nav>
+  <ul class="pagination justify-content-center">
+    {% if lavorazioni_paginator.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ lavorazioni_paginator.previous_page_number }}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <span class="page-link" aria-hidden="true">&laquo;</span>
+      </li>
+    {% endif %}
+
+    {% for page in lavorazioni_paginator.paginator.page_range %}
+      {% if page == lavorazioni_paginator.number %}
+        <li class="page-item active">
+          <span class="page-link">{{ page }}</span>
+        </li>
+      {% else %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+
+    {% if lavorazioni_paginator.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ lavorazioni_paginator.next_page_number }}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <span class="page-link" aria-hidden="true">&raquo;</span>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+<!-- End Pagination -->
+
+</div>
+
+
+
+{% endblock content %}
+
+{% block extra_scripts %}
+
+<script>
+
+
+
+  $(function () {
+  
+  var $origine = $("#origine");
+  $.ajax({
+    url: $origine.data("url"),
+    success: function (data) {
+  
+      var ctx = $origine[0].getContext("2d");        
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: data.labels,
+          datasets: [{
+            label: 'Origine',
+            backgroundColor: getRandomColor(),
+            data: data.data
+          }]          
+        },
+        options: {
+          responsive: true,
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Origine'
+          },
+          
+        }
+      });
+  
+    }
+  });
+  
+  });
+</script>
+{% endblock %}
+

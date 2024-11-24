@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import (dashboard_acquisto_pelli, tabelle_generiche_acquisto_pelli,
                     LottoCreateView, LottoUpdateView,
+                    DettaglioLottoCreateView, DettaglioLottoUpdateView, delete_dettaglio_lotto,
                     SceltaLottoCreateView, SceltaLottoUpdateView, delete_scelta_lotto,
                     TipoAnimaleCreateView, TipoAnimaleUpdateView, delete_tipo_animale,
                     TipoGrezzoCreateView, TipoGrezzoUpdateView, delete_tipo_grezzo,
@@ -34,6 +35,10 @@ urlpatterns = [
     path('modifica_scelta_lotto/<int:pk>', SceltaLottoUpdateView.as_view(), name="modifica_scelta_lotto"),
     path('delete_scelta_lotto/<int:pk>', delete_scelta_lotto, name="delete_scelta_lotto"),
 
+    # Dettaglio Lotto
+    path('<int:pk>/crea_dettaglio_lotto/', DettaglioLottoCreateView.as_view(), name="crea_dettaglio_lotto"),
+    path('modifica_dettaglio_lotto/<int:pk>/', DettaglioLottoUpdateView.as_view(), name="modifica_dettaglio_lotto"),
+    path('delete_dettaglio_lotto/<int:pk>/', delete_dettaglio_lotto, name="delete_dettaglio_lotto"),
     
     # Tabelle generiche
     path('tabelle_generiche_acquisto_pelli/', tabelle_generiche_acquisto_pelli, name="tabelle_generiche_acquisto_pelli"),

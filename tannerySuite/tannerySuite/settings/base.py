@@ -7,7 +7,7 @@ from django.contrib.messages import constants as messages
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+print(f"BASE_DIR: {BASE_DIR}")
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'nonconformity',
     'articoli',
     'acquistopelli',
+    'lavorazioni',
     
     
     
@@ -78,7 +79,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, '..', 'templates'),
             os.path.join(BASE_DIR, 'accounts/templates'),
             os.path.join(BASE_DIR, 'userprofile/templates'),
             os.path.join(BASE_DIR, 'core/templates'),

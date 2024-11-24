@@ -1,0 +1,126 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{ block.super }} | Lotto - Dettaglio {% endblock %}
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_acquisto_pelli.html" %}
+{% endblock %}
+
+{% block content %}
+
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+        <li class="breadcrumb-item"><a href="{% url 'acquistopelli:modifica_lotto' pk=fk_lotto.pk %}">Lotto {{ fk_lotto }}</a></li>        
+
+        {% if form.instance.id  %}
+            <li class="breadcrumb-item active" aria-current="page">Modifica {{ dettaglio_lotto.descrizione }}</li>
+        {% else %}
+            <li class="breadcrumb-item active" aria-current="page">Aggiungi dettaglio</li>
+        {% endif %}             
+        
+        
+    </ol>
+</nav>
+
+    <div class="container">
+        {% if form.instance.id  %}
+            <h3>Modifica dettaglio</h3>
+        {% else %}
+            <h3> Aggiungi dettaglio</h3>
+        {% endif %}
+        
+        
+        <hr>
+        
+        
+        
+        
+        <br>
+
+        {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %} 
+               <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+               </div>
+            {% endfor %}
+        {% endfor %}
+     {% endif %}
+        <form method="post">
+            {% csrf_token %}
+
+            
+
+            <div class="row">
+                <div class="col-4">
+                    {{ form.fk_taglio|as_crispy_field }}
+                </div>
+                <div class="col-4">
+                    {{ form.fk_sezione|as_crispy_field }}
+                </div>
+            
+                <div class="col-4">
+                    {{ form.fk_concia|as_crispy_field }}
+                </div>
+                
+                
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    {{ form.fk_tipoanimale|as_crispy_field }}
+                </div>
+                <div class="col-4">
+                    {{ form.fk_spessore|as_crispy_field }}
+                </div>
+            
+                <div class="col-4">
+                    {{ form.fk_quality|as_crispy_field }}
+                </div>
+                
+                
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    {{ form.pezzi|as_crispy_field }}
+                </div>
+                <div class="col-4">
+                    {{ form.note|as_crispy_field }}
+                </div>
+            
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    {{ form.fk_lotto.as_hidden}}
+                </div>
+                <div class="col-4">
+                    {{ form.created_by.as_hidden}}
+                </div>
+                
+                
+                
+            </div>
+            
+            
+
+            
+            <input type="submit" class="btn btn-success" value="Salva">
+            <button type="button" class="btn btn-danger" onclick="goBack()"><i class="bi bi-arrow-counterclockwise"></i> Annulla</button>
+        </form>
+        <hr>
+        
+        
+    </div>
+
+
+
+{% endblock %}
+{% block extra_scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+            setFocusOnField('id_fk_taglio');
+        });
+</script>
+{% endblock %} 
+
