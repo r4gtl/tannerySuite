@@ -88,6 +88,7 @@ class LottoUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):        
         context = super().get_context_data(**kwargs)
         pk = self.object.pk   
+        dettagli_lotto = DettaglioLotto.objects.all()
         totale_pezzi = SceltaLotto.objects.filter(fk_lotto=pk).aggregate(Sum('pezzi'))['pezzi__sum'] or 0
         context['scelte_effettuate'] = SceltaLotto.objects.filter(fk_lotto=pk) 
         scelte_effettuate=SceltaLotto.objects.filter(fk_lotto=pk) 
@@ -99,9 +100,69 @@ class LottoUpdateView(LoginRequiredMixin, UpdateView):
         lotto = Lotto.objects.get(pk=pk)
         pezzi_rimanenti = lotto.pezzi - totale_pezzi
         context['pezzi_rimanenti'] = pezzi_rimanenti
+        context['dettagli_lotto'] = dettagli_lotto
         return context
 
+class DettaglioLottoCreateView(LoginRequiredMixin, CreateView):
+    model = DettaglioLotto
+    form_class = DettaglioLottoModelForm
+    template_name = 'acquistopelli/dettaglio_lotto.html'
+    success_message = 'Dettaglio aggiunto correttamente!'
+    
+    def get_initial(self):        
+        fk_lotto = self.kwargs['pk'] 
+        print("Lotto initial:" + str(fk_lotto))
+        created_by = self.request.user       
+        return {
+            'fk_lotto': fk_lotto,
+            'created_by': created_by
+        }
 
+    def get_success_url(self):          
+        fk_lotto=self.object.fk_lotto.pk   
+        print("fkLotto: " + str(fk_lotto))     
+        return reverse_lazy('acquistopelli:modifica_lotto', kwargs={'pk':fk_lotto})
+    
+    def form_valid(self, form):                
+        messages.info(self.request, self.success_message) # Compare sul success_url
+        return super().form_valid(form)
+    
+    def get_context_data(self, **kwargs):        
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']       
+        context['fk_lotto'] = Lotto.objects.get(pk=pk) 
+        return context
+    
+    
+class DettaglioLottoUpdateView(LoginRequiredMixin, UpdateView):
+    model = DettaglioLotto
+    form_class = DettaglioLottoModelForm
+    template_name = 'acquistopelli/dettaglio_lotto.html'
+    success_message = 'Dettaglio modificato correttamente!'
+    #success_url = reverse_lazy('human_resources:crea_registro_formazione', kwargs={"pk": pk})
+    
+    def get_success_url(self):          
+        fk_lotto=self.object.fk_lotto.pk        
+        return reverse_lazy('acquistopelli:modifica_lotto', kwargs={'pk':fk_lotto})
+    
+    def form_valid(self, form):                
+        messages.info(self.request, self.success_message) # Compare sul success_url
+        return super().form_valid(form)
+    
+    def get_context_data(self, **kwargs):        
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']       
+        context['fk_lotto'] = Lotto.objects.get(pk=pk)
+        return context
+    
+
+
+def delete_dettaglio_lotto(request, pk): 
+        deleteobject = get_object_or_404(DettaglioLotto, pk = pk)   
+        fk_lotto = deleteobject.fk_lotto.pk      
+        deleteobject.delete()
+        url_match = reverse_lazy('acquistopelli:modifica_lotto', kwargs={'pk':fk_lotto})
+        return redirect(url_match)
 
 # Dettaglio scelta lotto
 class SceltaLottoCreateView(LoginRequiredMixin, CreateView):

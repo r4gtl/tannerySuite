@@ -156,5 +156,17 @@ class SceltaLotto(models.Model):
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='sceltalotto', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
-
-
+    
+    
+class DettaglioLotto(models.Model):
+    fk_lotto = models.ForeignKey(Lotto, null=False, blank=False, on_delete=models.CASCADE)
+    fk_taglio = models.ForeignKey(Taglio, null=True, blank=True, on_delete=models.SET_NULL, related_name='dettaglio_lotto')
+    fk_sezione = models.ForeignKey(Sezione, null=True, blank=True, on_delete=models.SET_NULL, related_name='dettaglio_lotto')
+    fk_concia = models.ForeignKey(Concia, null=True, blank=True, on_delete=models.SET_NULL, related_name='dettaglio_lotto')
+    fk_tipoanimale = models.ForeignKey(TipoAnimale, null=True, blank=True, on_delete=models.SET_NULL, related_name='dettaglio_lotto')
+    fk_spessore = models.ForeignKey(Spessore, null=True, blank=True, on_delete=models.SET_NULL, related_name='dettaglio_lotto')
+    fk_quality = models.ForeignKey(Quality, null=True, blank=True, on_delete=models.SET_NULL, related_name='dettaglio_lotto')
+    pezzi = models.IntegerField(null=True, blank=True)
+    note = models.TextField(null=True, blank=True)
+    created_by = models.ForeignKey(User, related_name='dettaglio_lotto', null=True, blank=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
