@@ -267,14 +267,18 @@ class FornitoreManutenzioni(models.Model):
     
 '''FINE MODELLI CATEGORIE'''
 
-class DestinazioniDiverseFornitori(models.Model):
-    fk_fornitore = models.ForeignKey(Fornitore, on_delete=models.CASCADE)
+class DestinazioneDiversaFornitore(models.Model):
+    fk_fornitore = models.ForeignKey(Fornitore, related_name='destinazione_diversa_fornitore', on_delete=models.CASCADE)
     ragionesociale = models.CharField(max_length=50, blank=False, null=False)
     indirizzo = models.CharField(max_length=100, blank=True, null=True)
     cap = models.CharField(max_length=50, blank=True, null=True)
     city = models.CharField(max_length=50, blank=True, null=True)
     provincia = models.CharField(max_length=50, blank=True, null=True)
     country = CountryField(blank_label='(seleziona Paese)')
+    note = models.TextField(null=True, blank=True)
+    created_by = models.ForeignKey(User, related_name='destinazione_diversa_fornitore', null=True, blank=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
 
     class Meta:
         ordering =['ragionesociale']

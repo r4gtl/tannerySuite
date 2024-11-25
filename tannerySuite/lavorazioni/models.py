@@ -1,10 +1,12 @@
-from datetime import date
+from datetime import date, datetime
 #import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from anagrafiche.models import Fornitore
 
 
+def get_current_time():
+    return datetime.now().time()
 
 class CausaleTrasporto(models.Model):
     '''Utilizzare la PK come codice anche per la ricerca (vedi programma ddt)'''
@@ -83,8 +85,9 @@ class OrdineLavoro(models.Model):
         choices=CHOICES_TRASPORTO,
         default=MITTENTE,
     )
-    #data_inizio_trasporto = models.DateField(default=datetime.date.today)
-    #ora_inizio_trasporto = models.TimeField(default=datetime.datetime.now().time)    
+    data_inizio_trasporto = models.DateField(default=date.today)    
+    ora_inizio_trasporto = models.TimeField(default=get_current_time)
+    fk_vettore = models.ForeignKey(Fornitore, null=True, blank=True, related_name='ordine_lavoro_vettore', on_delete=models.SET_NULL)
     n_colli = models.IntegerField(null=True, blank=True)
     peso_kg = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True, )
     note = models.TextField(null=True, blank=True)

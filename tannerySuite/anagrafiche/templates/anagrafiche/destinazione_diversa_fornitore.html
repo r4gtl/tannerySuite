@@ -1,0 +1,96 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{ block.super }} | Anagrafiche - Destinazione Diversa Fornitore {% endblock %}
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_anagrafiche.html" %}
+{% endblock %}
+
+{% block content %}
+
+{% include 'core/modals/delConfirm.html' %}
+
+<nav aria-label="breadcrumb" class="mt-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+        <li class="breadcrumb-item"><a href="{% url 'anagrafiche:home_fornitori' %}">Fornitori</a></li>        
+        <li class="breadcrumb-item"><a href="{% url 'anagrafiche:vedi_fornitore' pk=fk_fornitore %}">{{ fornitore.ragionesociale }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Destinazione Diversa</li>
+        
+    </ol>
+</nav>
+
+    <div class="container">
+        {% if form.instance.id  %}
+            <h3>Modifica Destinazione Diversa</h3>
+        {% else %}
+            <h3> Aggiungi Destinazione Diversa</h3>
+        {% endif %}
+        
+        
+        <hr>
+        
+        {% include "core/partials/_messages.html" %}
+        
+        
+        <br>
+
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            
+
+            <div class="row">
+                <div class="col-2">
+                    {{ form.ragionesociale|as_crispy_field }}
+                </div>
+                <div class="col-2">
+                    {{ form.indirizzo|as_crispy_field }}
+                </div>
+                <div class="col-2">
+                    {{ form.cap|as_crispy_field }}
+                </div>
+                <div class="col-2">
+                    {{ form.city|as_crispy_field }}
+                </div>
+                <div class="col-2">
+                    {{ form.provincia|as_crispy_field }}
+                </div>
+                <div class="col-2">
+                    {{ form.country|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    {{ form.note|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ form.fk_fornitore|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ form.created_by|as_crispy_field }}
+                </div>
+            </div>
+            
+
+            
+            <input type="submit" name="salva_esci" class="btn btn-success mb-2 me-1" value="Salva">            
+            <button type="button" class="btn btn-danger mb-2 me-1" onclick="goBack()"><i class="bi bi-arrow-counterclockwise"></i> Annulla</button>
+        </form>
+        <hr>
+        
+        
+    </div>
+
+
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+            setFocusOnField('id_lwg_urn');
+        });
+</script>
+{% endblock %} 

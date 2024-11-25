@@ -5,11 +5,13 @@ from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
 
 from .models import (Cliente, Facility, FacilityContact, Fornitore,
-                     FornitoreLavorazioniEsterne, FornitoreManutenzioni,
-                     FornitorePelli, FornitoreProdottiChimici,
-                     FornitoreRifiuti, FornitoreServizi, LwgFornitore, Macello,
-                     TransferValue, XrDocumentiGestore, XrDocumentiSmaltitore,
-                     XrDocumentiTrasportatore, XrTransferValueLwgFornitore)
+                    FornitoreLavorazioniEsterne, FornitoreManutenzioni,
+                    FornitorePelli, FornitoreProdottiChimici,
+                    FornitoreRifiuti, FornitoreServizi, LwgFornitore, Macello,
+                    TransferValue, XrDocumentiGestore, XrDocumentiSmaltitore,
+                    XrDocumentiTrasportatore, XrTransferValueLwgFornitore,
+                    DestinazioneDiversaFornitore,
+                    )
 
 
 class FormFornitore(forms.ModelForm):
@@ -46,7 +48,43 @@ class FormFornitore(forms.ModelForm):
             
         }
         
+class DestinazioneDiversaFornitoreModelForm(forms.ModelForm):
+    
 
+    class Meta:
+        model = DestinazioneDiversaFornitore
+        #exclude=()
+        fields='__all__'
+        
+        
+        
+        widgets = {
+                    'fk_fornitore': forms.HiddenInput(),
+                    'ragionesociale': forms.TextInput(),
+                    'indirizzo': forms.TextInput(),
+                    'cap': forms.TextInput(),
+                    'city': forms.TextInput(),
+                    'provincia': forms.TextInput(),
+                    'country': CountrySelectWidget(),                    
+                    'note': forms.Textarea(attrs={'placeholder': 'Inserisci Annotazioni', 'rows':'3'}),
+                    'created_by': forms.HiddenInput(),
+                    'created_at': forms.HiddenInput()
+                    
+                    
+                }
+        labels = {
+            'ragionesociale': 'Ragione Sociale',
+            'indirizzo': 'Indirizzo',
+            'cap': 'CAP',
+            'city': 'Città',    
+            'provincia': 'Provincia',    
+            'country': 'Paese',
+            'note': 'Annotazioni'
+            
+            
+        }
+        
+        
 class FormXrDocumentiGestore(forms.ModelForm):
     class Meta:
         model = XrDocumentiGestore

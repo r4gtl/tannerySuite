@@ -22,13 +22,15 @@ from .forms import (FormCliente, FormFacility, FormFacilityContact,
                     FormFornitoreServizi, FormLwgFornitore, FormTransferValue,
                     FormXrDocumentiGestore, FormXrTransferValueLwgFornitore,
                     ListinoClienteModelForm, ListinoTerzistaModelForm,
-                    PrezzoListinoModelForm)
+                    PrezzoListinoModelForm, DestinazioneDiversaFornitoreModelForm)
 from .models import (Cliente, Facility, FacilityContact, Fornitore,
-                     FornitoreLavorazioniEsterne, FornitorePelli,
-                     FornitoreProdottiChimici, FornitoreRifiuti,
-                     FornitoreServizi, LwgFornitore, TransferValue,
-                     XrDocumentiGestore, XrDocumentiSmaltitore,
-                     XrDocumentiTrasportatore, XrTransferValueLwgFornitore)
+                    FornitoreLavorazioniEsterne, FornitorePelli,
+                    FornitoreProdottiChimici, FornitoreRifiuti,
+                    FornitoreServizi, LwgFornitore, TransferValue,
+                    XrDocumentiGestore, XrDocumentiSmaltitore,
+                    XrDocumentiTrasportatore, XrTransferValueLwgFornitore,
+                    DestinazioneDiversaFornitore,
+                    )
 
 # Create your views here.
 
@@ -63,7 +65,8 @@ class UpdateSupplier(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["form"] = self.get_form()  # Utilizza il form principale per Fornitore        
+        context["form"] = self.get_form()  # Utilizza il form principale per Fornitore 
+        context["pk_fornitore"] = self.object.pk
         # Ottieni l'istanza di Categoria correlata al Fornitore attuale
         categoria_model_name = f'Fornitore{self.object.categoria.title().replace(" ", "")}'
         
@@ -89,6 +92,8 @@ class UpdateSupplier(LoginRequiredMixin, UpdateView):
         context["gestori_rifiuti"] = XrDocumentiGestore.objects.filter(fornitore_rifiuti=self.object.pk)
         context["smaltitori_rifiuti"] = XrDocumentiSmaltitore.objects.filter(fornitore_rifiuti=self.object.pk)
         context["trasportatori_rifiuti"] = XrDocumentiTrasportatore.objects.filter(fornitore_rifiuti=self.object.pk)
+        context["destinazioni_diverse"] = DestinazioneDiversaFornitore.objects.filter(fk_fornitore=self.object.pk)
+        print(f"fk_fornitore: {self.object.pk}")
         return context
     
     
@@ -235,7 +240,76 @@ class CreateSupplier(LoginRequiredMixin, CreateView):
         messages.error(self.request, 'Errore! Il fornitore non è stato aggiunto!')
         return super().form_invalid(form)
 
+# Destinazioni diverse fornitori
+class DestinazioneDiversaFornitoreCreateView(LoginRequiredMixin,CreateView):
+    model = DestinazioneDiversaFornitore
+    form_class = DestinazioneDiversaFornitoreModelForm
+    template_name = 'anagrafiche/destinazione_diversa_fornitore.html'
+    success_message = 'Destinazione diversa aggiunta correttamente!'
+    
+    def get_success_url(self):          
+        
+        if 'salva_esci' in self.request.POST:
+            fornitore = self.object.fk_fornitore.pk
+            #print("Fornitore: " + str(fornitore))
+            return reverse_lazy('anagrafiche:vedi_fornitore', kwargs={'pk': fornitore})
 
+        pk=self.object.pk        
+        return reverse_lazy('anagrafiche:modifica_destinazione_diversa_fornitore', kwargs={'pk':pk})
+    
+    def get_initial(self):
+        fk_fornitore = self.kwargs['fk_fornitore']
+        return {
+            'fk_fornitore': fk_fornitore,
+            
+        }
+    
+    def get_context_data(self, **kwargs):        
+        context = super().get_context_data(**kwargs)
+        fk_fornitore=self.kwargs['fk_fornitore']
+        print("Fornitore: " + str(fk_fornitore))        
+        context['fornitore'] = Fornitore.objects.get(pk=fk_fornitore)
+        context['fk_fornitore'] = fk_fornitore
+        return context
+
+    
+
+class DestinazioneDiversaFornitoreUpdateView(LoginRequiredMixin,UpdateView):
+    model = DestinazioneDiversaFornitore
+    form_class = DestinazioneDiversaFornitoreModelForm
+    template_name = 'anagrafiche/destinazione_diversa_fornitore.html'
+    success_message = 'Destinazione diversa modificata correttamente!'
+    
+
+    def get_success_url(self):
+        if 'salva_esci' in self.request.POST:
+            fornitore = self.object.fk_fornitore.pk
+            #print("Fornitore: " + str(fornitore))
+            return reverse_lazy('anagrafiche:vedi_fornitore', kwargs={'pk': fornitore})
+
+        pk=self.object.pk
+        #print(f'pk da success url: {pk}')       
+        return reverse_lazy('anagrafiche:modifica_destinazione_diversa_fornitore', kwargs={'pk':pk})
+    
+
+    def get_context_data(self, **kwargs):        
+        context = super().get_context_data(**kwargs)
+        fk_fornitore = self.object.fk_fornitore.pk        
+        context['fk_fornitore'] = fk_fornitore
+        context['fornitore'] = Fornitore.objects.get(pk=fk_fornitore)        
+        
+        return context
+
+
+def delete_destinazione_diversa_fornitore(request, pk): 
+        deleteobject = get_object_or_404(DestinazioneDiversaFornitore, pk = pk) 
+        fornitore = deleteobject.fk_fornitore.pk         
+        deleteobject.delete()
+        messages.warning(request, 'Voce eliminata correttamente!')
+        url_match= reverse_lazy('anagrafiche:vedi_fornitore', kwargs={'pk': fornitore}) 
+        return redirect(url_match)    
+    
+    
 class AddLwgCertificate(CreateView):
     
     model = LwgFornitore
