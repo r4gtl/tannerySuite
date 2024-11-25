@@ -68,7 +68,7 @@ class SpessoreModelForm(forms.ModelForm):
 
 
         widgets = {
-            'descrizione': forms.TextInput(attrs={'placeholder': 'Inserisci tipo animale'}),            
+            'descrizione': forms.TextInput(attrs={'placeholder': 'Inserisci spessore'}),            
             'note': forms.Textarea(attrs={'placeholder': 'Inserisci Annotazioni', 'rows':'3'}),
             'created_by': forms.HiddenInput(),
             'created_at': forms.HiddenInput()
@@ -85,7 +85,7 @@ class QualityModelForm(forms.ModelForm):
 
 
         widgets = {
-            'descrizione': forms.TextInput(attrs={'placeholder': 'Inserisci tipo animale'}),            
+            'descrizione': forms.TextInput(attrs={'placeholder': 'Inserisci qualità'}),            
             'note': forms.Textarea(attrs={'placeholder': 'Inserisci Annotazioni', 'rows':'3'}),
             'created_by': forms.HiddenInput(),
             'created_at': forms.HiddenInput()
@@ -102,7 +102,7 @@ class TaglioModelForm(forms.ModelForm):
 
 
         widgets = {
-            'descrizione': forms.TextInput(attrs={'placeholder': 'Inserisci tipo animale'}),            
+            'descrizione': forms.TextInput(attrs={'placeholder': 'Inserisci taglio'}),            
             'note': forms.Textarea(attrs={'placeholder': 'Inserisci Annotazioni', 'rows':'3'}),
             'created_by': forms.HiddenInput(),
             'created_at': forms.HiddenInput()
@@ -120,7 +120,7 @@ class SezioneModelForm(forms.ModelForm):
 
 
         widgets = {
-            'descrizione': forms.TextInput(attrs={'placeholder': 'Inserisci tipo animale'}),            
+            'descrizione': forms.TextInput(attrs={'placeholder': 'Inserisci sezione'}),            
             'note': forms.Textarea(attrs={'placeholder': 'Inserisci Annotazioni', 'rows':'3'}),
             'created_by': forms.HiddenInput(),
             'created_at': forms.HiddenInput()
@@ -137,7 +137,7 @@ class ConciaModelForm(forms.ModelForm):
 
 
         widgets = {
-            'descrizione': forms.TextInput(attrs={'placeholder': 'Inserisci tipo animale'}),            
+            'descrizione': forms.TextInput(attrs={'placeholder': 'Inserisci concia'}),            
             'note': forms.Textarea(attrs={'placeholder': 'Inserisci Annotazioni', 'rows':'3'}),
             'created_by': forms.HiddenInput(),
             'created_at': forms.HiddenInput()

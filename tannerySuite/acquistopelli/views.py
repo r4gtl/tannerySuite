@@ -98,8 +98,8 @@ class LottoUpdateView(LoginRequiredMixin, UpdateView):
             print(f"scelta pk {scelta.pk}")
         context['totale_pezzi'] = totale_pezzi
         lotto = Lotto.objects.get(pk=pk)
-        pezzi_rimanenti = lotto.pezzi - totale_pezzi
-        context['pezzi_rimanenti'] = pezzi_rimanenti
+        #pezzi_rimanenti = lotto.pezzi - totale_pezzi
+        #context['pezzi_rimanenti'] = pezzi_rimanenti
         context['dettagli_lotto'] = dettagli_lotto
         return context
 

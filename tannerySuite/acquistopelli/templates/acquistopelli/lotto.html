@@ -1,5 +1,6 @@
 {% extends 'core/base.html' %} 
 {% load static %}
+{% load custom_filters %}
 {% load crispy_forms_tags %} 
 {% load widget_tweaks %}
 {% block head_title %}{{ block.super }} - Lotto{% endblock head_title %} 
@@ -152,12 +153,12 @@
               {% for dettaglio_lotto in dettagli_lotto %}
               <tr>        
                 
-                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{{ dettaglio_lotto.fk_taglio.descrizione }}</a></td>
-                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{{ dettaglio_lotto.fk_sezione.descrizione }}</a></td>
-                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{{ dettaglio_lotto.fk_concia.descrizione }}</a></td>
-                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{{ dettaglio_lotto.fk_tipoanimale.descrizione }}</a></td>
-                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{{ dettaglio_lotto.fk_spessore.descrizione }}</a></td>
-                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{{ dettaglio_lotto.fk_quality.descrizione }}</a></td>
+                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{% if dettaglio_lotto.fk_taglio.pk %}{{ dettaglio_lotto.fk_taglio.pk|pad_zero }} - {{ dettaglio_lotto.fk_taglio.descrizione }}{% endif %}</a></td>
+                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{% if dettaglio_lotto.fk_sezione.pk %}{{ dettaglio_lotto.fk_sezione.pk|pad_zero }} - {{ dettaglio_lotto.fk_sezione.descrizione }}{% endif %}</a></td>
+                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{% if dettaglio_lotto.fk_concia.pk %}{{ dettaglio_lotto.fk_concia.pk|pad_zero }} - {{ dettaglio_lotto.fk_concia.descrizione }}{% endif %}</a></td>
+                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{% if dettaglio_lotto.fk_tipoanimale.pk %}{{ dettaglio_lotto.fk_tipoanimale.pk|pad_zero }} - {{ dettaglio_lotto.fk_tipoanimale.descrizione }}{% endif %}</a></td>
+                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{% if dettaglio_lotto.fk_spessore.pk %}{{ dettaglio_lotto.fk_spessore.pk|pad_zero }} - {{ dettaglio_lotto.fk_spessore.descrizione }}{% endif %}</a></td>
+                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{% if dettaglio_lotto.fk_quality.pk %}{{ dettaglio_lotto.fk_quality.pk|pad_zero }} - {{ dettaglio_lotto.fk_quality.descrizione }}{% endif %}</a></td>
                     
                 <td class="text-center">{{ dettaglio_lotto.pezzi }}</td>                           
                 <td class="text-center"><a href="{% url 'acquistopelli:delete_dettaglio_lotto' pk=dettaglio_lotto.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{dettaglio_lotto.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>             

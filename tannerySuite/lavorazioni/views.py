@@ -14,7 +14,7 @@ from .forms import *
 from .filters import LavorazioneFilter
 
 
-def dashboard_lavorazioni(request):     
+'''def dashboard_lavorazioni(request):     
     lavorazioni = Lavorazione.objects.all()
     
     lavorazioni_filter = LavorazioneFilter(request.GET, queryset=lavorazioni)
@@ -35,9 +35,9 @@ def dashboard_lavorazioni(request):
         'filter': lavorazioni_filter,
     }
     
-    return render(request, 'lavorazioni/dashboard_lavorazioni.html', context)
+    return render(request, 'lavorazioni/dashboard_lavorazioni.html', context)'''
 
-
+'''
 class LavorazioneCreateView(LoginRequiredMixin,CreateView):
     model = Lavorazione
     form_class = LavorazioneModelForm
@@ -73,4 +73,4 @@ def delete_lavorazione(request, pk):
         deleteobject = get_object_or_404(Lavorazione, pk = pk)          
         deleteobject.delete()
         url_match = reverse_lazy('lavorazioni:dashboard_lavorazioni')
-        return redirect(url_match)
+        return redirect(url_match)'''
