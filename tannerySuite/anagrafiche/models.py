@@ -267,7 +267,20 @@ class FornitoreManutenzioni(models.Model):
     
 '''FINE MODELLI CATEGORIE'''
 
+class DestinazioniDiverseFornitori(models.Model):
+    fk_fornitore = models.ForeignKey(Fornitore, on_delete=models.CASCADE)
+    ragionesociale = models.CharField(max_length=50, blank=False, null=False)
+    indirizzo = models.CharField(max_length=100, blank=True, null=True)
+    cap = models.CharField(max_length=50, blank=True, null=True)
+    city = models.CharField(max_length=50, blank=True, null=True)
+    provincia = models.CharField(max_length=50, blank=True, null=True)
+    country = CountryField(blank_label='(seleziona Paese)')
 
+    class Meta:
+        ordering =['ragionesociale']
+        
+    def __str__(self):
+        return self.ragionesociale
 
 
 class Macello(Fornitore):
