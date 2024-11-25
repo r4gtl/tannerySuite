@@ -1,0 +1,82 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{ block.super }} | Lavorazioni {% endblock %}
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_acquisto_pelli.html" %}
+{% endblock %}
+
+{% block content %}
+
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+        <li class="breadcrumb-item"><a href="{% url 'lavorazioni:dashboard_lavorazioni' %}">Lavorazioni</a></li>        
+
+        {% if form.instance.id  %}
+            <li class="breadcrumb-item active" aria-current="page">Modifica {{ lavorazione.description }}</li>
+        {% else %}
+            <li class="breadcrumb-item active" aria-current="page">Aggiungi lavorazione</li>
+        {% endif %}             
+        
+        
+    </ol>
+</nav>
+
+    <div class="container">
+        {% if form.instance.id  %}
+            <h3>Modifica lavorazione</h3>
+        {% else %}
+            <h3> Aggiungi lavorazione</h3>
+        {% endif %}
+        
+        
+        <hr>
+        
+        
+        
+        
+        <br>
+
+
+        <form method="post">
+            {% csrf_token %}
+
+            
+
+            <div class="row">
+                <div class="col-4">
+                    {{ form.descrizione|as_crispy_field }}
+                </div>
+                <div class="col-4">
+                    {{ form.codice|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ form.note|as_crispy_field }}
+                </div>
+                
+                
+            </div>
+            
+            
+
+            
+            <input type="submit" class="btn btn-success" value="Salva">
+            <button type="button" class="btn btn-danger" onclick="goBack()"><i class="bi bi-arrow-counterclockwise"></i> Annulla</button>
+        </form>
+        <hr>
+        
+        
+    </div>
+
+
+
+{% endblock %}
+{% block extra_scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+            setFocusOnField('id_descrizione');
+        });
+</script>
+{% endblock %} 

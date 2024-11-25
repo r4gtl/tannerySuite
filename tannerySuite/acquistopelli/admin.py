@@ -1,10 +1,10 @@
 from django.contrib import admin
 from .models import (TipoAnimale,
-                     TipoGrezzo,
-                     Lotto,
-                     Scelta,
-                     )
-# Register your models here.
+                    TipoGrezzo,
+                    Lotto,
+                    Scelta,
+                    )
+
 
 admin.site.register(TipoAnimale)
 admin.site.register(TipoGrezzo)

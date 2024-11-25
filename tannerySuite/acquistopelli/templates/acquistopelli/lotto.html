@@ -5,7 +5,7 @@
 {% block head_title %}{{ block.super }} - Lotto{% endblock head_title %} 
 
 {% block sidenav %}
-{% include "core/partials/_sidenav_human_resources.html" %}
+{% include "core/partials/_sidenav_acquisto_pelli.html" %}
 {% endblock %}
 
 {% block content %}
@@ -61,12 +61,24 @@
                           </div> 
                       </div>
                       <div class="row"> 
-                        <div class="col-3">
-                          {{ form.fk_tipoanimale|as_crispy_field }}
+                        <div class="col-2">
+                          {{ form.fk_taglio|as_crispy_field }}
                       </div>                         
-                        <div class="col-3">
-                          {{ form.fk_tipogrezzo|as_crispy_field }}
+                        <div class="col-2">
+                          {{ form.fk_sezione|as_crispy_field }}
                       </div>
+                      <div class="col-2">
+                        {{ form.fk_concia|as_crispy_field }}
+                    </div>
+                    <div class="col-2">
+                      {{ form.fk_tipoanimale|as_crispy_field }}
+                  </div>
+                  <div class="col-2">
+                    {{ form.fk_spessore|as_crispy_field }}
+                </div>
+                <div class="col-2">
+                  {{ form.fk_quality|as_crispy_field }}
+              </div>
                           <div class="col-md-3">
                             {{ form.origine|as_crispy_field }}
                           </div>
@@ -115,43 +127,53 @@
       {% if form.instance.id  %}
       <div class="row">
         <div class="col-4">
-          <p><strong>Pelli da scegliere {{ pezzi_rimanenti }}</strong><p>
+          <!-- <p><strong>Pelli da scegliere {{ pezzi_rimanenti }}</strong><p> -->
         </div>
         <div class="col-8 text-end">          
-          <a href="{% url 'acquistopelli:crea_scelta_lotto' pk=lotto.pk %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi scelta</a>
+          <a href="{% url 'acquistopelli:crea_dettaglio_lotto' pk=lotto.pk %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi scelta</a>
         </div>
       </div>
       
           <table class="table table-bordered table-striped mt-2">
             <thead>
               <tr>
-                <th>Scelta</th>            
+                <th>Taglio</th>            
+                <th>Sezione</th>            
+                <th>Concia</th>            
+                <th>Animale</th>            
+                <th>Spessore</th>            
+                <th>Qualità</th>            
                 <th>Pezzi</th>
                 <th>Azione</th>
               </tr>
             </thead>
             <tbody>
               
-              {% for scelta_effettuata in scelte_effettuate %}
+              {% for dettaglio_lotto in dettagli_lotto %}
               <tr>        
                 
-                <td><a href="{% url 'acquistopelli:modifica_scelta_lotto' pk=scelta_effettuata.pk %}">{{ scelta_effettuata.fk_scelta.descrizione }}</a></td>
+                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{{ dettaglio_lotto.fk_taglio.descrizione }}</a></td>
+                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{{ dettaglio_lotto.fk_sezione.descrizione }}</a></td>
+                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{{ dettaglio_lotto.fk_concia.descrizione }}</a></td>
+                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{{ dettaglio_lotto.fk_tipoanimale.descrizione }}</a></td>
+                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{{ dettaglio_lotto.fk_spessore.descrizione }}</a></td>
+                <td><a href="{% url 'acquistopelli:modifica_dettaglio_lotto' pk=dettaglio_lotto.pk %}">{{ dettaglio_lotto.fk_quality.descrizione }}</a></td>
                     
-                <td class="text-center">{{ scelta_effettuata.pezzi }}</td>                           
-                <td class="text-center"><a href="{% url 'acquistopelli:delete_scelta_lotto' pk=scelta_effettuata.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{scelta_effettuata.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>             
+                <td class="text-center">{{ dettaglio_lotto.pezzi }}</td>                           
+                <td class="text-center"><a href="{% url 'acquistopelli:delete_dettaglio_lotto' pk=dettaglio_lotto.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{dettaglio_lotto.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>             
               </tr>  
               
               {% endfor %}
               
 
             </tbody>
-            <tfoot>
+            <!--<tfoot>
               <tr>
                 <td><strong>Totale pelli scelte</strong></td>
                 <td class="text-center"><strong>{{ totale_pezzi }}</strong></td>
                 <td></td>
               </tr>
-            </tfoot>
+            </tfoot>-->
           </table>
         {% endif %}
       </div>

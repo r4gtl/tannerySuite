@@ -6,7 +6,7 @@ from django_countries.fields import \
 
 '''Questi modelli devono essere inseriti in automatico'''
 class TipoAnimale(models.Model):
-    descrizione = models.CharField(max_length=10)
+    descrizione = models.CharField(max_length=50)
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='animale', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -34,7 +34,7 @@ class TipoGrezzo(models.Model):
 '''Fine modelli da inserire in automatico'''
     
 class Spessore(models.Model):
-    descrizione = models.CharField(max_length=10)
+    descrizione = models.CharField(max_length=50)
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='spessore', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -47,7 +47,7 @@ class Spessore(models.Model):
         return self.descrizione
     
 class Quality(models.Model):
-    descrizione = models.CharField(max_length=10)
+    descrizione = models.CharField(max_length=50)
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='quality', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -60,7 +60,7 @@ class Quality(models.Model):
         return self.descrizione
     
 class Taglio(models.Model):
-    descrizione = models.CharField(max_length=10)
+    descrizione = models.CharField(max_length=50)
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='taglio', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -73,7 +73,7 @@ class Taglio(models.Model):
         return self.descrizione
     
 class Sezione(models.Model):
-    descrizione = models.CharField(max_length=10)
+    descrizione = models.CharField(max_length=50)
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='sezione', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -86,7 +86,7 @@ class Sezione(models.Model):
         return self.descrizione
     
 class Concia(models.Model):
-    descrizione = models.CharField(max_length=10)
+    descrizione = models.CharField(max_length=50)
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='concia', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -156,5 +156,17 @@ class SceltaLotto(models.Model):
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='sceltalotto', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
-
-
+    
+    
+class DettaglioLotto(models.Model):
+    fk_lotto = models.ForeignKey(Lotto, null=False, blank=False, on_delete=models.CASCADE)
+    fk_taglio = models.ForeignKey(Taglio, null=True, blank=True, on_delete=models.SET_NULL, related_name='dettaglio_lotto')
+    fk_sezione = models.ForeignKey(Sezione, null=True, blank=True, on_delete=models.SET_NULL, related_name='dettaglio_lotto')
+    fk_concia = models.ForeignKey(Concia, null=True, blank=True, on_delete=models.SET_NULL, related_name='dettaglio_lotto')
+    fk_tipoanimale = models.ForeignKey(TipoAnimale, null=True, blank=True, on_delete=models.SET_NULL, related_name='dettaglio_lotto')
+    fk_spessore = models.ForeignKey(Spessore, null=True, blank=True, on_delete=models.SET_NULL, related_name='dettaglio_lotto')
+    fk_quality = models.ForeignKey(Quality, null=True, blank=True, on_delete=models.SET_NULL, related_name='dettaglio_lotto')
+    pezzi = models.IntegerField(null=True, blank=True)
+    note = models.TextField(null=True, blank=True)
+    created_by = models.ForeignKey(User, related_name='dettaglio_lotto', null=True, blank=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
