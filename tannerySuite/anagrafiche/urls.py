@@ -30,9 +30,15 @@ urlpatterns = [
     path("aggiungi_fornitore/", CreateSupplier.as_view(), name="aggiungi_fornitore"),
     path('aggiungi_fornitore_with_category/<str:category>/', aggiungi_fornitore_with_category, name='aggiungi_fornitore_with_category'),    
     path("vedi_fornitore/<int:pk>", UpdateSupplier.as_view(), name="vedi_fornitore"),
+    
     path("fornitore/<int:fk_fornitore>/aggiungi_lwg/", AddLwgCertificate.as_view(), name="aggiungi_lwg"),
     path("modifica_lwg/<int:pk>", UpdateLwgCertificate.as_view(), name="modifica_lwg"),    
     path("delete_lwg/<int:pk>", delete_certificato, name="delete_lwg"),
+    
+    path("fornitore/<int:fk_fornitore>/aggiungi_destinazione_diversa_fornitore/", DestinazioneDiversaFornitoreCreateView.as_view(), name="aggiungi_destinazione_diversa_fornitore"),
+    path("modifica_destinazione_diversa_fornitore/<int:pk>", DestinazioneDiversaFornitoreUpdateView.as_view(), name="modifica_destinazione_diversa_fornitore"),    
+    path("delete_destinazione_diversa_fornitore/<int:pk>", delete_destinazione_diversa_fornitore, name="delete_destinazione_diversa_fornitore"),
+    
     path("modifica_lwg/<int:fk_certificato>/add_transf_value/", XrTransferValueCreateView.as_view(), name="add_transf_value"),
     path("edit_transf_value/<int:pk>", XrTransferValueUpdateView.as_view(), name="edit_transf_value"),
     path("delete_transf_value/<int:pk>", delete_xrtransfervalue, name="delete_transf_value"),

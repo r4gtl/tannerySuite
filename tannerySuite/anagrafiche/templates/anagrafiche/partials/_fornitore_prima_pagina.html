@@ -1,0 +1,143 @@
+{% load crispy_forms_tags %}
+
+<form method="post">
+    {% csrf_token %}
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %} 
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    <input type="submit" name="salva_esci" class="btn btn-success mb-2 me-1" value="Salva ed Esci">
+    <input type="submit" name="salva_continua" class="btn btn-success mb-2 me-1" value="Salva e continua">
+    <button type="button" class="btn btn-danger mb-2 me-1" onclick="goBack()"><i class="bi bi-arrow-counterclockwise"></i> Annulla</button>
+    <input type="hidden" name="categoria" value="{{ request.GET.categoria }}">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" data-bs-toggle="tab" href="#prima_pagina">Dati Principali <i class="bi bi-person-fill-add"></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="tab" href="#seconda_pagina">Destinazioni diverse <i class="bi bi-building-fill-add"></i></a>
+        </li>
+        
+      </ul>
+    <div class="tab-content">
+    <div id="prima_pagina" class="container tab-pane active"><br>
+        <div class="row">
+            <div class="col-9">
+                {{ form.ragionesociale|as_crispy_field }}
+            </div>
+            <div class="col-3">
+                {{ form.categoria|as_crispy_field }}
+                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                {{ form.indirizzo|as_crispy_field }}
+            </div>
+            <div class="col-2">
+                {{ form.cap|as_crispy_field }}
+            </div>
+            <div class="col-3">
+                {{ form.city|as_crispy_field }}
+            </div>
+            <div class="col-1">
+                {{ form.provincia|as_crispy_field }}
+            </div>
+            <div class="col-3">
+                {{ form.country|as_crispy_field }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                {{ form.sito_web|as_crispy_field }}
+                
+            </div>
+            <div class="col-3 mb-1 d-flex align-items-center pt-1">
+                <button type="button" class="btn btn-sm btn-success" onclick="openWebSite()"><i class="bi bi-globe2"></i> Visita Sito</button>
+                
+            </div>
+            <div class="col-3">
+                {{ form.e_mail|as_crispy_field }}
+                
+            </div>
+            
+            
+            
+                
+        </div>         
+        <div class="row">
+            <div class="col-1">
+                {{ form.created_by|as_crispy_field }}
+            </div>
+        </div>
+
+        <br>
+        {% if categoria_instance_missing %}
+            <p>Il fornitore non è presente nei sottodati della categoria.</p>
+            <p>Salvare e riprovare.</p>
+
+        {% else %}
+            {% if nome_form_secondario == "FornitorePelliForm" %}            
+                {% include "anagrafiche/partials/_fornitore_pelli.html" %}
+            {% elif nome_form_secondario == "FornitoreProdottiChimiciForm" %}
+                {% include "anagrafiche/partials/_fornitore_prodotti_chimici.html" %}
+            {% elif nome_form_secondario == "FornitoreLavorazioniEsterneForm" %}
+                {% include "anagrafiche/partials/_fornitore_lavorazioni_esterne.html" %}
+            {% elif nome_form_secondario == "FornitoreServiziForm" %}
+                {% include "anagrafiche/partials/_fornitore_servizi.html" %}
+            {% elif nome_form_secondario == "FornitoreManutenzioniForm" %}
+                {% include "anagrafiche/partials/_fornitore_manutenzioni.html" %}
+            {% elif nome_form_secondario == "FornitoreRifiutiForm" %}
+                {% include "anagrafiche/partials/_fornitore_rifiuti.html" %}
+
+            {% endif %}
+        {% endif %}
+    </div> 
+    <!--Chiusura prima pagina-->
+    <!--Seconda pagina-->
+    {% if form.instance.id  %}
+        <div id="seconda_pagina" class="container tab-pane fade"><br>
+            <div class="row">
+                <div class="col text-end mt-2">          
+                <a href="{% url 'anagrafiche:aggiungi_destinazione_diversa_fornitore' fk_fornitore=pk_fornitore %}" class="btn btn-success mt-2 "><i class="bi bi-file-earmark-plus"></i> Aggiungi destinazione diversa</a>          
+                </div>
+            </div>
+            <div class="table-container-big">
+                <table class="table table-bordered table-striped mt-2">
+                <thead>
+                    <tr>
+                    <th>Ragione Sociale</th>            
+                    <th>Indirizzo</th>
+                    <th>CAP</th>
+                    <th>Città</th>
+                    <th>Provincia</th>
+                    <th>Paese</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for destinazione_diversa in destinazioni_diverse %}
+                    <tr>        
+                    
+                    <td><a href="{% url 'anagrafiche:modifica_destinazione_diversa_fornitore' pk=destinazione_diversa.pk %}">{{ destinazione_diversa.ragionesociale }}</a></td>
+                    <td class="text-end">{{ destinazione_diversa.indirizzo }}</td>                           
+                    <td class="text-end">{{ destinazione_diversa.cap }}</td>
+                    <td class="text-end">{{ destinazione_diversa.city }}</td>
+                    <td class="text-end">{{ destinazione_diversa.provincia }}</td>
+                    <td class="text-end">{{ destinazione_diversa.country }}</td>
+                    <td class="text-center"><a href="{% url 'anagrafiche:delete_destinazione_diversa_fornitore' pk=destinazione_diversa.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{destinazione_diversa.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>             
+                    </tr>  
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+        {% endif %}
+    <!--Chiusura seconda pagina-->
+    </form>
