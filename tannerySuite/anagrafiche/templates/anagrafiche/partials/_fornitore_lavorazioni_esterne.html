@@ -53,7 +53,7 @@
               <tbody>
                 {% for listino in listini_terzisti %}
                     
-                    <td class="col-md"><a href="{% url 'anagrafiche:modifica_voce_listino' pk=listino.pk %}">{{ listino.fk_lavorazione_esterna.descrizione }}</a></td>
+                    <td class="col-md"><a href="{% url 'anagrafiche:modifica_voce_listino' pk=listino.pk %}">{{ listino.fk_lavorazione.descrizione }}</a></td>
                     <td class="col-md text-end">
                       {% if listino.ultimo_prezzo %}
                           {{ listino.ultimo_prezzo }}

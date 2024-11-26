@@ -163,10 +163,10 @@ function searchFunctionGeneral(url, modalTitle, searchInputLabel, callerButtonId
         break;
   
       case 'openSearchOutSourcingButton':
-        console.log("id_fk_lavorazione_esterna: " + id_fk_lavorazione_esterna)
-        var id_fk_lavorazione_esterna = $(this).find('.lavorazione-id').text();  
-        console.log("id_fk_lavorazione_esterna: " + id_fk_lavorazione_esterna)  
-        $('#id_fk_lavorazione_esterna').val(id_fk_lavorazione_esterna);    
+        console.log("id_fk_lavorazione: " + id_fk_lavorazione)
+        var id_fk_lavorazione = $(this).find('.lavorazione-id').text();  
+        console.log("id_fk_lavorazione: " + id_fk_lavorazione)  
+        $('#id_fk_lavorazione').val(id_fk_lavorazione);    
         $('#searchModal').modal('hide');
         break;
   
