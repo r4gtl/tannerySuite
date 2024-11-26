@@ -1,5 +1,13 @@
 html {
-  font-size: 14px;
+  font-size: 12px;
+}
+
+.filter label[for="id_data_doc"] {
+  font-size: 12px;
+}
+
+.filter label {
+  font-size: 12px; /* Cambia questa dimensione per adattarla alle tue esigenze */
 }
 
 /* regole per le tabelle */
