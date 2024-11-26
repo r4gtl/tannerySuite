@@ -1,5 +1,5 @@
 from anagrafiche.models import Fornitore
-from articoli.models import Articolo, Colore, FaseLavoro, LavorazioneEsterna
+from articoli.models import Articolo, Colore, FaseLavoro, Lavorazione
 
 from django.db.models import Q
 from django.http import JsonResponse
@@ -88,7 +88,7 @@ def search_outsourcing(request):
     search_term = request.GET.get('search', '')
     if search_term:
         # Effettua la ricerca dei prodotti chimici
-        lavorazioni = LavorazioneEsterna.objects.filter(
+        lavorazioni = Lavorazione.objects.filter(
             Q(descrizione__icontains=search_term) | Q(codice__icontains=search_term)
         )
         # Costruisci il markup HTML per la tabella dei risultati della ricerca

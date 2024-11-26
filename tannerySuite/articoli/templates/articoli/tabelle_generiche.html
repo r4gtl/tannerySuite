@@ -266,7 +266,7 @@
                 <p>Inserire/modificare i codici lavorazione esterna.</p>                  
               </div>
               <div class="col-6 text-end">
-                <a href="{% url 'articoli:crea_lavorazione_esterna' %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi Lavorazione Esterna</a>
+                <a href="{% url 'articoli:crea_lavorazione' %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi Lavorazione</a>
               </div>
             </div>
           <!-- filtro -->
@@ -323,9 +323,9 @@
           <tr>        
             
             
-            <td><a href="{% url 'articoli:modifica_lavorazione_esterna' pk=lavorazione.pk %}">{{ lavorazione.descrizione }}</a></td>            
+            <td><a href="{% url 'articoli:modifica_lavorazione' pk=lavorazione.pk %}">{{ lavorazione.descrizione }}</a></td>            
             <td>{{ lavorazione.codice|default_if_none:"" }}</td>            
-            <td class="text-center"><a href="{% url 'articoli:delete_lavorazione_esterna' pk=lavorazione.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButtonLavorazione{{lavorazione.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+            <td class="text-center"><a href="{% url 'articoli:delete_lavorazione' pk=lavorazione.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButtonLavorazione{{lavorazione.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
           </tr>  
           {% endfor %}
         </tbody>

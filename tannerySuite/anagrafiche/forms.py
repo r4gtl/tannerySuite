@@ -1,4 +1,4 @@
-from articoli.models import (Articolo, LavorazioneEsterna, ListinoCliente,
+from articoli.models import (Articolo, Lavorazione, ListinoCliente,
                              ListinoTerzista, PrezzoListino)
 from django import forms
 from django_countries.fields import CountryField
@@ -359,14 +359,14 @@ class ListinoTerzistaModelForm(forms.ModelForm):
             queryset=FornitoreLavorazioniEsterne.objects.all(),
             label='Fornitore')
         '''
-        fields = ['fk_lavorazione_esterna', 'fk_fornitore', 'note', 'created_by']
+        fields = ['fk_lavorazione', 'fk_fornitore', 'note', 'created_by']
         widgets = {'note': forms.Textarea(attrs={'placeholder': 'Inserisci Annotazioni', 'rows':'3'}),
                     'created_by': forms.HiddenInput(),
                     'fk_fornitore': forms.HiddenInput()
                 }
         labels = {
             'note': 'Note',
-            'fk_lavorazione_esterna': 'Codice Lavorazione'
+            'fk_lavorazione': 'Codice Lavorazione'
             
         }
 

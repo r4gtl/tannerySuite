@@ -37,9 +37,9 @@ class ColoreModelForm(forms.ModelForm):
             
         }
 
-class LavorazioneEsternaModelForm(forms.ModelForm):
+class LavorazioneModelForm(forms.ModelForm):
     class Meta:
-        model = LavorazioneEsterna
+        model = Lavorazione
         fields = '__all__'
         widgets = {
             'descrizione': forms.TextInput(attrs={'placeholder': 'Inserisci Nome Lavorazione'}),  
@@ -192,8 +192,8 @@ class CaratteristicaProceduraModelForm(forms.ModelForm):
             queryset=DettaglioFaseLavoro.objects.all(),            
             widget=forms.Select
             )
-        fk_lavorazione_esterna = forms.ModelChoiceField(
-            queryset=LavorazioneEsterna.objects.all(),            
+        fk_lavorazione = forms.ModelChoiceField(
+            queryset=Lavorazione.objects.all(),            
             widget=forms.Select
             )
 
@@ -208,7 +208,7 @@ class CaratteristicaProceduraModelForm(forms.ModelForm):
         labels = {
             'fk_fornitore': 'Terzista',
             'fk_dettaglio_fase_lavoro': 'Attributo',            
-            'fk_lavorazione_esterna': 'Lavorazione esterna',
+            'fk_lavorazione': 'Lavorazione',
             'valore': 'Valore',
             'note': 'Note'
             

@@ -9,7 +9,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from .filters import *
 from .forms import *
 from .models import (Articolo, Colore, DettaglioProcedura, ElencoTest,
-                     FaseLavoro, Procedura, TestArticolo)
+                    FaseLavoro, Procedura, TestArticolo)
 
 
 def articoli_home(request):
@@ -204,8 +204,8 @@ def tabelle_generiche(request):
 
     
     # Elenco Lavorazioni
-    elenco_lavorazioni = LavorazioneEsterna.objects.all()
-    tot_lavorazioni_esterne = LavorazioneEsterna.objects.count()
+    elenco_lavorazioni = Lavorazione.objects.all()
+    tot_lavorazioni_esterne = Lavorazione.objects.count()
     lavorazioni_esterne_filter = LavorazioneEsternaFilter(request.GET, queryset=elenco_lavorazioni)
     filtered_elenco_lavorazioni = lavorazioni_esterne_filter.qs
     lavorazioni_esterne_filter_count = filtered_elenco_lavorazioni.count()
@@ -362,17 +362,15 @@ def delete_dettaglio_fase_lavoro(request, pk):
 
 
 # Lavorazioni Esterne
-class LavorazioneEsternaCreateView(LoginRequiredMixin,CreateView):
-    model = LavorazioneEsterna
-    form_class = LavorazioneEsternaModelForm
-    template_name = 'articoli/lavorazione_esterna.html'
-    success_message = 'Lavorazione aggiunto correttamente!'
-    def get_success_url(self):        
-        #if 'salva_esci' in self.request.POST:
+class LavorazioneCreateView(LoginRequiredMixin,CreateView):
+    model = Lavorazione
+    form_class = LavorazioneModelForm
+    template_name = 'articoli/lavorazione.html'
+    success_message = 'Lavorazione aggiunta correttamente!'
+    
+    def get_success_url(self):
         return reverse_lazy('articoli:tabelle_generiche')
         
-        #pk_fase=self.object.pk
-        #return reverse_lazy('articoli:modifica_fase_lavoro', kwargs={'pk':pk_fase})
     
     def form_valid(self, form):        
         messages.info(self.request, self.success_message) # Compare sul success_url
@@ -380,10 +378,10 @@ class LavorazioneEsternaCreateView(LoginRequiredMixin,CreateView):
     
     
 
-class LavorazioneEsternaUpdateView(LoginRequiredMixin,UpdateView):
-    model = LavorazioneEsterna
-    form_class = LavorazioneEsternaModelForm
-    template_name = 'articoli/lavorazione_esterna.html'
+class LavorazioneUpdateView(LoginRequiredMixin,UpdateView):
+    model = Lavorazione
+    form_class = LavorazioneModelForm
+    template_name = 'articoli/lavorazione.html'
     success_message = 'Lavorazione modificata correttamente!'
     
     def form_valid(self, form):        
@@ -403,8 +401,8 @@ class LavorazioneEsternaUpdateView(LoginRequiredMixin,UpdateView):
         # context['elenco_valutazioni'] = ValutazioneOperatore.objects.filter(fk_hr=self.object.pk)
         return context
     
-def delete_lavorazione_esterna(request, pk): 
-        deleteobject = get_object_or_404(LavorazioneEsterna, pk = pk)        
+def delete_lavorazione(request, pk): 
+        deleteobject = get_object_or_404(Lavorazione, pk = pk)        
         deleteobject.delete()
         url_match= reverse_lazy('articoli:tabelle_generiche')
         return redirect(url_match)

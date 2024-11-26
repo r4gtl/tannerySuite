@@ -46,6 +46,6 @@ class LavorazioneEsternaFilter(django_filters.FilterSet):
     
     
     class Meta:
-        model = LavorazioneEsterna
+        model = Lavorazione
         fields = ['descrizione'
                 ] 
