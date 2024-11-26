@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %} 
+{% load static %}
+{% load crispy_forms_tags %} 
+{% load widget_tweaks %}
+{% block head_title %}{{ block.super }} - Tabelle Generiche Lavorazioni {% endblock head_title %} 
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_lavorazioni.html" %}
+{% endblock %}
+
+{% block content %}
+{% include 'core/modals/delConfirm.html' %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+        <li class="breadcrumb-item"><a href="{% url 'lavorazioni:dashboard_lavorazioni' %}">Dashboard Lavorazioni</a></li>     
+        <li class="breadcrumb-item active" aria-current="page">Tabelle Generiche Lavorazioni</li>        
+    </ol>
+
+</nav>
+<div class="container">
+  <br>
+  <h3>Tabelle Generiche Lavorazioni</h3>
+  <hr>
+
+  {% include "core/partials/_messages.html" %}
+
+
+  <div class="row">
+    {% include './partials/_aspetto_beni_table.html' %}
+    {% include './partials/_causale_trasporto_table.html' %}
+    {% include './partials/_porto_materiale_table.html' %}
+  </div>
+    
+<hr>
+  
+
+{% endblock content %}

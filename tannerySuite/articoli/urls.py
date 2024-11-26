@@ -35,9 +35,9 @@ urlpatterns = [
     path('delete_attributo/<int:pk>', delete_dettaglio_fase_lavoro, name="delete_attributo"),
     
     # Lavorazioni Esterne      
-    path("crea_lavorazione_esterna/", LavorazioneEsternaCreateView.as_view(), name="crea_lavorazione_esterna"),    
-    path("modifica_lavorazione_esterna/<int:pk>", LavorazioneEsternaUpdateView.as_view(), name="modifica_lavorazione_esterna"),    
-    path("delete_lavorazione_esterna/<int:pk>", delete_lavorazione_esterna, name="delete_lavorazione_esterna"), 
+    path("crea_lavorazione/", LavorazioneCreateView.as_view(), name="crea_lavorazione"),    
+    path("modifica_lavorazione/<int:pk>", LavorazioneUpdateView.as_view(), name="modifica_lavorazione"),    
+    path("delete_lavorazione/<int:pk>", delete_lavorazione, name="delete_lavorazione"), 
 
     # Elenco Test      
     path("crea_test/", ElencoTestCreateView.as_view(), name="crea_test"),    

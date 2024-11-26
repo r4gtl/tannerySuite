@@ -1,6 +1,6 @@
 {% extends 'core/base.html' %}
 {% load crispy_forms_tags %}
-{% block title %}{{ block.super }} | Lavorazioni {% endblock %}
+{% block title %}{{ block.super }} | Generiche - Aspetto dei Beni {% endblock %}
 
 {% block sidenav %}
 {% include "core/partials/_sidenav_lavorazioni.html" %}
@@ -12,12 +12,14 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
-        <li class="breadcrumb-item"><a href="{% url 'lavorazioni:dashboard_lavorazioni' %}">Lavorazioni</a></li>        
+        <li class="breadcrumb-item"><a href="{% url 'lavorazioni:dashboard_lavorazioni' %}">Dashboard Lavorazioni</a></li>      
+        <li class="breadcrumb-item"><a href="{% url 'lavorazioni:tabelle_generiche' %}">Tabelle generiche</a></li>        
+        
 
         {% if form.instance.id  %}
-            <li class="breadcrumb-item active" aria-current="page">Modifica {{ lavorazione.description }}</li>
+            <li class="breadcrumb-item active" aria-current="page">Modifica {{ aspettobeni.descrizione }}</li>
         {% else %}
-            <li class="breadcrumb-item active" aria-current="page">Aggiungi lavorazione</li>
+            <li class="breadcrumb-item active" aria-current="page">Aggiungi aspetto dei beni</li>
         {% endif %}             
         
         
@@ -26,9 +28,9 @@
 
     <div class="container">
         {% if form.instance.id  %}
-            <h3>Modifica lavorazione</h3>
+            <h3>Modifica aspetto dei beni</h3>
         {% else %}
-            <h3> Aggiungi lavorazione</h3>
+            <h3> Aggiungi aspetto dei beni</h3>
         {% endif %}
         
         
@@ -48,9 +50,6 @@
             <div class="row">
                 <div class="col-4">
                     {{ form.descrizione|as_crispy_field }}
-                </div>
-                <div class="col-4">
-                    {{ form.codice|as_crispy_field }}
                 </div>
                 <div class="col-3">
                     {{ form.note|as_crispy_field }}

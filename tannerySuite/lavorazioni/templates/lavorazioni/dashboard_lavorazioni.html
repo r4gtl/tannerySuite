@@ -5,7 +5,7 @@
 {% block head_title %}{{ block.super }} - Lavorazioni{% endblock head_title %} 
 
 {% block sidenav %}
-{% include "core/partials/_sidenav_acquisto_pelli.html" %}
+{% include "core/partials/_sidenav_lavorazioni.html" %}
 {% endblock %}
 
 
@@ -16,7 +16,7 @@
 
 <div class="container">
   <br>
-  <h3>Lista Lavorazioni</h3>
+  <h3>Lista DDT</h3>
   <hr>
   
 
@@ -30,15 +30,17 @@
                     <table class="table table-hover table-striped table-bordered">
                         <thead class="thead-dark">
                             <tr>     
-                                <th>Descrizione</th>
-                                <th>Codice</th>                                    
+                                <th>Numero Documento</th>
+                                <th>Data Documento</th>                                    
+                                <th>Fornitore</th>                                    
                                 
                             </tr>
                         </thead>                            
                         <tbody>
                             <tr>                                    
-                                <td style="width: 20%">{{ filter.form.descrizione|as_crispy_field }}</td>                                    
-                                <td style="width: 20%">{{ filter.form.codice|as_crispy_field }}</td>                                
+                                <td style="width: 20%">{{ filter.form.num_doc|as_crispy_field }}</td>                                    
+                                <td style="width: 20%">{{ filter.form.data_doc|as_crispy_field }}</td>                                
+                                <td style="width: 20%">{{ filter.form.fk_fornitore|as_crispy_field }}</td>                                
                                                               
                             </tr>
                         </tbody>
@@ -56,14 +58,14 @@
   <br>
   
 
-  <a class="btn btn-sm btn-success mt-2 mb-4" href="{% url 'lavorazioni:crea_lavorazione' %}"><span class="bi bi-person-plus-fill"></span> Aggiungi</a>
+  <a class="btn btn-sm btn-success mt-2 mb-4" href="{% url 'lavorazioni:crea_ordine_lavoro' %}"><span class="bi bi-person-plus-fill"></span> Aggiungi</a>
   <br>
     <table class="table table-bordered table-striped">
         <thead>
           <tr>
             
-            <th>Descrizione</th>
-            <th>Codice</th>                                    
+            <th>Numero Documento</th>
+            <th>Data Documento</th>                                    
             
           </tr>
         </thead>
@@ -72,9 +74,10 @@
           <tr>        
             
             
-            <td><a href="{% url 'lavorazioni:modifica_lavorazione' pk=lavorazione.pk %}">{{ lavorazione.descrizione }}</a></td>
+            <td><a href="{% url 'lavorazioni:modifica_ordine_lavoro' pk=lavorazione.pk %}">{{ lavorazione.num_doc }}</a></td>
             
-            <td>{{ lavorazione.codice }}</td>            
+            <td>{{ lavorazione.data_doc }}</td>            
+            <td>{{ lavorazione.fk_fornitore }}</td>            
           </tr>  
           {% endfor %}
         </tbody>
@@ -133,43 +136,6 @@
 
 <script>
 
-
-
-  $(function () {
-  
-  var $origine = $("#origine");
-  $.ajax({
-    url: $origine.data("url"),
-    success: function (data) {
-  
-      var ctx = $origine[0].getContext("2d");        
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: data.labels,
-          datasets: [{
-            label: 'Origine',
-            backgroundColor: getRandomColor(),
-            data: data.data
-          }]          
-        },
-        options: {
-          responsive: true,
-          legend: {
-            position: 'top',
-          },
-          title: {
-            display: true,
-            text: 'Origine'
-          },
-          
-        }
-      });
-  
-    }
-  });
-  
-  });
 </script>
 {% endblock %}
 
