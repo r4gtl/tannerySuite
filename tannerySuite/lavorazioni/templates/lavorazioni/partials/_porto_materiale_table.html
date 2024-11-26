@@ -1,0 +1,31 @@
+<div class="col-4">
+    <div class="row">
+      <div class="col-6">
+        <h5>Porto Materiale</h5>                  
+      </div>
+      <div class="col-6 text-end">
+        <a href="{% url 'lavorazioni:crea_porto_materiale' %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi porto materiale</a>
+      </div>
+    </div>
+    <div class="table-container">
+      <table class="table table-bordered table-striped mt-2">
+        <thead>
+          <tr>
+            <th>Descrizione</th>            
+            <th>Azione</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% for porto_materiale in porti_materiale %}
+          <tr>        
+            
+            <td><a href="{% url 'lavorazioni:modifica_porto_materiale' pk=porto_materiale.pk %}">{{ porto_materiale.descrizione }}</a></td>
+            
+            <td class="text-center"><a href="{% url 'lavorazioni:delete_porto_materiale' pk=porto_materiale.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{porto_materiale.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+          </tr>  
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>

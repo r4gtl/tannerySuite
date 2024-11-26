@@ -2,7 +2,7 @@ from datetime import date, datetime
 #import datetime
 from django.db import models
 from django.contrib.auth.models import User
-from anagrafiche.models import Fornitore
+from anagrafiche.models import Fornitore, DestinazioneDiversaFornitore
 from acquistopelli.models import DettaglioLotto, Taglio, Sezione, Concia, TipoAnimale, Spessore, Quality
 from articoli.models import Lavorazione
 
@@ -83,6 +83,7 @@ class OrdineLavoro(models.Model):
     num_doc = models.IntegerField(default=None)
     data_doc = models.DateField(default=date.today)
     fk_fornitore = models.ForeignKey(Fornitore, related_name='ordine_lavoro', on_delete=models.CASCADE)
+    fk_destinazione_diversa = models.ForeignKey(DestinazioneDiversaFornitore, related_name='ordine_lavoro', on_delete=models.CASCADE)
     fk_causale_trasporto = models.ForeignKey(CausaleTrasporto, related_name='ordine_lavoro', on_delete=models.CASCADE)
     trasporto = models.CharField(
         max_length=20,
@@ -93,6 +94,7 @@ class OrdineLavoro(models.Model):
     ora_inizio_trasporto = models.TimeField(default=get_current_time)
     fk_vettore = models.ForeignKey(Fornitore, null=True, blank=True, related_name='ordine_lavoro_vettore', on_delete=models.SET_NULL)
     n_colli = models.IntegerField(null=True, blank=True)
+    fk_aspetto_beni = models.ForeignKey(AspettoDeiBeni, related_name='ordine_lavoro', on_delete=models.CASCADE)
     peso_kg = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True, )
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='ordine_lavoro', null=True, blank=True, on_delete=models.SET_NULL)

@@ -1,15 +1,234 @@
 {% extends 'core/base.html' %}
 {% load static %}
-{% block title %}QMS {% endblock %}
+{% block title %}tannerySuite {% endblock %}
 
 {% block sidenav %}
 {% include "core/partials/_sidenav_base.html" %}
 {% endblock %}
 
 {% block content %}
-  
+  <div class="container">
+    <div class="row mt-4">
+      
+        <div class="col-4">
+          <div class="card" >
+              
+             
+                <div class="card-body">
+                  <h5 class="card-title"><i class="bi bi-person-vcard"></i> Anagrafiche</h5>
+                  <hr>
+                  <p class="card-text">Aggiorna, elimina e visualizza le informazioni dettagliate di clienti e fornitori.</p>
+                  <a href="{% url 'anagrafiche:home_clienti' %}" class="btn btn-sm btn-primary">Sezione Clienti</a>
+                  <a href="{% url 'anagrafiche:home_fornitori' %}" class="btn btn-sm btn-primary">Sezione Fornitori</a>
+                  
+                </div>
+              </div>
+              
+        </div>
+
+        <div class="col-4">
+            <div class="card" >
+                <div class="card-body">
+                  <h5 class="card-title"><i class="bi bi-archive"></i> Articoli</h5>
+                  <hr>
+                  <p class="card-text">Esplora, crea, modifica ed elimina gli articoli.</p>
+                  <a href="{% url 'articoli:articoli_home' %}" class="btn btn-sm btn-primary">Vai alla sezione</a>
+                  
+                </div>
+              </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card" >
+                <div class="card-body">
+                  <h5 class="card-title"><i class="bi bi-person-workspace"></i> Risorse Umane</h5>
+                  <hr>
+                  <p class="card-text">Gestisci il personale, gli incarichi e la formazione aziendale.</p>
+                  <a href="#" class="btn btn-sm btn-secondary">Vai alla sezione</a>
+                  
+                  <!--{% if scadenze_formazione > 0 %}
+        
+                    <button onclick="goToTrainingSchedule()" type="button" class="btn btn-primary btn-sm position-relative float-end ">
+                        Prossime scadenze
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ scadenze_formazione }}
+                        <span class="visually-hidden">Prossime scadenze</span>
+                        </span>
+                    </button>
+                  {% endif %}
+                </div>-->
+              </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-4">
+            <div class="card" >
+                <div class="card-body">
+                  <h5 class="card-title"><i class="bi bi-box-arrow-in-down-left"></i> Acquisti</h5>
+                  <hr>
+
+                  <p class="card-text">Gestisci l'approvvigionamento delle materie prime.</p>
+                  <a href="{% url 'acquistopelli:dashboard_acquisto_pelli' %}" class="btn btn-sm btn-primary">Vai alla sezione</a>
+                  
+                </div>
+              </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card" >
+                <div class="card-body">
+                  <h5 class="card-title"><i class="bi bi-box-arrow-up-right"></i> Vendite</h5>
+                  <hr>
+                  <p class="card-text">Gestisci vendite e messa in lavoro aziendale.</p>
+                  <a href="#" class="btn btn-sm btn-secondary">Vai alla sezione</a>
+                  
+                </div>
+              </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card" >
+                <div class="card-body">
+                  <h5 class="card-title">Lavorazioni</h5>
+                  <hr>
+                  <p class="card-text">Elenco lavorazioni e listini prezzi lavorazioni.</p>
+                  <a href="{% url 'lavorazioni:dashboard_lavorazioni' %}" class="btn btn-sm btn-primary">Vai alla sezione</a>
+                  
+                </div>
+              </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-4">
+            <div class="card" >
+                <div class="card-body">
+                  <h5 class="card-title"><i class="bi bi-moisture"></i> Gestione Chimica</h5>
+                  <hr>
+                  <p class="card-text">Massimizza la sicurezza e l'efficienza nella gestione dei prodotti chimici.</p>
+                  <a href="#" class="btn btn-sm btn-secondary">Vai alla sezione</a>
+                  
+                </div>
+              </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card" >
+                <div class="card-body">
+                  <h5 class="card-title"><i class="bi bi-speedometer"></i> Monitoraggi</h5>
+                  <hr>
+                  <p class="card-text">Misura e monitora l'efficienza energetica dei processi.</p>
+                  <a href="#" class="btn btn-sm btn-secondary">Vai alla sezione</a>
+                  
+                </div>
+              </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card" >
+                <div class="card-body">
+                  <h5 class="card-title"><i class="bi bi-wrench"></i> Manutenzioni e controlli periodici</h5>
+                  <hr>
+                  <p class="card-text">Programma e monitora le manutenzioni ordinarie, straordinarie e i controlli periodici. </p>
+                  <a href="#" class="btn btn-sm btn-secondary">Vai alla sezione</a>
+                  <!--{% if scadenze_manutenzioni > 0 %}
+        
+                    <button onclick="goToMaintenanceSchedule()" type="button" class="btn btn-primary btn-sm position-relative float-end ">
+                        Prossime scadenze
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ scadenze_manutenzioni }}
+                        <span class="visually-hidden">Prossime scadenze</span>
+                        </span>
+                    </button>
+                  {% endif %}
+                -->
+                </div>
+              </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-4">
+          <div class="card" >
+              <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-book"></i> Manuale Procedure</h5>
+                <hr>
+                <p class="card-text">Standardizza e documenta le procedure aziendali per una maggiore efficienza.</p>
+                <a href="#" class="btn btn-sm btn-secondary">Vai alla sezione</a>
+                
+              </div>
+            </div>
+      </div>
+
+      <div class="col-4">
+        <div class="card" >
+            <div class="card-body">
+              <h5 class="card-title"><i class="bi bi-recycle"></i> Gestione Rifiuti</h5>
+              <hr>
+              <p class="card-text">Traccia e gestisci la raccolta, il trattamento e lo smaltimento dei rifiuti.</p>
+              <a href="#" class="btn btn-sm btn-secondary">Vai alla sezione</a>
+              
+            </div>
+          </div>
+    </div>
+
+    <div class="col-4">
+      <div class="card" >
+          <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-fire"></i> Prevenzione Incendi</h5>
+            <hr>
+            <p class="card-text">Registro dei mezzi di prevenzione incendi e controlli periodici.</p>
+            <a href="#" class="btn btn-sm btn-secondary">Vai alla sezione</a>
+            
+          </div>
+        </div>
+  </div>
+
+    
+
+      
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-4">
+      <div class="card" >
+          <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-journal-check"></i> Registro Non Conformità</h5>
+            <hr>
+            <p class="card-text">Documenta e traccia le azioni correttive e preventive.</p>
+            <a href="{% url 'nonconformity:home_rapporti_nc' %}" class="btn btn-sm btn-primary">Vai alla sezione</a>
+            
+          </div>
+        </div>
+  </div>
+
+  <div class="col-4">
+      <div class="card" >
+          <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-wind"></i> Emissioni in Atmosfera</h5>
+            <hr>
+            <p class="card-text">Inventario Punti di Emissioni e analisi.</p>
+            <a href="#" class="btn btn-sm btn-secondary">Vai alla sezione</a>
+            
+          </div>
+        </div>
+  </div>
+
+  </div>
+</div>
 {% endblock %}
 
 {% block extra_scripts %}
+<script>
+//function goToMaintenanceSchedule(){
+//        document.location.href = "#"        
+//    }
+//  
+//function goToTrainingSchedule(){
+//        document.location.href = "#"        
+//    }
 
+
+</script>
 {% endblock %}

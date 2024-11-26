@@ -1,14 +1,20 @@
 import django_filters
 from django import forms
-from .models import Lavorazione
+from .models import Lavorazione, OrdineLavoro
+from anagrafiche.models import Fornitore
 
 
-class LavorazioneFilter(django_filters.FilterSet):   
+class OrdineLavoroFilter(django_filters.FilterSet):   
    
-    descrizione=django_filters.CharFilter(field_name='descrizione', lookup_expr='icontains', widget=forms.TextInput(attrs={'style': 'width: 90%; margin-left: 5%'}))
-    codice=django_filters.CharFilter(field_name='codice', lookup_expr='icontains', widget=forms.TextInput(attrs={'style': 'width: 90%; margin-left: 5%'}))
+    num_doc=django_filters.NumberFilter(field_name='Numero Documento', lookup_expr='icontains', widget=forms.NumberInput(attrs={'style': 'width: 90%; margin-left: 5%'}))
+    data_doc = django_filters.DateFromToRangeFilter(label='Data Documento')
+    fk_fornitore = django_filters.ModelChoiceFilter(
+        field_name='fk_fornitore',
+        queryset=Fornitore.objects.all(),
+        label='Fornitore'
+    )
     
     class Meta:
-        model = Lavorazione
-        fields = ['descrizione', 'codice',                   
+        model = OrdineLavoro
+        fields = ['num_doc', 'data_doc', 'fk_fornitore'                   
                 ]

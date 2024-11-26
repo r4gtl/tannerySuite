@@ -1,0 +1,31 @@
+<div class="col-4">
+    <div class="row">
+      <div class="col-6">
+        <h5>Causale Trasporto</h5>                  
+      </div>
+      <div class="col-6 text-end">
+        <a href="{% url 'lavorazioni:crea_causale_trasporto' %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi causale di trasporto</a>
+      </div>
+    </div>
+    <div class="table-container">
+      <table class="table table-bordered table-striped mt-2">
+        <thead>
+          <tr>
+            <th>Descrizione</th>            
+            <th>Azione</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% for causale_trasporto in causali_trasporto %}
+          <tr>        
+            
+            <td><a href="{% url 'lavorazioni:modifica_causale_trasporto' pk=causale_trasporto.pk %}">{{ causale_trasporto.descrizione }}</a></td>
+            
+            <td class="text-center"><a href="{% url 'lavorazioni:delete_causale_trasporto' pk=causale_trasporto.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{causale_trasporto.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+          </tr>  
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>

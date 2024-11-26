@@ -1,0 +1,31 @@
+<div class="col-4">
+    <div class="row">
+      <div class="col-6">
+        <h5>Aspetto dei beni</h5>                  
+      </div>
+      <div class="col-6 text-end">
+        <a href="{% url 'lavorazioni:crea_aspetto_beni' %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi aspetto dei beni</a>
+      </div>
+    </div>
+    <div class="table-container">
+      <table class="table table-bordered table-striped mt-2">
+        <thead>
+          <tr>
+            <th>Descrizione</th>            
+            <th>Azione</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% for aspetto_bene in aspetto_beni %}
+          <tr>        
+            
+            <td><a href="{% url 'lavorazioni:modifica_aspetto_beni' pk=aspetto_bene.pk %}">{{ aspetto_bene.descrizione }}</a></td>
+            
+            <td class="text-center"><a href="{% url 'lavorazioni:delete_aspetto_beni' pk=aspetto_bene.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{aspetto_bene.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+          </tr>  
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
