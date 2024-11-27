@@ -41,7 +41,7 @@
         <td>{{ dettaglio.fk_unita_misura }}</td>
         <td class="text-end">{{ dettaglio.quantity }}</td>
         
-        <td class="text-center"><a href="{% url 'lavorazioni:delete_dettaglio_ordine_lavoro' pk=dettaglio.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{dettaglio.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+        <td class="text-center"><a href="{% url 'lavorazioni:delete_dettaglio_ordine_lavoro' pk=dettaglio.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButtonDettaglioDDT{{dettaglio.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
       </tr>  
       {% endfor %}
     </tbody>

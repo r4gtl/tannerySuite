@@ -22,7 +22,7 @@
             
             <td><a href="{% url 'lavorazioni:modifica_porto_materiale' pk=porto_materiale.pk %}">{{ porto_materiale.descrizione }}</a></td>
             
-            <td class="text-center"><a href="{% url 'lavorazioni:delete_porto_materiale' pk=porto_materiale.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{porto_materiale.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+            <td class="text-center"><a href="{% url 'lavorazioni:delete_porto_materiale' pk=porto_materiale.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButtonPortoMateriale{{porto_materiale.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
           </tr>  
           {% endfor %}
         </tbody>

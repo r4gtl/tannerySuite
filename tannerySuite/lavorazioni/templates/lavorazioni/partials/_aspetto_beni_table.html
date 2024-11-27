@@ -22,7 +22,7 @@
             
             <td><a href="{% url 'lavorazioni:modifica_aspetto_beni' pk=aspetto_bene.pk %}">{{ aspetto_bene.descrizione }}</a></td>
             
-            <td class="text-center"><a href="{% url 'lavorazioni:delete_aspetto_beni' pk=aspetto_bene.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{aspetto_bene.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+            <td class="text-center"><a href="{% url 'lavorazioni:delete_aspetto_beni' pk=aspetto_bene.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButtonAspettoBeni{{aspetto_bene.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
           </tr>  
           {% endfor %}
         </tbody>

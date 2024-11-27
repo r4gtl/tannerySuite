@@ -308,7 +308,7 @@ class DettaglioOrdineLavoroCreateView(LoginRequiredMixin,CreateView):
         #focus_button = 'btn_new_detail'  # Imposto il pulsante su cui settare il focus
         
         #return reverse_lazy('ricette:modifica_dettaglio_ricetta_rifinizione_with_focus_button', kwargs={'pk':fk_ricetta_rifinizione, 'focus_button': focus_button})     
-        return reverse_lazy('lavorazioni:modifica_dettaglio_ordine_lavoro', kwargs={'pk':fk_ordine_lavoro})
+        return reverse_lazy('lavorazioni:modifica_ordine_lavoro', kwargs={'pk':fk_ordine_lavoro})
     
       
     def form_valid(self, form):
@@ -354,7 +354,7 @@ class DettaglioOrdineLavoroUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         fk_ordine_lavoro=self.object.fk_ordine_lavoro.pk        
-        return reverse_lazy('lavorazioni:modifica_dettaglio_ordine_lavoro', kwargs={'pk':fk_ordine_lavoro})
+        return reverse_lazy('lavorazioni:modifica_ordine_lavoro', kwargs={'pk':fk_ordine_lavoro})
     
 
 

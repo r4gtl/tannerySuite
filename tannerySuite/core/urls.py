@@ -3,6 +3,7 @@ from django.urls import path
 
 from .views import *
 from .searches import *
+from .utils import carica_destinazioni
 
 app_name="core"
 
@@ -25,7 +26,7 @@ urlpatterns = [
     path('search_outsourcing/', search_outsourcing, name='search_outsourcing'),
     path('search_fase_lavoro/', search_fase_lavoro, name="search_fase_lavoro"), # Fase lavoro
     
-    
+    path('carica_destinazioni/', carica_destinazioni, name='carica_destinazioni'),
 
     
 ]

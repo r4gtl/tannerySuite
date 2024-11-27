@@ -88,7 +88,7 @@ class LottoUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):        
         context = super().get_context_data(**kwargs)
         pk = self.object.pk   
-        dettagli_lotto = DettaglioLotto.objects.all()
+        dettagli_lotto = DettaglioLotto.objects.filter(fk_lotto=pk)
         totale_pezzi = SceltaLotto.objects.filter(fk_lotto=pk).aggregate(Sum('pezzi'))['pezzi__sum'] or 0
         context['scelte_effettuate'] = SceltaLotto.objects.filter(fk_lotto=pk) 
         scelte_effettuate=SceltaLotto.objects.filter(fk_lotto=pk) 

@@ -25,7 +25,7 @@
         
     </ol>
 </nav>
-
+{% include 'lavorazioni/modals/modal_quantity.html' %}
     <div class="container">
         {% if form.instance.id  %}
             <h3>Modifica dettaglio ddt N. {{ ordine_lavoro.num_doc }}</h3>
@@ -37,24 +37,35 @@
         <hr>
         
         
-        
+        {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %} 
+               <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong> - Campo: <strong>{{ field.name }}</strong>
+               </div>
+            {% endfor %}
+        {% endfor %}
+     {% endif %}
         
         <br>
 
 
         <form method="post">
             {% csrf_token %}
-
+            
             <div class="row">
-                <div class="col-8">
+                <div class="col-6">
                     <div class="row">
+                        <div class="col-2">
+                            {{ form.numero_riga|as_crispy_field }}
+                        </div>
                         <div class="col-2">
                             {{ form.fk_dettaglio_lotto|as_crispy_field }}
                         </div>
                         <div class="col-2">
                             {{ form.fk_output_lavorazione|as_crispy_field }}
                         </div>
-                        <div class="col-2">
+                        <div class="col-6">
                             {{ form.descrizione|as_crispy_field }}
                         </div>
                         
@@ -62,13 +73,13 @@
                     </div>
         
                     <div class="row">
-                        <div class="col-4">
+                        <div class="col-3">
                             {{ form.fk_lavorazione|as_crispy_field }}
                         </div>
-                        <div class="col-4">
+                        <div class="col-2">
                             {{ form.fk_unita_misura|as_crispy_field }}
                         </div>
-                        <div class="col-3">
+                        <div class="col-1">
                             {{ form.quantity|as_crispy_field }}
                         </div>
                         
@@ -81,6 +92,9 @@
                         </div>
                         <div class="col-4">
                             {{ form.created_by|as_crispy_field }}
+                        </div>
+                        <div class="col-4">
+                            {{ form.fk_ordine_lavoro|as_crispy_field }}
                         </div>
                         
                         
@@ -95,7 +109,7 @@
                 </form>
                 <hr>
                 </div>
-                <div class="col-4">
+                <div class="col-6" style="border: 2px solid black; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
                     <div class="row">
                         {% include "lavorazioni/partials/_elenco_lotti.html" %}
                     </div>
@@ -120,5 +134,60 @@
 document.addEventListener("DOMContentLoaded", function() {
             setFocusOnField('id_descrizione');
         });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const rows = document.querySelectorAll('.clickable-row');
+    const confirmBtn = document.getElementById('confirmQuantityBtn');
+    const quantityInput = document.getElementById('quantityInput');
+    const dettaglioIdInput = document.getElementById('dettaglioIdInput');
+    
+    let quantityModalInstance = null;
+
+    rows.forEach(row => {
+        row.addEventListener('click', function() {
+            const dettaglioId = this.getAttribute('data-dettaglio-id');
+            const pezzi = this.getAttribute('data-pezzi');
+
+            quantityInput.value = ''; // Reset input field
+            quantityInput.setAttribute('max', pezzi); // Imposta il massimo consentito
+            dettaglioIdInput.value = dettaglioId;
+
+            quantityModalInstance = new bootstrap.Modal(document.getElementById('quantityModal'));
+            quantityModalInstance.show();
+        });
+    });
+
+    confirmBtn.addEventListener('click', function() {
+        const quantity = quantityInput.value;
+        const dettaglioId = dettaglioIdInput.value;
+
+        if (quantity && dettaglioId && quantity > 0) {
+            // Trova il campo quantity associato e aggiorna il valore
+            const formQuantityField = document.querySelector(`#id_quantity`);
+            if (formQuantityField) {
+                formQuantityField.value = quantity;
+            }
+
+            // Chiudi il modal correttamente e rimuovi il backdrop
+            quantityModalInstance.hide();
+            document.querySelector('.modal-backdrop').remove(); 
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('overflow');
+        } else {
+            alert('Inserisci una quantità valida.');
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Inizializzare i tooltip di Bootstrap
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+});
+        
+
+        
 </script>
 {% endblock %} 

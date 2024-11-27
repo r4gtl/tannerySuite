@@ -18,17 +18,9 @@
                 <td>{{ lotto.fk_fornitore.pk }}</td>                
                 <td>{{ lotto.pezzi }}</td>
                 <td>
-                    <!-- Utilizzare Flexbox per allineare l'icona e il bottone nella stessa riga -->
-                <div class="d-flex align-items-center">
-                    <!-- Icona di ricerca con tooltip -->
-                    <a href="{% url 'acquistopelli:modifica_lotto' pk=lotto.pk %}" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Vedi Lotto" class="me-2">
-                        <i class="bi bi-search"></i>
-                    </a>
-                    
-                    <!-- Bottone per il collapse -->
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#details-{{ lotto.id }}" aria-expanded="true" aria-controls="#details-{{ lotto.id }}">
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#details-{{ lotto.id }}">
+                        Mostra Dettagli
                     </button>
-                </div>
                 </td>
             </tr>
             <tr>
@@ -47,11 +39,7 @@
                             </thead>
                             <tbody>
                                 {% for dettaglio in lotto.dettagliolotto_set.all %}
-                                <tr class="clickable-row" data-bs-toggle="modal" data-bs-target="#quantityModal" 
-                                    data-dettaglio-id="{{ dettaglio.id }}" 
-                                    data-pezzi="{{ dettaglio.pezzi }}"
-                                    style="cursor: pointer;">
-
+                                <tr>
                                     <td>{{ dettaglio.fk_taglio }}</td>
                                     <td>{{ dettaglio.fk_sezione }}</td>
                                     <td>{{ dettaglio.fk_concia }}</td>

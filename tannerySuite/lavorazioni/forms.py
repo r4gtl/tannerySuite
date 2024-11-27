@@ -132,11 +132,13 @@ class DettaglioOrdineLavoroModelForm(forms.ModelForm):
     
     fk_dettaglio_lotto = forms.ModelChoiceField(
         queryset=DettaglioLotto.objects.all(),
-        label='Dettaglio Lotto'
+        label='Dettaglio Lotto',
+        required=False
     )
     fk_output_lavorazione = forms.ModelChoiceField(
         queryset=OutputLavorazione.objects.all(),
-        label='Già lavorati'
+        label='Già lavorati',
+        required=False
     )
     fk_lavorazione = forms.ModelChoiceField(
         queryset=Lavorazione.objects.all(),
@@ -154,13 +156,14 @@ class DettaglioOrdineLavoroModelForm(forms.ModelForm):
         
         
         widgets = {'quantity': forms.NumberInput(),
-                'numero_riga': forms.NumberInput(),
+                'numero_riga': forms.NumberInput(attrs={'class': 'form-control text-end', 'readonly': 'True'}),
                 'descrizione': forms.TextInput(attrs={'placeholder': 'Inserisci unità di misura'}),
                 'note': forms.Textarea(attrs={
                     'class': 'form-control',
                     'placeholder': 'Inserisci note',
                 }),
-                'created_by': forms.HiddenInput(),                              
+                'created_by': forms.HiddenInput(),
+                'fk_ordine_lavoro': forms.HiddenInput()                              
                 }
         labels = {
             'quantity': 'Quantità', 

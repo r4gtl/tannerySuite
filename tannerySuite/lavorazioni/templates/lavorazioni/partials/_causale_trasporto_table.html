@@ -22,7 +22,7 @@
             
             <td><a href="{% url 'lavorazioni:modifica_causale_trasporto' pk=causale_trasporto.pk %}">{{ causale_trasporto.descrizione }}</a></td>
             
-            <td class="text-center"><a href="{% url 'lavorazioni:delete_causale_trasporto' pk=causale_trasporto.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{causale_trasporto.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+            <td class="text-center"><a href="{% url 'lavorazioni:delete_causale_trasporto' pk=causale_trasporto.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButtonCausaleTrasporto{{causale_trasporto.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
           </tr>  
           {% endfor %}
         </tbody>
