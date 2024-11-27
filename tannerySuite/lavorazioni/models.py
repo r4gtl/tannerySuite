@@ -98,7 +98,7 @@ class OrdineLavoro(models.Model):
     num_doc = models.IntegerField(default=None)
     data_doc = models.DateField(default=date.today)
     fk_fornitore = models.ForeignKey(Fornitore, related_name='ordine_lavoro', on_delete=models.CASCADE)
-    fk_destinazione_diversa = models.ForeignKey(DestinazioneDiversaFornitore, related_name='ordine_lavoro', on_delete=models.CASCADE)
+    fk_destinazione_diversa = models.ForeignKey(DestinazioneDiversaFornitore, null=True, blank=True, related_name='ordine_lavoro', on_delete=models.SET_NULL)
     fk_causale_trasporto = models.ForeignKey(CausaleTrasporto, related_name='ordine_lavoro', on_delete=models.CASCADE)
     trasporto = models.CharField(
         max_length=20,

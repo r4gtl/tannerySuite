@@ -32,7 +32,7 @@
             
             <td><a href="{% url 'articoli:modifica_procedura' fk_articolo=articolo.pk pk=revisione.pk %}">{{ revisione.nr_procedura }} del {{ revisione.data_procedura }}</a></td>
             <td>{{ revisione.nr_revisione }} del {{ revisione.data_revisione }}</td>            
-            <td class="text-center"><a href="{% url 'articoli:delete_procedura' pk=revisione.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{revisione.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+            <td class="text-center"><a href="{% url 'articoli:delete_procedura' pk=revisione.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButtonRevisioni{{revisione.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
           </tr>  
           {% endfor %}
         </tbody>

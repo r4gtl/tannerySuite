@@ -38,7 +38,7 @@
           {% endif %}
           <td>{{ caratteristica.valore|default_if_none:"" }}</td>            
           <td class="text-center">
-            <a href="{% url 'articoli:delete_caratteristica_procedura' pk=caratteristica.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{caratteristica.pk}}"><i class="bi bi-trash"></i>Elimina</a>
+            <a href="{% url 'articoli:delete_caratteristica_procedura' pk=caratteristica.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButtonCaratteristicaProcedura{{caratteristica.pk}}"><i class="bi bi-trash"></i>Elimina</a>
             
           </td>
 

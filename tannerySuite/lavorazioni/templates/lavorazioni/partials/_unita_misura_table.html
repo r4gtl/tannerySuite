@@ -24,7 +24,7 @@
             <td><a href="{% url 'lavorazioni:modifica_unita_misura' pk=unita_misura.pk %}">{{ unita_misura.descrizione }}</a></td>
             <td>{{ unita_misura.abbreviazione }}</td>
             
-            <td class="text-center"><a href="{% url 'lavorazioni:delete_unita_misura' pk=unita_misura.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{unita_misura.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+            <td class="text-center"><a href="{% url 'lavorazioni:delete_unita_misura' pk=unita_misura.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButtonUnitaMisura{{unita_misura.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
           </tr>  
           {% endfor %}
         </tbody>

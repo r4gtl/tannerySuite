@@ -23,7 +23,7 @@
         
     </ol>
 </nav>
-
+{% include 'core/modals/delConfirm.html' %}
     <div class="container">
         {% if form.instance.id  %}
             <h3>Modifica DDT</h3>
@@ -136,5 +136,33 @@
 document.addEventListener("DOMContentLoaded", function() {
             setFocusOnField('id_descrizione');
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const fornitoreField = document.getElementById('id_fk_fornitore');
+            const destinazioneField = document.getElementById('id_fk_destinazione_diversa');
+            const urlCaricaDestinazioni = "{% url 'core:carica_destinazioni' %}";
+        
+            fornitoreField.addEventListener('change', function () {
+                const fornitoreId = this.value;
+                if (fornitoreId) {
+                    fetch(`${urlCaricaDestinazioni}?fk_fornitore=${fornitoreId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Pulisci il campo
+                            destinazioneField.innerHTML = '<option value="">---------</option>';
+                            data.forEach(function (item) {
+                                const option = document.createElement('option');
+                                option.value = item.id;
+                                option.textContent = item.ragionesociale; // Aggiusta con il campo corretto
+                                destinazioneField.appendChild(option);
+                            });
+                        })
+                        .catch(error => console.error('Errore:', error));
+                } else {
+                    destinazioneField.innerHTML = '<option value="">---------</option>';
+                }
+            });
+        });
+
 </script>
 {% endblock %} 

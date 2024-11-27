@@ -28,7 +28,7 @@
           
           <td>{{ dettaglio.fk_faselavoro.descrizione }}</td>            
           <td class="text-center">
-            <a href="{% url 'articoli:delete_dettaglio_procedura' pk=dettaglio.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{dettaglio.pk}}"><i class="bi bi-trash"></i>Elimina</a>
+            <a href="{% url 'articoli:delete_dettaglio_procedura' pk=dettaglio.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButtonDettaglioProcedura{{dettaglio.pk}}"><i class="bi bi-trash"></i>Elimina</a>
             
           </td>
 

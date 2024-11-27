@@ -31,7 +31,7 @@
             
             <td><a href="{% url 'articoli:modifica_test_articolo' fk_articolo=articolo.pk pk=test.pk %}">{{ test.fk_test.descrizione }}</a></td>
             <td class="text-end">{{ test.valore }}</td>
-            <td class="text-center"><a href="{% url 'articoli:delete_test_articolo' pk=test.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{test.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+            <td class="text-center"><a href="{% url 'articoli:delete_test_articolo' pk=test.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButtonTest{{test.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
           </tr>  
           {% endfor %}
         </tbody>
