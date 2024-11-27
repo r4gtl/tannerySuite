@@ -1,0 +1,37 @@
+<div class="col-10">
+    <div class="row">
+      <div class="col-6">
+        <h5>Dettaglio DDT</h5>                  
+      </div>
+      <div class="col-6 text-end">
+        <a href="{% url 'lavorazioni:crea_dettaglio_ordine_lavoro' %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi dettaglio</a>
+      </div>
+    </div>
+    <div class="table-container">
+      <table class="table table-bordered table-striped mt-2">
+        <thead>
+          <tr>
+            <th>Descrizione</th> 
+            <th>Codice Lavorazione</th> 
+            <th>UM</th>  
+            <th>Quantità</th>  
+            <th>Azione</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% for dettaglio_ordine_lavoro in elenco_dettagli %}
+          <tr>        
+            
+            <td><a href="{% url 'lavorazioni:modifica_dettaglio_ordine_lavoro' pk=dettaglio_ordine_lavoro.pk %}">{{ dettaglio_ordine_lavoro.descrizione }}</a></td>
+            <td>{{ dettaglio_ordine_lavoro.fk_lavorazione }}</td>
+            <td>{{ dettaglio_ordine_lavoro.fk_unita_misura}}</td>
+            <td>{{ dettaglio_ordine_lavoro.quantity }}</td>
+            
+            <td class="text-center"><a href="{% url 'lavorazioni:delete_dettaglio_ordine_lavoro' pk=dettaglio_ordine_lavoro.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{dettaglio_ordine_lavoro.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+          </tr>  
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>

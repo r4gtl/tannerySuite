@@ -1,0 +1,33 @@
+<div class="col-4">
+    <div class="row">
+      <div class="col-6">
+        <h5>Unità di Misura</h5>                  
+      </div>
+      <div class="col-6 text-end">
+        <a href="{% url 'lavorazioni:crea_unita_misura' %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi unità di misura</a>
+      </div>
+    </div>
+    <div class="table-container">
+      <table class="table table-bordered table-striped mt-2">
+        <thead>
+          <tr>
+            <th>Descrizione</th>  
+            <th>Abbreviazione</th>  
+            <th>Azione</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% for unita_misura in uni_misura %}
+          <tr>        
+            
+            <td><a href="{% url 'lavorazioni:modifica_unita_misura' pk=unita_misura.pk %}">{{ unita_misura.descrizione }}</a></td>
+            <td>{{ unita_misura.abbreviazione }}</td>
+            
+            <td class="text-center"><a href="{% url 'lavorazioni:delete_unita_misura' pk=unita_misura.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{unita_misura.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+          </tr>  
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>

@@ -17,7 +17,7 @@
         {% if form.instance.id  %}
             <li class="breadcrumb-item active" aria-current="page">Modifica {{ ordinelavoro.description }}</li>
         {% else %}
-            <li class="breadcrumb-item active" aria-current="page">Aggiungi ordine di lavoro</li>
+            <li class="breadcrumb-item active" aria-current="page">Aggiungi DDT</li>
         {% endif %}             
         
         
@@ -26,9 +26,9 @@
 
     <div class="container">
         {% if form.instance.id  %}
-            <h3>Modifica ordine di lavoro</h3>
+            <h3>Modifica DDT</h3>
         {% else %}
-            <h3> Aggiungi ordine di lavoro</h3>
+            <h3> Aggiungi DDT</h3>
         {% endif %}
         
         
@@ -42,9 +42,11 @@
 
         <form method="post">
             {% csrf_token %}
-
+            <input type="submit" name="salva_esci" class="btn btn-success mb-2 me-1" value="Salva ed Esci">
+            <input type="submit" name="salva_continua" class="btn btn-success mb-2 me-1" value="Salva e continua">
+            <button type="button" class="btn btn-danger mb-2 me-1" onclick="goBack()"><i class="bi bi-arrow-counterclockwise"></i> Annulla</button>
             
-            # Intestazione
+            <!--Intestazione-->
             <div class="row">
                 <div class="col-2">
                     {{ form.int_est|as_crispy_field }}
@@ -72,9 +74,9 @@
                 
             </div>
 
-            # Corpo
+            <!-- Corpo -->
 
-            # Piè pagina
+            <!-- Piè pagina -->
             <div class="row">
                 <div class="col-2">
                     {{ form.data_inizio_trasporto|as_crispy_field }}
@@ -113,8 +115,7 @@
             
 
             
-            <input type="submit" class="btn btn-success" value="Salva">
-            <button type="button" class="btn btn-danger" onclick="goBack()"><i class="bi bi-arrow-counterclockwise"></i> Annulla</button>
+            
         </form>
         <hr>
         
