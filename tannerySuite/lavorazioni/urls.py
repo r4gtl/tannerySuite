@@ -32,10 +32,20 @@ urlpatterns = [
     path('modifica_porto_materiale/<int:pk>/', PortoMaterialeUpdateView.as_view(), name="modifica_porto_materiale"),
     path('delete_porto_materiale/<int:pk>/', delete_porto_materiale, name="delete_porto_materiale"),
     
+    # Unità di misura   
+    path('crea_unita_misura/', UnitaMisuraCreateView.as_view(), name="crea_unita_misura"),
+    path('modifica_unita_misura/<int:pk>/', UnitaMisuraUpdateView.as_view(), name="modifica_unita_misura"),
+    path('delete_unita_misura/<int:pk>/', delete_unita_misura, name="delete_unita_misura"),
+    
     # Ordine di Lavoro   
     path('crea_ordine_lavoro/', OrdineLavoroCreateView.as_view(), name="crea_ordine_lavoro"),
     path('modifica_ordine_lavoro/<int:pk>/', OrdineLavoroUpdateView.as_view(), name="modifica_ordine_lavoro"),
     path('delete_ordine_lavoro/<int:pk>/', delete_ordine_lavoro, name="delete_ordine_lavoro"),
+    
+    # Dettaglio Ordine Lavoro
+    path("ordine_lavoro/<int:fk_ordine_lavoro>/aggiungi_dettaglio_ordine_lavoro/", DettaglioOrdineLavoroCreateView.as_view(), name="aggiungi_dettaglio_ordine_lavoro"),
+    path("modifica_dettaglio_ordine_lavoro/<int:pk>", DettaglioOrdineLavoroUpdateView.as_view(), name="modifica_dettaglio_ordine_lavoro"),    
+    path("delete_dettaglio_ordine_lavoro/<int:pk>", delete_dettaglio_ordine_lavoro, name="delete_dettaglio_ordine_lavoro"),
 
     
     

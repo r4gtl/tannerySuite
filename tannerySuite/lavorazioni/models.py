@@ -42,7 +42,7 @@ class AspettoDeiBeni(models.Model):
 class PortoMateriale(models.Model):
     '''Utilizzare la PK come codice anche per la ricerca (vedi programma ddt)'''
     descrizione = models.CharField(max_length=50)
-    decrizione_inglese = models.CharField(max_length=50)
+    descrizione_inglese = models.CharField(max_length=50, null=True, blank=True)
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='porto_materiale', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -53,6 +53,21 @@ class PortoMateriale(models.Model):
 
     def __str__(self):
         return self.descrizione
+    
+class UnitaMisura(models.Model):
+    '''Utilizzare la PK come codice anche per la ricerca (vedi programma ddt)'''
+    descrizione = models.CharField(max_length=50)
+    abbreviazione = models.CharField(max_length=2)
+    note = models.TextField(null=True, blank=True)
+    created_by = models.ForeignKey(User, related_name='unita_misura', null=True, blank=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["descrizione"]
+        verbose_name_plural = "unità di misura"
+
+    def __str__(self):
+        return self.abbreviazione
   
     
     
@@ -102,16 +117,20 @@ class OrdineLavoro(models.Model):
     
     
 class DettaglioOrdineLavoro(models.Model):
-    fk_ordine_lavoro = models.ForeignKey(OrdineLavoro, null=True, blank=True, related_name='dettaglio_ordine_lavoro', on_delete=models.SET_NULL)
+    numero_riga = models.IntegerField()
+    fk_ordine_lavoro = models.ForeignKey(OrdineLavoro, related_name='dettaglio_ordine_lavoro', on_delete=models.CASCADE)
     fk_dettaglio_lotto = models.ForeignKey(DettaglioLotto, null=True, blank=True, related_name='dettaglio_ordine_lavoro', on_delete=models.SET_NULL)
     fk_output_lavorazione = models.ForeignKey('OutputLavorazione', null=True, blank=True, related_name='dettaglio_ordine_lavoro', on_delete=models.SET_NULL)
+    descrizione = models.CharField(max_length=100, null=True, blank=True)
     fk_lavorazione = models.ForeignKey(Lavorazione, null=True, blank=True, related_name='dettaglio_ordine_lavoro', on_delete=models.SET_NULL)
+    fk_unita_misura = models.ForeignKey(UnitaMisura, null=True, blank=True, related_name='dettaglio_ordine_lavoro', on_delete=models.SET_NULL)
     quantity = models.IntegerField(null=True, blank=True)
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='dettaglio_ordine_lavoro', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     
-    
+    class Meta:
+        ordering = ["numero_riga"]
   
 class OutputLavorazione(models.Model):
     
@@ -137,6 +156,7 @@ class OutputLavorazione(models.Model):
     )
     n_doc_reso = models.IntegerField(default=None)
     data_doc_reso = models.DateField()
+    fk_dettaglio_lotto = models.ForeignKey(DettaglioLotto, related_name='output_lavorazione', on_delete=models.CASCADE)
     fk_fornitore_origine = models.ForeignKey(Fornitore, related_name='output_lavorazione', on_delete=models.CASCADE)
     fk_fornitore_destinatario = models.ForeignKey(Fornitore, null=True, blank=True, related_name='output_lavorazione_dest', on_delete=models.SET_NULL)
     fk_lavorazione = models.ForeignKey(Lavorazione, null=True, blank=True, related_name='output_lavorazione', on_delete=models.SET_NULL)

@@ -48,10 +48,26 @@ class CausaleTrasportoModelForm(forms.ModelForm):
             'note': 'Note'            
         }
         
+class UnitaMisuraModelForm(forms.ModelForm):
+    class Meta:
+        model = UnitaMisura
+        fields = '__all__'
+        widgets = {
+            'descrizione': forms.TextInput(attrs={'placeholder': 'Inserisci unità di misura'}),              
+            'abbreviazione': forms.TextInput(attrs={'placeholder': 'Inserisci abbreviazione'}),              
+            'created_by': forms.HiddenInput(),
+            'created_at': forms.HiddenInput()
+        }
+        labels = {
+            'descrizione': 'Unità di misura',            
+            'abbreviazione': 'Abbreviazione',            
+            'note': 'Note'            
+        }
+        
 
 class OrdineLavoroModelForm(forms.ModelForm):
     int_est = forms.ChoiceField(choices=OrdineLavoro.CHOICES_INT_EST, label='Interno/Esterno')
-    trasporto = forms.ChoiceField(choices=OrdineLavoro.CHOICES_TRASPORTO, widget=forms.RadioSelect, label='Trasporto a cura')
+    trasporto = forms.ChoiceField(choices=OrdineLavoro.CHOICES_TRASPORTO, widget=forms.RadioSelect, label='')
     fk_fornitore = forms.ModelChoiceField(
         queryset=Fornitore.objects.all(),
         label='Fornitore'
@@ -108,6 +124,48 @@ class OrdineLavoroModelForm(forms.ModelForm):
             'ora_inizio_trasporto': 'Ora inizio trasporto',        
             'n_colli': 'Numero colli',
             'peso_kg': 'Peso',
+            'note': 'Note'
+        }
+
+
+class DettaglioOrdineLavoroModelForm(forms.ModelForm):
+    
+    fk_dettaglio_lotto = forms.ModelChoiceField(
+        queryset=DettaglioLotto.objects.all(),
+        label='Dettaglio Lotto'
+    )
+    fk_output_lavorazione = forms.ModelChoiceField(
+        queryset=OutputLavorazione.objects.all(),
+        label='Già lavorati'
+    )
+    fk_lavorazione = forms.ModelChoiceField(
+        queryset=Lavorazione.objects.all(),
+        label='Lavorazione'
+    )
+    fk_unita_misura = forms.ModelChoiceField(
+        queryset=UnitaMisura.objects.all(),
+        label='Unità di Misura'
+    )
+    
+    class Meta:
+        model = DettaglioOrdineLavoro
+        #exclude=()
+        fields='__all__'
+        
+        
+        widgets = {'quantity': forms.NumberInput(),
+                'numero_riga': forms.NumberInput(),
+                'descrizione': forms.TextInput(attrs={'placeholder': 'Inserisci unità di misura'}),
+                'note': forms.Textarea(attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Inserisci note',
+                }),
+                'created_by': forms.HiddenInput(),                              
+                }
+        labels = {
+            'quantity': 'Quantità', 
+            'numero_riga': 'Numero riga',
+            'descrizione': 'Descrizione',
             'note': 'Note'
         }
         
