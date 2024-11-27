@@ -1,0 +1,64 @@
+<div class="container mt-4">
+    <p>Output Attivi</p>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Data Acquisto</th>
+                <th>Identificativo</th>
+                <th>Fornitore</th>                
+                <th>Pezzi</th>
+                <th>Azioni</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lotto in output_prova %}
+            <tr>
+                <td>{{ lotto.data_acquisto|date:"d/m/y" }}</td>
+                <td>{{ lotto.identificativo }}</td>
+                <td>{{ lotto.fk_fornitore.pk }}</td>                
+                <td>{{ lotto.pezzi }}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#details-{{ lotto.id }}">
+                        Mostra Dettagli
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div id="details-{{ lotto.id }}" class="collapse">
+                        <table class="table table-bordered mt-2">
+                            <thead>
+                                <tr>
+                                    <th>Taglio</th>
+                                    <th>Sezione</th>
+                                    <th>Concia</th>
+                                    <th>Tipo Animale</th>
+                                    <th>Spessore</th>
+                                    <th>Pezzi</th>                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for dettaglio in lotto.dettagliolotto_set.all %}
+                                <tr>
+                                    <td>{{ dettaglio.fk_taglio }}</td>
+                                    <td>{{ dettaglio.fk_sezione }}</td>
+                                    <td>{{ dettaglio.fk_concia }}</td>
+                                    <td>{{ dettaglio.fk_tipoanimale }}</td>
+                                    <td>{{ dettaglio.fk_spessore }}</td>
+                                    <td>{{ dettaglio.pezzi }}</td>
+                                    <td>{{ dettaglio.note }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="7" class="text-center">Nessun dettaglio disponibile</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

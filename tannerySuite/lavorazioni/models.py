@@ -42,7 +42,7 @@ class AspettoDeiBeni(models.Model):
 class PortoMateriale(models.Model):
     '''Utilizzare la PK come codice anche per la ricerca (vedi programma ddt)'''
     descrizione = models.CharField(max_length=50)
-    decrizione_inglese = models.CharField(max_length=50)
+    descrizione_inglese = models.CharField(max_length=50, null=True, blank=True)
     note = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='porto_materiale', null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -118,7 +118,7 @@ class OrdineLavoro(models.Model):
     
 class DettaglioOrdineLavoro(models.Model):
     numero_riga = models.IntegerField()
-    fk_ordine_lavoro = models.ForeignKey(OrdineLavoro, null=True, blank=True, related_name='dettaglio_ordine_lavoro', on_delete=models.SET_NULL)
+    fk_ordine_lavoro = models.ForeignKey(OrdineLavoro, related_name='dettaglio_ordine_lavoro', on_delete=models.CASCADE)
     fk_dettaglio_lotto = models.ForeignKey(DettaglioLotto, null=True, blank=True, related_name='dettaglio_ordine_lavoro', on_delete=models.SET_NULL)
     fk_output_lavorazione = models.ForeignKey('OutputLavorazione', null=True, blank=True, related_name='dettaglio_ordine_lavoro', on_delete=models.SET_NULL)
     descrizione = models.CharField(max_length=100, null=True, blank=True)
@@ -156,6 +156,7 @@ class OutputLavorazione(models.Model):
     )
     n_doc_reso = models.IntegerField(default=None)
     data_doc_reso = models.DateField()
+    fk_dettaglio_lotto = models.ForeignKey(DettaglioLotto, related_name='output_lavorazione', on_delete=models.CASCADE)
     fk_fornitore_origine = models.ForeignKey(Fornitore, related_name='output_lavorazione', on_delete=models.CASCADE)
     fk_fornitore_destinatario = models.ForeignKey(Fornitore, null=True, blank=True, related_name='output_lavorazione_dest', on_delete=models.SET_NULL)
     fk_lavorazione = models.ForeignKey(Lavorazione, null=True, blank=True, related_name='output_lavorazione', on_delete=models.SET_NULL)

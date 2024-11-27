@@ -1,37 +1,51 @@
-<div class="col-10">
-    <div class="row">
-      <div class="col-6">
-        <h5>Dettaglio DDT</h5>                  
-      </div>
-      <div class="col-6 text-end">
-        <a href="{% url 'lavorazioni:crea_dettaglio_ordine_lavoro' %}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i> Aggiungi dettaglio</a>
-      </div>
+<!-- Tabella dettaglio -->
+<div class="col-12">
+  <div class="row">
+  
+  
+    <div class="col-6 mb-3" >
+      <h5>Dettaglio</h5>
+                
     </div>
-    <div class="table-container">
-      <table class="table table-bordered table-striped mt-2">
-        <thead>
-          <tr>
-            <th>Descrizione</th> 
-            <th>Codice Lavorazione</th> 
-            <th>UM</th>  
-            <th>Quantità</th>  
-            <th>Azione</th>
-            
-          </tr>
-        </thead>
-        <tbody>
-          {% for dettaglio_ordine_lavoro in elenco_dettagli %}
-          <tr>        
-            
-            <td><a href="{% url 'lavorazioni:modifica_dettaglio_ordine_lavoro' pk=dettaglio_ordine_lavoro.pk %}">{{ dettaglio_ordine_lavoro.descrizione }}</a></td>
-            <td>{{ dettaglio_ordine_lavoro.fk_lavorazione }}</td>
-            <td>{{ dettaglio_ordine_lavoro.fk_unita_misura}}</td>
-            <td>{{ dettaglio_ordine_lavoro.quantity }}</td>
-            
-            <td class="text-center"><a href="{% url 'lavorazioni:delete_dettaglio_ordine_lavoro' pk=dettaglio_ordine_lavoro.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{dettaglio_ordine_lavoro.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
-          </tr>  
-          {% endfor %}
-        </tbody>
-      </table>
+    <div class="col-6 text-end">
+      {% if form.instance.id  %}
+        <a href="{% url 'lavorazioni:aggiungi_dettaglio_ordine_lavoro' fk_ordine_lavoro=fk_ordine_lavoro %}" class="btn btn-sm btn-success" id="btn_new_detail"><i class="bi bi-file-earmark-plus"></i> Aggiungi Dettaglio</a>
+
+      {% else %}
+      <a href="#" class="btn btn-sm btn-secondary" id="btn_new_detail"><i class="bi bi-file-earmark-plus"></i> Aggiungi Dettaglio</a>
+      {% endif %}
+
     </div>
   </div>
+<div class="container" style="border: 2px solid black; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+  <table class="table table-bordered table-striped mt-2 table-container" id="myTable" data-model_name="DettaglioOrdineLavoro">
+    <thead>
+      <tr>
+        <th>Riga</th>        
+        <th>Lavorazione</th>
+        <th>Descrizione</th>                
+        <th>Unità di Misura</th>                
+        <th>Quantità</th>       
+        <th>Azione</th>
+        
+      </tr>
+    </thead>
+    <tbody id="tabella_dettaglio">
+      {% for dettaglio in elenco_dettagli %}
+      <tr data-pk="{{ dettaglio.pk }}">        
+        
+        <td><a  href="{% url 'lavorazioni:modifica_dettaglio_ordine_lavoro' pk=dettaglio.pk %}" id="numero_riga_{{ dettaglio.pk }}">{{ dettaglio.numero_riga }}</a></td>
+        
+        <td>{{ dettaglio.fk_lavorazione }}</td>
+        <td>{{ dettaglio.descrizione }}</td>
+        <td>{{ dettaglio.fk_unita_misura }}</td>
+        <td class="text-end">{{ dettaglio.quantity }}</td>
+        
+        <td class="text-center"><a href="{% url 'lavorazioni:delete_dettaglio_ordine_lavoro' pk=dettaglio.pk %}" class="btn btn-sm btn-outline-danger confirm-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{dettaglio.pk}}"><i class="bi bi-trash"></i>Elimina</a></td>
+      </tr>  
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</div><!--Fine tabella dettaglio -->

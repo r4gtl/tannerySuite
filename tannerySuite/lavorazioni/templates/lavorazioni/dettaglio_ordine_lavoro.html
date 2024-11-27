@@ -1,0 +1,124 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{ block.super }} | Dettaglio DDT {% endblock %}
+
+{% block sidenav %}
+{% include "core/partials/_sidenav_lavorazioni.html" %}
+{% endblock %}
+
+{% block content %}
+
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>      
+        <li class="breadcrumb-item"><a href="{% url 'lavorazioni:dashboard_lavorazioni' %}">Dashboard Lavorazioni</a></li>      
+        <li class="breadcrumb-item"><a href="{% url 'lavorazioni:modifica_ordine_lavoro' pk=ordine_lavoro %}">DDT n. {{ ordine_lavoro.num_doc }} del {{ ordine_lavoro.data_doc }}</a></li>        
+        
+
+        {% if form.instance.id  %}
+            <li class="breadcrumb-item active" aria-current="page">Modifica dettaglio ddt N. {{ ordine_lavoro.num_doc }}</li>
+        {% else %}
+            <li class="breadcrumb-item active" aria-current="page">Aggiungi dettaglio ddt</li>
+        {% endif %}             
+        
+        
+    </ol>
+</nav>
+
+    <div class="container">
+        {% if form.instance.id  %}
+            <h3>Modifica dettaglio ddt N. {{ ordine_lavoro.num_doc }}</h3>
+        {% else %}
+            <h3> Aggiungi dettaglio ddt</h3>
+        {% endif %}
+        
+        
+        <hr>
+        
+        
+        
+        
+        <br>
+
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-2">
+                            {{ form.fk_dettaglio_lotto|as_crispy_field }}
+                        </div>
+                        <div class="col-2">
+                            {{ form.fk_output_lavorazione|as_crispy_field }}
+                        </div>
+                        <div class="col-2">
+                            {{ form.descrizione|as_crispy_field }}
+                        </div>
+                        
+                        
+                    </div>
+        
+                    <div class="row">
+                        <div class="col-4">
+                            {{ form.fk_lavorazione|as_crispy_field }}
+                        </div>
+                        <div class="col-4">
+                            {{ form.fk_unita_misura|as_crispy_field }}
+                        </div>
+                        <div class="col-3">
+                            {{ form.quantity|as_crispy_field }}
+                        </div>
+                        
+                        
+                    </div>
+        
+                    <div class="row">
+                        <div class="col-4">
+                            {{ form.note|as_crispy_field }}
+                        </div>
+                        <div class="col-4">
+                            {{ form.created_by|as_crispy_field }}
+                        </div>
+                        
+                        
+                        
+                    </div>
+                    
+                    
+        
+                    
+                    <input type="submit" class="btn btn-success" value="Salva">
+                    <button type="button" class="btn btn-danger" onclick="goBack()"><i class="bi bi-arrow-counterclockwise"></i> Annulla</button>
+                </form>
+                <hr>
+                </div>
+                <div class="col-4">
+                    <div class="row">
+                        {% include "lavorazioni/partials/_elenco_lotti.html" %}
+                    </div>
+                    <div class="row">
+                        {% include "lavorazioni/partials/_elenco_output.html" %}
+                    </div>
+
+                </div>
+
+            </div>
+
+            
+        
+        
+    </div>
+
+
+
+{% endblock %}
+{% block extra_scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+            setFocusOnField('id_descrizione');
+        });
+</script>
+{% endblock %} 

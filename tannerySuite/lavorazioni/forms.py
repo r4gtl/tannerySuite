@@ -67,7 +67,7 @@ class UnitaMisuraModelForm(forms.ModelForm):
 
 class OrdineLavoroModelForm(forms.ModelForm):
     int_est = forms.ChoiceField(choices=OrdineLavoro.CHOICES_INT_EST, label='Interno/Esterno')
-    trasporto = forms.ChoiceField(choices=OrdineLavoro.CHOICES_TRASPORTO, widget=forms.RadioSelect, label='Trasporto a cura')
+    trasporto = forms.ChoiceField(choices=OrdineLavoro.CHOICES_TRASPORTO, widget=forms.RadioSelect, label='')
     fk_fornitore = forms.ModelChoiceField(
         queryset=Fornitore.objects.all(),
         label='Fornitore'
@@ -154,7 +154,7 @@ class DettaglioOrdineLavoroModelForm(forms.ModelForm):
         
         
         widgets = {'quantity': forms.NumberInput(),
-                   'numero_riga': forms.NumberInput(),
+                'numero_riga': forms.NumberInput(),
                 'descrizione': forms.TextInput(attrs={'placeholder': 'Inserisci unità di misura'}),
                 'note': forms.Textarea(attrs={
                     'class': 'form-control',

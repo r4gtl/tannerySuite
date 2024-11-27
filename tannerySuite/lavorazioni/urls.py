@@ -43,7 +43,7 @@ urlpatterns = [
     path('delete_ordine_lavoro/<int:pk>/', delete_ordine_lavoro, name="delete_ordine_lavoro"),
     
     # Dettaglio Ordine Lavoro
-    path("fornitore/<int:fk_fornitore>/aggiungi_dettaglio_ordine_lavoro/", DettaglioOrdineLavoroCreateView.as_view(), name="aggiungi_dettaglio_ordine_lavoro"),
+    path("ordine_lavoro/<int:fk_ordine_lavoro>/aggiungi_dettaglio_ordine_lavoro/", DettaglioOrdineLavoroCreateView.as_view(), name="aggiungi_dettaglio_ordine_lavoro"),
     path("modifica_dettaglio_ordine_lavoro/<int:pk>", DettaglioOrdineLavoroUpdateView.as_view(), name="modifica_dettaglio_ordine_lavoro"),    
     path("delete_dettaglio_ordine_lavoro/<int:pk>", delete_dettaglio_ordine_lavoro, name="delete_dettaglio_ordine_lavoro"),
 

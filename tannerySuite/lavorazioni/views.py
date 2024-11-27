@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
 
-
+from acquistopelli.models import Lotto
 from .models import *
 
 from .forms import *
@@ -62,12 +62,9 @@ class CausaleTrasportoCreateView(LoginRequiredMixin,CreateView):
     success_message = 'Causale di trasporto aggiunta correttamente!'
     #success_url = reverse_lazy('human_resources:human_resources')
 
-    def get_success_url(self):        
-        if 'salva_esci' in self.request.POST:
-            return reverse_lazy('lavorazioni:tabelle_generiche')
+    def get_success_url(self):  
+        return reverse_lazy('lavorazioni:tabelle_generiche')
         
-        pk_fase=self.object.pk
-        return reverse_lazy('lavorazioni:modifica_causale_trasporto', kwargs={'pk':pk_fase})
     
     def form_valid(self, form):        
         messages.info(self.request, self.success_message) # Compare sul success_url
@@ -85,12 +82,10 @@ class CausaleTrasportoUpdateView(LoginRequiredMixin,UpdateView):
         messages.info(self.request, self.success_message) # Compare sul success_url
         return super().form_valid(form)
     
-    def get_success_url(self):        
-        if 'salva_esci' in self.request.POST:
-            return reverse_lazy('lavorazioni:tabelle_generiche')
+    def get_success_url(self): 
+        return reverse_lazy('lavorazioni:tabelle_generiche')
         
-        pk_fase=self.object.pk
-        return reverse_lazy('lavorazioni:modifica_causale_trasporto', kwargs={'pk':pk_fase})
+        
     
     def get_context_data(self, **kwargs):        
         context = super().get_context_data(**kwargs)
@@ -112,12 +107,9 @@ class AspettoDeiBeniCreateView(LoginRequiredMixin,CreateView):
     success_message = 'Aspetto dei beni aggiunto correttamente!'
     #success_url = reverse_lazy('human_resources:human_resources')
 
-    def get_success_url(self):        
-        if 'salva_esci' in self.request.POST:
-            return reverse_lazy('lavorazioni:tabelle_generiche')
+    def get_success_url(self):                
+        return reverse_lazy('lavorazioni:tabelle_generiche')
         
-        pk_fase=self.object.pk
-        return reverse_lazy('lavorazioni:modifica_aspetto_beni', kwargs={'pk':pk_fase})
     
     def form_valid(self, form):        
         messages.info(self.request, self.success_message) # Compare sul success_url
@@ -259,7 +251,7 @@ class OrdineLavoroCreateView(LoginRequiredMixin,CreateView):
             return reverse_lazy('lavorazioni:dashboard_lavorazioni')
         
         pk_ordine_lavoro=self.object.pk
-        return reverse_lazy('lavorazioni:crea_ordine_lavoro', kwargs={'pk':pk_ordine_lavoro})
+        return reverse_lazy('lavorazioni:modifica_ordine_lavoro', kwargs={'pk':pk_ordine_lavoro})
 
         
     def get_initial(self):
@@ -291,8 +283,9 @@ class OrdineLavoroUpdateView(LoginRequiredMixin,UpdateView):
     
     def get_context_data(self, **kwargs):        
         context = super().get_context_data(**kwargs)
-        
-        context['elenco_dettagli'] = DettaglioOrdineLavoro.objects.filter(fk_hr=self.object.pk)
+        fk_ordine_lavoro=self.object.pk
+        context['fk_ordine_lavoro'] = fk_ordine_lavoro
+        context['elenco_dettagli'] = DettaglioOrdineLavoro.objects.filter(fk_ordine_lavoro=self.object.pk)
         return context
     
 
@@ -306,7 +299,7 @@ def delete_ordine_lavoro(request, pk):
 class DettaglioOrdineLavoroCreateView(LoginRequiredMixin,CreateView):
     model = DettaglioOrdineLavoro
     form_class = DettaglioOrdineLavoroModelForm
-    template_name = 'ricette/dettaglio_ordine_lavoro.html'
+    template_name = 'lavorazioni/dettaglio_ordine_lavoro.html'
     success_message = 'Dettaglio aggiunto correttamente!'
 
 
@@ -338,7 +331,15 @@ class DettaglioOrdineLavoroCreateView(LoginRequiredMixin,CreateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pk_ordine_lavoro = self.kwargs['fk_rordine_lavoro']         
+        pk_ordine_lavoro = self.kwargs['fk_ordine_lavoro']  
+        lotti_prova = Lotto.objects.prefetch_related('dettagliolotto_set').all()
+        output_prova = OutputLavorazione.objects.prefetch_related('dettagliolotto_set').all()
+        elenco_dettagli_lotti = DettaglioLotto.objects.all()
+        elenco_dettagli_output = OutputLavorazione.objects.all()
+        context['lotti_prova'] = lotti_prova
+        context['output_prova'] = output_prova
+        context['elenco_dettagli_lotti'] = elenco_dettagli_lotti
+        context['elenco_dettagli_output'] = elenco_dettagli_output
         context['ordine_lavoro'] = pk_ordine_lavoro
         context['dettagli_ordine_lavoro'] = get_object_or_404(OrdineLavoro, pk=pk_ordine_lavoro)
         return context
