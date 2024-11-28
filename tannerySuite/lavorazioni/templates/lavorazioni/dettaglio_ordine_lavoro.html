@@ -79,7 +79,7 @@
                         <div class="col-2">
                             {{ form.fk_unita_misura|as_crispy_field }}
                         </div>
-                        <div class="col-1">
+                        <div class="col-2">
                             {{ form.quantity|as_crispy_field }}
                         </div>
                         
@@ -109,7 +109,7 @@
                 </form>
                 <hr>
                 </div>
-                <div class="col-6" style="border: 2px solid black; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                <div class="col-6" style="border: 1px solid black; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
                     <div class="row">
                         {% include "lavorazioni/partials/_elenco_lotti.html" %}
                     </div>
@@ -131,6 +131,9 @@
 {% endblock %}
 {% block extra_scripts %}
 <script>
+
+    
+
 document.addEventListener("DOMContentLoaded", function() {
             setFocusOnField('id_descrizione');
         });
@@ -154,6 +157,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
             quantityModalInstance = new bootstrap.Modal(document.getElementById('quantityModal'));
             quantityModalInstance.show();
+
+            // Imposta il focus sull'input dopo aver mostrato il modal
+            quantityModalInstance._element.addEventListener('shown.bs.modal', function () {
+            quantityInput.focus();
+            });
         });
     });
 
@@ -186,7 +194,28 @@ document.addEventListener('DOMContentLoaded', function () {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
 });
-        
+
+function filterTable() {
+    const input = document.getElementById('searchInput');
+    const filter = input.value.toLowerCase();
+    const table = document.getElementById('lottiTable');
+
+    if (!table) {
+        console.error("Tabella non trovata!");
+        return;
+    }
+
+    const rows = table.querySelectorAll('tbody > tr');
+
+    rows.forEach(row => {
+        const rowText = row.innerText.toLowerCase();
+        row.style.display = rowText.includes(filter) ? '' : 'none';
+    });
+}
+
+
+
+
 
         
 </script>
