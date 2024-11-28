@@ -1,0 +1,6 @@
+<form method="post">
+    {% csrf_token %}
+    <p>Prova da template</p>
+    {{ form_ricerca.as_p }}
+    <button type="submit" class="btn btn-primary">Cerca</button>
+</form>

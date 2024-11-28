@@ -47,6 +47,7 @@ urlpatterns = [
     path("modifica_dettaglio_ordine_lavoro/<int:pk>", DettaglioOrdineLavoroUpdateView.as_view(), name="modifica_dettaglio_ordine_lavoro"),    
     path("delete_dettaglio_ordine_lavoro/<int:pk>", delete_dettaglio_ordine_lavoro, name="delete_dettaglio_ordine_lavoro"),
 
-    
+    path('ricerca_lotto/', ricerca_lotto, name='ricerca_lotto'),
+    path('ricerca_lotto_modal/', ricerca_lotto_modal, name='ricerca_lotto_modal'),
     
 ]

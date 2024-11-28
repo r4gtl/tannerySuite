@@ -1,10 +1,14 @@
 import datetime
 from django.contrib import messages
+from django.http import HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
+from django.template.loader import render_to_string
+from django.http import JsonResponse
+
 
 from acquistopelli.models import Lotto
 from .models import *
@@ -371,8 +375,64 @@ class DettaglioOrdineLavoroUpdateView(LoginRequiredMixin, UpdateView):
 
 
 def delete_dettaglio_ordine_lavoro(request, pk):
-        deleteobject = get_object_or_404(DettaglioOrdineLavoro, pk = pk)
-        fk_ordine_lavoro = deleteobject.fk_ordine_lavoro.pk
-        deleteobject.delete()
-        url_match = reverse_lazy('lavorazioni:modifica_ordine_lavoro', kwargs={'pk':fk_ordine_lavoro})
-        return redirect(url_match)
+    deleteobject = get_object_or_404(DettaglioOrdineLavoro, pk = pk)
+    fk_ordine_lavoro = deleteobject.fk_ordine_lavoro.pk
+    deleteobject.delete()
+    url_match = reverse_lazy('lavorazioni:modifica_ordine_lavoro', kwargs={'pk':fk_ordine_lavoro})
+    return redirect(url_match)
+
+    
+def ricerca_lotto(request):
+    if request.method == 'POST':
+        form = RicercaLottoForm(request.POST)
+        if form.is_valid():
+            identificativo = form.cleaned_data['identificativo']
+            fornitore = form.cleaned_data['fornitore']
+            taglio = form.cleaned_data['taglio']
+            sezione = form.cleaned_data['sezione']
+            concia = form.cleaned_data['concia']
+            tipoanimale = form.cleaned_data['tipoanimale']
+            spessore = form.cleaned_data['spessore']
+            quality = form.cleaned_data['quality']  
+
+            lotti = Lotto.objects.all()
+            if identificativo:
+                lotti = lotti.filter(identificativo__icontains=identificativo)
+            if fornitore:
+                lotti = lotti.filter(fornitore=fornitore)
+            if taglio:
+                lotti = lotti.filter(taglio=taglio)
+            if sezione:
+                lotti = lotti.filter(sezione=sezione)
+            if concia:
+                lotti = lotti.filter(concia=concia)
+            if tipoanimale:
+                lotti = lotti.filter(tipoanimale=tipoanimale)
+            if spessore:
+                lotti = lotti.filter(spessore=spessore)
+            if quality:
+                lotti = lotti.filter(quality=quality)
+            
+            for lotto in lotti:
+                print(f"lotto: {lotto}")
+
+            return render(request, 'lavorazioni/risultati_ricerca_lotto.html', {'lotti': lotti})
+            #risultati_html = render_to_string('lavorazioni/risultati_ricerca_lotto.html', {'lotti': lotti})
+            #return JsonResponse({'html': risultati_html})
+    #return JsonResponse({'error': 'Invalid form'}, status=400)
+    else:
+       form = RicercaLottoForm()
+    
+    return render(request, 'lavorazioni/ricerca_lotto.html', {'form_ricerca': form})
+
+
+def ricerca_lotto_modal(request):
+    if request.method == 'GET':
+        form = RicercaLottoForm()
+        print("arrivato qui")
+        for field in form:
+            print(f"NOmecampo: {field.name}")
+        return render(request, 'lavorazioni/modals/modal_ricerca_lotto.html', {'form_ricerca': form})
+    else:
+        # Handle potential POST requests within the modal (optional)
+        return HttpResponseBadRequest()

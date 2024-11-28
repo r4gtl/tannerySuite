@@ -2,14 +2,9 @@ import django_filters
 from django import forms
 from .models import RapportoAudit, RapportoNC
 
-
-
-        
 class RapportoAuditFilter(django_filters.FilterSet):
     numero_rapporto_audit = django_filters.CharFilter(lookup_expr='icontains', label='Numero')
     data_rapporto_audit = django_filters.DateFromToRangeFilter()
-    
-    
     class Meta:
         model = RapportoAudit
         fields = ['numero_rapporto_audit', 'data_rapporto_audit',
