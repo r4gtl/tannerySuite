@@ -74,11 +74,13 @@ class OrdineLavoroModelForm(forms.ModelForm):
     )
     fk_vettore = forms.ModelChoiceField(
         queryset=Fornitore.objects.all(),
-        label='Vettore'
+        label='Vettore',
+        required=False
     )
     fk_destinazione_diversa = forms.ModelChoiceField(
         queryset=DestinazioneDiversaFornitore.objects.all(),
-        label='Destinazione Diversa'
+        label='Destinazione Diversa',
+        required=False
     )
     fk_causale_trasporto = forms.ModelChoiceField(
         queryset=CausaleTrasporto.objects.all(),
