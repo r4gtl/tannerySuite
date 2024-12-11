@@ -1,0 +1,37 @@
+{% load crispy_forms_tags %}
+
+<div class="modal fade" id="ricercaLottoModal" tabindex="-1" aria-labelledby="ricercaLottoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ricercaLottoModalLabel">Ricerca Lotto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="ricercaLottoForm">
+            {% for field in form %}
+                {{ field.label }}: {{ field|as_crispy_field }}
+            {% endfor %}
+            {{ form_ricerca.non_field_errors }}
+            {{ form_ricerca.fornitore.errors }}
+            
+            <button type="submit" class="btn btn-primary">Cerca</button>
+          </form>
+          <hr>
+          <div id="risultatiRicerca">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Identificativo</th>
+                  <th>Fornitore</th>
+                  <th>Dettagli</th>
+                </tr>
+              </thead>
+              <tbody>
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

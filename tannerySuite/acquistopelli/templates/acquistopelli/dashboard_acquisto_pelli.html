@@ -1,198 +1,209 @@
 {% extends 'core/base.html' %} 
 {% load static %}
-{% load crispy_forms_tags %} 
+{% load crispy_forms_tags %}
 {% load widget_tweaks %}
 {% block head_title %}{{ block.super }} - Acquisto Pelli{% endblock head_title %} 
-
 {% block sidenav %}
 {% include "core/partials/_sidenav_acquisto_pelli.html" %}
 {% endblock %}
-
-
-
 {% block content %}
-
 
 <div class="container">
   <div class="row">
-    <div class="col-4">        
-  <canvas id="origine" data-url="{% url 'acquistopelli:origine' %}"></canvas>
-</div>
-</div>
+    <div class="col-4">
+      <canvas
+        id="origine"
+        data-url="{% url 'acquistopelli:origine' %}"
+      ></canvas>
+    </div>
+  </div>
 </div>
 <div class="container">
-  <br>
+  <br />
   <h3>Lista Lotti</h3>
-  <hr>
-  
+  <hr />
 
-  <button type="button" class="btn btn-warning mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#criteriaModal"><span class="bi bi-printer"></span>
-  Stampa tracciabilità LWG
-</button>
-
+  <button
+    type="button"
+    class="btn btn-warning mt-2 mb-2"
+    data-bs-toggle="modal"
+    data-bs-target="#criteriaModal"
+  >
+    <span class="bi bi-printer"></span>
+    Stampa tracciabilità LWG
+  </button>
 
   <!-- filtro -->
   <div class="row">
     <div class="col">
-        <div class="card card-body">
-            <form method="get">
-
-                <div class="table-responsive-sm">
-                    <table class="table table-hover table-striped table-bordered">
-                        <thead class="thead-dark">
-                            <tr>     
-                                <th>Data Acquisto</th>
-                                <th>identificativo</th>                                    
-                                <th>Fornitore</th>                                    
-                                <th>Tipo Animale</th>                                    
-                                <th>Tipo Grezzo</th>                                    
-
-                            </tr>
-                        </thead>                            
-                        <tbody>
-                            <tr>                                    
-                                <td style="width: 20%">{{ filter.form.data_acquisto|as_crispy_field }}</td>                                    
-                                <td style="width: 20%">{{ filter.form.identificativo|as_crispy_field }}</td>                                
-                                <td style="width: 20%">{{ filter.form.fk_fornitore|as_crispy_field }}</td>                                
-                                <td style="width: 20%">{{ filter.form.fk_tipoanimale|as_crispy_field }}</td>                                
-                                <td style="width: 20%">{{ filter.form.fk_tipogrezzo|as_crispy_field }}</td>                                
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <button class="btn btn-primary" type="submit">Cerca</button>
-                <a class="btn btn-success" href="{% url 'acquistopelli:dashboard_acquisto_pelli' %}"><i class="bi bi-arrow-counterclockwise"></i>&nbsp;&nbsp; Pulisci campi</a>
-            </form>        
-        </div>
-    </div>        
-</div>
-<!-- fine filtro-->
-  <hr>
+      <div class="card card-body">
+        <form method="get">
+          <div class="table-responsive-sm">
+            <table class="table table-hover table-striped table-bordered">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Data Acquisto</th>
+                  <th>identificativo</th>
+                  <th>Fornitore</th>
+                  <th>Tipo Animale</th>
+                  <th>Tipo Grezzo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 20%">
+                    {{ filter.form.data_acquisto|as_crispy_field }}
+                  </td>
+                  <td style="width: 20%">
+                    {{ filter.form.identificativo|as_crispy_field }}
+                  </td>
+                  <td style="width: 20%">
+                    {{ filter.form.fk_fornitore|as_crispy_field }}
+                  </td>
+                  <td style="width: 20%">
+                    {{ filter.form.fk_tipoanimale|as_crispy_field }}
+                  </td>
+                  <td style="width: 20%">
+                    {{ filter.form.fk_tipogrezzo|as_crispy_field }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <button class="btn btn-primary" type="submit">Cerca</button>
+          <a
+            class="btn btn-success"
+            href="{% url 'acquistopelli:dashboard_acquisto_pelli' %}"
+            ><i class="bi bi-arrow-counterclockwise"> </i>&nbsp;&nbsp; Pulisci
+            campi
+          </a>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- fine filtro-->
+  <hr />
   {% include "core/partials/_messages.html" %}
-  <br>
-  
+  <br />
 
-  <a class="btn btn-sm btn-success mt-2 mb-4" href="{% url 'acquistopelli:crea_lotto' %}"><span class="bi bi-person-plus-fill"></span> Aggiungi</a>
-  <br>
-    <table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            
-            <th>Data Acquisto</th>
-            <th>Identificativo</th>                                    
-            <th>Fornitore</th>                                    
-            <th>Tipo Animale</th>                                    
-            <th>Tipo Grezzo</th>  
+  <a
+    class="btn btn-sm btn-success mt-2 mb-4"
+    href="{% url 'acquistopelli:crea_lotto' %}"
+    ><span class="bi bi-person-plus-fill"></span> Aggiungi</a>
+  <br />
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Data Acquisto</th>
+        <th>Identificativo</th>
+        <th>Fornitore</th>
+        <th>Tipo Animale</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      {% for lotti in lotti_paginator %}
+      <tr>
+        <td>
+          <a href="{% url 'acquistopelli:modifica_lotto' pk=lotti.pk %}">
+            {{ lotti.data_acquisto|date:'d/m/Y' }}</a
+          >
+        </td>
 
-            
-          </tr>
-        </thead>
-        <tbody>
-          {% for lotti in lotti_paginator %}
-          <tr>        
-            
-            
-            <td><a href="{% url 'acquistopelli:modifica_lotto' pk=lotti.pk %}">{{ lotti.data_acquisto|date:'d/m/Y' }}</a></td>
-            
-            <td>{{ lotti.identificativo }}</td>
-            <td>{{ lotti.fk_fornitore.ragionesociale }}</td>
-            <td>{{ lotti.fk_tipoanimale.descrizione }}</td>
-            <td>{{ lotti.fk_tipogrezzo.descrizione }}</td>
-          </tr>  
-          {% endfor %}
-        </tbody>
-      </table>
-      <!-- Pagination -->
-{% if lotti_paginator.has_other_pages %}
-<nav>
-  <ul class="pagination justify-content-center">
-    {% if lotti_paginator.has_previous %}
+        <td>{{ lotti.identificativo }}</td>
+        <td>{{ lotti.fk_fornitore.ragionesociale }}</td>
+        <td>{{ lotti.fk_tipoanimale.descrizione }}</td>
+        
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <!-- Pagination -->
+  {% if lotti_paginator.has_other_pages %}
+  <nav>
+    <ul class="pagination justify-content-center">
+      {% if lotti_paginator.has_previous %}
       <li class="page-item">
-        <a class="page-link" href="?page={{ lotti_paginator.previous_page_number }}" aria-label="Previous">
+        <a
+          class="page-link"
+          href="?page={{ lotti_paginator.previous_page_number }}"
+          aria-label="Previous"
+        >
           <span aria-hidden="true">&laquo;</span>
         </a>
       </li>
-    {% else %}
+      {% else %}
       <li class="page-item disabled">
         <span class="page-link" aria-hidden="true">&laquo;</span>
       </li>
-    {% endif %}
-
-    {% for page in lotti_paginator.paginator.page_range %}
+      {% endif %} {% for page in lotti_paginator.paginator.page_range %} 
       {% if page == lotti_paginator.number %}
-        <li class="page-item active">
-          <span class="page-link">{{ page }}</span>
-        </li>
+      <li class="page-item active">
+        <span class="page-link">{{ page }}</span>
+      </li>
       {% else %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{ page }}">{{ page }}</a>
-        </li>
-      {% endif %}
-    {% endfor %}
-
-    {% if lotti_paginator.has_next %}
       <li class="page-item">
-        <a class="page-link" href="?page={{ lotti_paginator.next_page_number }}" aria-label="Next">
+        <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+      </li>
+      {% endif %} 
+      {% endfor %}
+      {% if lotti_paginator.has_next %}
+      <li class="page-item">
+        <a
+          class="page-link"
+          href="?page={{ lotti_paginator.next_page_number }}"
+          aria-label="Next"
+        >
           <span aria-hidden="true">&raquo;</span>
         </a>
       </li>
-    {% else %}
+      {% else %}
       <li class="page-item disabled">
         <span class="page-link" aria-hidden="true">&raquo;</span>
       </li>
-    {% endif %}
-  </ul>
-</nav>
-{% endif %}
-<!-- End Pagination -->
-
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+  <!-- End Pagination -->
 </div>
 
 {% include 'acquistopelli/modals/lwg_report_criteria.html' %}
-
 {% endblock content %}
-
 {% block extra_scripts %}
 
 <script>
-
-
-
   $(function () {
-  
-  var $origine = $("#origine");
-  $.ajax({
-    url: $origine.data("url"),
-    success: function (data) {
-  
-      var ctx = $origine[0].getContext("2d");        
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: data.labels,
-          datasets: [{
-            label: 'Origine',
-            backgroundColor: getRandomColor(),
-            data: data.data
-          }]          
-        },
-        options: {
-          responsive: true,
-          legend: {
-            position: 'top',
+    var $origine = $('#origine');
+    $.ajax({
+      url: $origine.data('url'),
+      success: function (data) {
+        var ctx = $origine[0].getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: data.labels,
+            datasets: [
+              {
+                label: 'Origine',
+                backgroundColor: getRandomColor(),
+                data: data.data,
+              },
+            ],
           },
-          title: {
-            display: true,
-            text: 'Origine'
+          options: {
+            responsive: true,
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'Origine',
+            },
           },
-          
-        }
-      });
-  
-    }
-  });
-  
+        });
+      },
+    });
   });
 </script>
 {% endblock %}
-

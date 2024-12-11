@@ -1,11 +1,12 @@
 <div class="container mt-4">
     <p>Lotti Attivi</p>
-    <table class="table table-striped">
+    
+    <table id="lottiTable" class="table table-striped">
         <thead>
             <tr>
                 <th>Data Acquisto</th>
                 <th>Identificativo</th>
-                <th>Fornitore</th>                
+                <th>Fornitore</th>
                 <th>Pezzi</th>
                 <th>Azioni</th>
             </tr>
@@ -15,16 +16,25 @@
             <tr>
                 <td>{{ lotto.data_acquisto|date:"d/m/y" }}</td>
                 <td>{{ lotto.identificativo }}</td>
-                <td>{{ lotto.fk_fornitore.pk }}</td>                
+                <td>{{ lotto.fk_fornitore.pk }}</td>
                 <td>{{ lotto.pezzi }}</td>
                 <td>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#details-{{ lotto.id }}">
-                        Mostra Dettagli
-                    </button>
+                    <div class="d-flex align-items-center">
+                        <a href="{% url 'acquistopelli:modifica_lotto' pk=lotto.pk %}" target="_blank" 
+                           data-bs-toggle="tooltip" data-bs-placement="top" title="Vedi Lotto" class="me-2">
+                            <i class="bi bi-search"></i>
+                        </a>
+                        <button class="accordion-button bg-transparent border-0 shadow-none p-0" 
+                                type="button" data-bs-toggle="collapse" 
+                                data-bs-target="#details-{{ lotto.id }}" 
+                                aria-expanded="true" 
+                                aria-controls="#details-{{ lotto.id }}">
+                        </button>
+                    </div>
                 </td>
             </tr>
-            <tr>
-                <td colspan="6">
+            <tr class="no-datatables">
+                <td colspan="5">
                     <div id="details-{{ lotto.id }}" class="collapse">
                         <table class="table table-bordered mt-2">
                             <thead>
@@ -34,7 +44,8 @@
                                     <th>Concia</th>
                                     <th>Tipo Animale</th>
                                     <th>Spessore</th>
-                                    <th>Pezzi</th>                                    
+                                    <th>Pezzi</th>
+                                    <th>Note</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -46,7 +57,7 @@
                                     <td>{{ dettaglio.fk_tipoanimale }}</td>
                                     <td>{{ dettaglio.fk_spessore }}</td>
                                     <td>{{ dettaglio.pezzi }}</td>
-                                    <td>{{ dettaglio.note }}</td>
+                                    
                                 </tr>
                                 {% empty %}
                                 <tr>
@@ -60,5 +71,6 @@
             </tr>
             {% endfor %}
         </tbody>
+        
     </table>
 </div>
