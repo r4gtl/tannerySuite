@@ -88,7 +88,7 @@ urlpatterns = [
     path('origine/', origine, name='origine'),
     path('origine_per_rpt_lwg/', origine_per_rpt_lwg, name='origine_per_rpt_lwg'),
     path('tipoanimale_per_rpt_lwg/', tipoanimale_per_rpt_lwg, name='tipoanimale_per_rpt_lwg'),
-    path('tipogrezzo_per_rpt_lwg/', tipogrezzo_per_rpt_lwg, name='tipogrezzo_per_rpt_lwg'),
+    #path('tipogrezzo_per_rpt_lwg/', tipogrezzo_per_rpt_lwg, name='tipogrezzo_per_rpt_lwg'),
 
     # Stampe
     path('report_traceability_in/', report_traceability_in, name='report_traceability_in'),

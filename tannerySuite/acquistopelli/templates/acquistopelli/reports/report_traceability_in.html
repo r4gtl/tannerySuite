@@ -67,7 +67,7 @@
       <canvas id="tipoanimale_per_rpt_lwg" data-url="{% url 'acquistopelli:tipoanimale_per_rpt_lwg' %}" data-from-date="{{ from_date|date:'Y-m-d' }}" data-to-date="{{ to_date|date:'Y-m-d' }}"></canvas>
     </div>
     <div class="col-4">
-      <canvas id="tipogrezzo_per_rpt_lwg" data-url="{% url 'acquistopelli:tipogrezzo_per_rpt_lwg' %}" data-from-date="{{ from_date|date:'Y-m-d' }}" data-to-date="{{ to_date|date:'Y-m-d' }}"></canvas>
+      
     </div>
 </div>
 <br>
@@ -77,7 +77,12 @@
             <tr>
                         
               <th>Fornitore</th>
+<<<<<<< HEAD
               <th>Tipo Animale</th>              
+=======
+              <th>Tipo Animale</th>
+              
+>>>>>>> Sync
               <th>Origine</th>
               <th>Acquistati nel periodo</th>
               <th>Somma pezzi</th>
@@ -92,7 +97,12 @@
                 <tr>
                   
                   <td>{{ lotto.fk_fornitore__ragionesociale }}</td>			
+<<<<<<< HEAD
                   <td>{{ lotto.fk_tipoanimale__descrizione }}</td>                  
+=======
+                  <td>{{ lotto.fk_tipoanimale__descrizione }}</td>
+                  
+>>>>>>> Sync
                   <td>{{ lotto.origine }}</td>                  
                   <td>{{ lotto.numero_lotti }}</td>
                   <td>{{ lotto.pezzi }}</td>
@@ -192,6 +202,10 @@ $(function() {
   });
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> Sync
 
 </script>
 {% endblock %}
