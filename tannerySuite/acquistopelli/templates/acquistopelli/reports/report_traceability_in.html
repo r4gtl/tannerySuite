@@ -77,8 +77,7 @@
             <tr>
                         
               <th>Fornitore</th>
-              <th>Tipo Animale</th>
-              <th>Tipo Grezzo</th>
+              <th>Tipo Animale</th>              
               <th>Origine</th>
               <th>Acquistati nel periodo</th>
               <th>Somma pezzi</th>
@@ -93,8 +92,7 @@
                 <tr>
                   
                   <td>{{ lotto.fk_fornitore__ragionesociale }}</td>			
-                  <td>{{ lotto.fk_tipoanimale__descrizione }}</td>
-                  <td>{{ lotto.fk_tipogrezzo__descrizione }}</td>
+                  <td>{{ lotto.fk_tipoanimale__descrizione }}</td>                  
                   <td>{{ lotto.origine }}</td>                  
                   <td>{{ lotto.numero_lotti }}</td>
                   <td>{{ lotto.pezzi }}</td>
@@ -194,42 +192,6 @@ $(function() {
   });
 
 
-$(function() {
-    var $tipogrezzoperrptlwg = $("#tipogrezzo_per_rpt_lwg");
-    var from_date = $tipogrezzoperrptlwg.data("from-date");
-    var to_date = $tipogrezzoperrptlwg.data("to-date");
-    $.ajax({
-      url: $tipogrezzoperrptlwg.data("url"),
-      data: {
-        from_date: from_date,
-        to_date: to_date
-      },
-      success: function(data) {
-        var ctx = $tipogrezzoperrptlwg[0].getContext("2d");
-        new Chart(ctx, {
-          type: 'pie',
-          data: {
-            labels: data.labels,
-            datasets: [{
-              label: 'Tipo Grezzo',
-              backgroundColor: getRandomColor(),
-              data: data.data
-            }]
-          },
-          options: {
-            responsive: true,
-            legend: {
-              position: 'top',
-            },
-            title: {
-              display: true,
-              text: 'Tipo Grezzo'
-            }
-          }
-        });
-      }
-    });
-  });
 
 </script>
 {% endblock %}

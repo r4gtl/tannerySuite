@@ -2,6 +2,9 @@ html {
   font-size: 12px;
 }
 
+body .container {
+  max-width: 1600px; /* Cambia questo valore */
+}
 
 /* regole per le tabelle */
 
