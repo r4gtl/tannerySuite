@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.urls import reverse
 from django.contrib.auth.models import User
 from datetime import date, time
 from .models import (
@@ -12,6 +13,7 @@ from .models import (
 )
 from anagrafiche.models import Fornitore, DestinazioneDiversaFornitore
 from acquistopelli.models import (
+    Lotto,
     DettaglioLotto,
     Taglio,
     Sezione,
@@ -21,6 +23,8 @@ from acquistopelli.models import (
     Quality,
 )
 from articoli.models import Lavorazione
+
+from lavorazioni.forms import RicercaLottoForm
 
 
 class ModelsTestCase(TestCase):
@@ -105,3 +109,80 @@ class ModelsTestCase(TestCase):
         )
         self.assertEqual(dettaglio.numero_riga, 1)
         self.assertEqual(dettaglio.fk_ordine_lavoro, ordine)
+
+
+class RicercaLottoViewTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        # Creazione degli oggetti per i campi ForeignKey
+        fornitore = Fornitore.objects.create(ragionesociale="Fornitore Test")
+
+        # Creazione degli oggetti correlati per le ForeignKey
+        tipo_animale = TipoAnimale.objects.create(descrizione="Bovino")
+        spessore = Spessore.objects.create(descrizione="1.5mm")
+        quality = Quality.objects.create(descrizione="Alta")
+        taglio = Taglio.objects.create(descrizione="Taglio Test")
+        sezione = Sezione.objects.create(descrizione="Sezione Test")
+        concia = Concia.objects.create(descrizione="Concia Test")
+
+        # Creazione dell'oggetto Lotto
+        Lotto.objects.create(
+            data_acquisto="2024-12-01",
+            identificativo="1234",
+            fk_fornitore=fornitore,
+            fk_taglio=taglio,
+            fk_sezione=sezione,
+            fk_concia=concia,
+            fk_tipoanimale=tipo_animale,
+            fk_spessore=spessore,
+            fk_quality=quality,
+            origine="IT",
+            documento="DOC001",
+            peso_totale=150.25,
+            pezzi=10,
+            prezzo_unitario=20.5,
+            spese_accessorie=50.0,
+            kg_km=3000,
+            note="Lotto di test",
+            created_by=None,  # O specifica un utente se necessario
+        )
+
+    def test_ricerca_lotto_view_get(self):
+        # Testare la visualizzazione iniziale della pagina di ricerca
+        response = self.client.get(reverse("lavorazioni:ricerca_lotto"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "lavorazioni/ricerca_lotto.html")
+        self.assertIn("form_ricerca", response.context)
+
+    def test_ricerca_lotto_view_post(self):
+        # Testare la ricerca con parametri specifici
+        form_data = {
+            "identificativo": "1234",
+            "fornitore": Fornitore.objects.first().pk,
+            "taglio": "",
+            "sezione": "",
+            "concia": "",
+            "tipoanimale": TipoAnimale.objects.first().pk,
+            "spessore": "",
+            "quality": "",
+        }
+        response = self.client.post(reverse("lavorazioni:ricerca_lotto"), form_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "lavorazioni/risultati_ricerca_lotto.html")
+        self.assertIn("lotti", response.context)
+        self.assertEqual(len(response.context["lotti"]), 1)  # Deve filtrare un lotto
+
+    def test_ricerca_lotto_view_post_invalid(self):
+        # Testare la gestione di una form non valida
+        response = self.client.post(reverse("lavorazioni:ricerca_lotto"), {})
+        self.assertEqual(response.status_code, 200)  # Mostra la pagina originale
+        self.assertTemplateUsed(response, "lavorazioni/risultati_ricerca_lotto.html")
+        self.assertIn("form_ricerca", response.context)
+
+    def test_ricerca_lotto_modal_view(self):
+        # Testare la visualizzazione del modal
+        response = self.client.get(reverse("lavorazioni:ricerca_lotto_modal"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "lavorazioni/modals/modal_ricerca_lotto.html")
+        self.assertIn("form_ricerca", response.context)

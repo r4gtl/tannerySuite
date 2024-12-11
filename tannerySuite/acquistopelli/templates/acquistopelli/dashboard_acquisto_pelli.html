@@ -1,8 +1,12 @@
-{% extends 'core/base.html' %} {% load static %} {% load crispy_forms_tags %} {%
-load widget_tweaks %} {% block head_title %}{{ block.super }} - Acquisto Pelli{%
-endblock head_title %} {% block sidenav %} {% include
-"core/partials/_sidenav_acquisto_pelli.html" %} {% endblock %} {% block content
-%}
+{% extends 'core/base.html' %} 
+{% load static %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% block head_title %}{{ block.super }} - Acquisto Pelli{% endblock head_title %} 
+{% block sidenav %}
+{% include "core/partials/_sidenav_acquisto_pelli.html" %}
+{% endblock %}
+{% block content %}
 
 <div class="container">
   <div class="row">
@@ -70,9 +74,9 @@ endblock head_title %} {% block sidenav %} {% include
           <a
             class="btn btn-success"
             href="{% url 'acquistopelli:dashboard_acquisto_pelli' %}"
-            ><i class="bi bi-arrow-counterclockwise"></i>&nbsp;&nbsp; Pulisci
-            campi</a
-          >
+            ><i class="bi bi-arrow-counterclockwise"> </i>&nbsp;&nbsp; Pulisci
+            campi
+          </a>
         </form>
       </div>
     </div>
@@ -85,8 +89,7 @@ endblock head_title %} {% block sidenav %} {% include
   <a
     class="btn btn-sm btn-success mt-2 mb-4"
     href="{% url 'acquistopelli:crea_lotto' %}"
-    ><span class="bi bi-person-plus-fill"></span> Aggiungi</a
-  >
+    ><span class="bi bi-person-plus-fill"></span> Aggiungi</a>
   <br />
   <table class="table table-bordered table-striped">
     <thead>
@@ -95,22 +98,22 @@ endblock head_title %} {% block sidenav %} {% include
         <th>Identificativo</th>
         <th>Fornitore</th>
         <th>Tipo Animale</th>
-        <th>Tipo Grezzo</th>
+        
       </tr>
     </thead>
     <tbody>
       {% for lotti in lotti_paginator %}
       <tr>
         <td>
-          <a href="{% url 'acquistopelli:modifica_lotto' pk=lotti.pk %}"
-            >{{ lotti.data_acquisto|date:'d/m/Y' }}</a
+          <a href="{% url 'acquistopelli:modifica_lotto' pk=lotti.pk %}">
+            {{ lotti.data_acquisto|date:'d/m/Y' }}</a
           >
         </td>
 
         <td>{{ lotti.identificativo }}</td>
         <td>{{ lotti.fk_fornitore.ragionesociale }}</td>
         <td>{{ lotti.fk_tipoanimale.descrizione }}</td>
-        <td>{{ lotti.fk_tipogrezzo.descrizione }}</td>
+        
       </tr>
       {% endfor %}
     </tbody>
@@ -133,8 +136,8 @@ endblock head_title %} {% block sidenav %} {% include
       <li class="page-item disabled">
         <span class="page-link" aria-hidden="true">&laquo;</span>
       </li>
-      {% endif %} {% for page in lotti_paginator.paginator.page_range %} {% if
-      page == lotti_paginator.number %}
+      {% endif %} {% for page in lotti_paginator.paginator.page_range %} 
+      {% if page == lotti_paginator.number %}
       <li class="page-item active">
         <span class="page-link">{{ page }}</span>
       </li>
@@ -142,7 +145,9 @@ endblock head_title %} {% block sidenav %} {% include
       <li class="page-item">
         <a class="page-link" href="?page={{ page }}">{{ page }}</a>
       </li>
-      {% endif %} {% endfor %} {% if lotti_paginator.has_next %}
+      {% endif %} 
+      {% endfor %}
+      {% if lotti_paginator.has_next %}
       <li class="page-item">
         <a
           class="page-link"
@@ -163,8 +168,9 @@ endblock head_title %} {% block sidenav %} {% include
   <!-- End Pagination -->
 </div>
 
-{% include 'acquistopelli/modals/lwg_report_criteria.html' %} {% endblock
-content %} {% block extra_scripts %}
+{% include 'acquistopelli/modals/lwg_report_criteria.html' %}
+{% endblock content %}
+{% block extra_scripts %}
 
 <script>
   $(function () {
