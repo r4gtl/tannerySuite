@@ -1,0 +1,9 @@
+{% for lotto in lotti %}
+<tr>
+  <td>{{ lotto.identificativo }}</td>
+  <td>{{ lotto.fornitore }}</td>
+  <td>
+    <button type="button" data-bs-toggle="modal" data-bs-target="#dettagliLottoModal{{ lotto.id }}">Dettagli</button>
+  </td>
+</tr>
+{% endfor %}

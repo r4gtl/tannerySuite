@@ -152,10 +152,8 @@ class DettaglioOrdineLavoroModelForm(forms.ModelForm):
     )
     
     class Meta:
-        model = DettaglioOrdineLavoro
-        #exclude=()
-        fields='__all__'
-        
+        model = DettaglioOrdineLavoro        
+        fields = '__all__'        
         
         widgets = {'quantity': forms.NumberInput(),
                 'numero_riga': forms.NumberInput(attrs={'class': 'form-control text-end', 'readonly': 'True'}),
@@ -174,3 +172,15 @@ class DettaglioOrdineLavoroModelForm(forms.ModelForm):
             'note': 'Note'
         }
         
+
+class RicercaLottoForm(forms.Form):
+    identificativo = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    fornitore = forms.ModelChoiceField(queryset=Fornitore.objects.all(), required=False)
+    taglio = forms.ModelChoiceField(queryset=Taglio.objects.all(), required=False)
+    sezione = forms.ModelChoiceField(queryset=Sezione.objects.all(), required=False)
+    concia = forms.ModelChoiceField(queryset=Concia.objects.all(), required=False)
+    tipoanimale = forms.ModelChoiceField(queryset=TipoAnimale.objects.all(), required=False)
+    quality = forms.ModelChoiceField(queryset=Quality.objects.all(), required=False)
+    spessore = forms.ModelChoiceField(queryset=Spessore.objects.all(), required=False)
+    
+    

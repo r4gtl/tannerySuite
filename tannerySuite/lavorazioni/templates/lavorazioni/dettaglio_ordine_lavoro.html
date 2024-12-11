@@ -7,7 +7,27 @@
 {% endblock %}
 
 {% block content %}
-
+<style>
+    /* CSS temporaneo per il debug */
+    .modal-dialog {
+        max-width: 90%; /* Puoi ridurre se non vuoi che sia a piena larghezza */
+        width: auto;
+    }
+    
+    .modal-body {
+        overflow-y: auto; /* Permette lo scroll se il contenuto è lungo */
+        max-height: 80vh; /* Evita che il modale sia troppo alto */
+    }
+    
+    .modal-body * {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        position: relative !important;
+        
+    }
+    </style>
+    
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -26,6 +46,10 @@
     </ol>
 </nav>
 {% include 'lavorazioni/modals/modal_quantity.html' %}
+{% include 'lavorazioni/modals/modal_ricerca_lotto.html' %}
+
+
+
     <div class="container">
         {% if form.instance.id  %}
             <h3>Modifica dettaglio ddt N. {{ ordine_lavoro.num_doc }}</h3>
@@ -61,6 +85,9 @@
                         </div>
                         <div class="col-2">
                             {{ form.fk_dettaglio_lotto|as_crispy_field }}
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#ricercaLottoModal">
+                                <i class="bi bi-search"></i> Ricerca
+                            </button>
                         </div>
                         <div class="col-2">
                             {{ form.fk_output_lavorazione|as_crispy_field }}
@@ -79,7 +106,7 @@
                         <div class="col-2">
                             {{ form.fk_unita_misura|as_crispy_field }}
                         </div>
-                        <div class="col-1">
+                        <div class="col-2">
                             {{ form.quantity|as_crispy_field }}
                         </div>
                         
@@ -109,7 +136,7 @@
                 </form>
                 <hr>
                 </div>
-                <div class="col-6" style="border: 2px solid black; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                <div class="col-6" style="border: 1px solid black; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
                     <div class="row">
                         {% include "lavorazioni/partials/_elenco_lotti.html" %}
                     </div>
@@ -131,6 +158,13 @@
 {% endblock %}
 {% block extra_scripts %}
 <script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    });
+    
+
 document.addEventListener("DOMContentLoaded", function() {
             setFocusOnField('id_descrizione');
         });
@@ -154,6 +188,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
             quantityModalInstance = new bootstrap.Modal(document.getElementById('quantityModal'));
             quantityModalInstance.show();
+
+            // Imposta il focus sull'input dopo aver mostrato il modal
+            quantityModalInstance._element.addEventListener('shown.bs.modal', function () {
+            quantityInput.focus();
+            });
         });
     });
 
@@ -186,7 +225,73 @@ document.addEventListener('DOMContentLoaded', function () {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
 });
+
+function filterTable() {
+    const input = document.getElementById('searchInput');
+    const filter = input.value.toLowerCase();
+    const table = document.getElementById('lottiTable');
+
+    if (!table) {
+        console.error("Tabella non trovata!");
+        return;
+    }
+
+    const rows = table.querySelectorAll('tbody > tr');
+
+    rows.forEach(row => {
+        const rowText = row.innerText.toLowerCase();
+        row.style.display = rowText.includes(filter) ? '' : 'none';
+    });
+}
+
+// Aggiungi questo codice allo script esistente:
+
+$(document).ready(function() {
+    // Invio del form di ricerca
+    $('#ricercaLottoForm').submit(function(e) {
+      e.preventDefault(); // Evita l'invio del form di default
+  
+      const form_data = $(this).serialize(); // Serializza i dati del form
+      console.log("data: " + form_data)
+      $.ajax({
+        url: "{% url 'lavorazioni:ricerca_lotto' %}", // Sostituisci con la tua url di ricerca
+        type: "POST",
+        data: form_data,
         
+        success: function(response) {
+            $('#risultatiRicerca tbody').html(response); // Aggiorna solo il tbody della tabella
+            
+        },
+        error: function(error) {
+          console.error("Errore durante la ricerca:", error);
+        }
+      });
+    });
+  });
+
+$(document).ready(function() {
+    $('#ricercaLottoModal').on('shown.bs.modal', function (e) {
+        var url = "{% url 'lavorazioni:ricerca_lotto_modal' %}";
+        console.log("Caricato")
+        console.log("url:" + url)
+        $.ajax({
+        
+        url: url,
+        success: function(response) {
+            //console.log($('#ricercaLottoModal .modal-body'));
+            $('#ricercaLottoModal .modal-body').empty().html(response);
+            //$('#ricercaLottoModal .modal-body').html(response);
+            //console.log($('#ricercaLottoModal .modal-body').html());
+            console.log($('#ricercaLottoModal .modal-body').children().length); // Verifica se ci sono elementi figli
+            $('#ricercaLottoModal').modal('handleUpdate');
+            
+
+            //console.log("Contenuto attuale della modal-body:", $('#ricercaLottoModal .modal-body').html());
+            //console.log(response)
+        }
+        });
+    });
+});
 
         
 </script>

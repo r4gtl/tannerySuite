@@ -1,6 +1,7 @@
 <div class="container mt-4">
     <p>Lotti Attivi</p>
-    <table class="table table-striped">
+    <input type="text" id="searchInput" class="form-control mb-3" placeholder="Filtra lotti o dettagli..." onkeyup="filterTable(); console.log('keyup event triggered');">
+    <table id="lottiTable" class="table table-striped">
         <thead>
             <tr>
                 <th>Data Acquisto</th>
@@ -26,7 +27,7 @@
                     </a>
                     
                     <!-- Bottone per il collapse -->
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#details-{{ lotto.id }}" aria-expanded="true" aria-controls="#details-{{ lotto.id }}">
+                    <button class="accordion-button bg-transparent border-0 shadow-none p-0" type="button" data-bs-toggle="collapse" data-bs-target="#details-{{ lotto.id }}" aria-expanded="true" aria-controls="#details-{{ lotto.id }}">
                     </button>
                 </div>
                 </td>
