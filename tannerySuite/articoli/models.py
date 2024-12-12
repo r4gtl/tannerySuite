@@ -1,4 +1,5 @@
 from datetime import date
+from django.core.exceptions import ValidationError
 
 # from acquistopelli.models import TipoAnimale, TipoGrezzo
 from anagrafiche.models import Fornitore, Cliente
@@ -174,7 +175,19 @@ class Procedura(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def clean(self):
+        if not getattr(
+            self, "fk_articolo", None
+        ):  # Usa getattr per evitare RelatedObjectDoesNotExist
+            raise ValidationError(
+                "fk_articolo è obbligatorio per salvare una Procedura."
+            )
+
     def save(self, *args, **kwargs):
+
+        # Chiamata a clean per eseguire la validazione
+        self.clean()
+
         # Se il numero ricetta è vuoto
         if self.nr_procedura is None:
             max_nr_procedura = Procedura.objects.aggregate(Max("nr_procedura"))[
